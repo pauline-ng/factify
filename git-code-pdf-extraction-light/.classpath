@@ -16,8 +16,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/nlp"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/utility"/>
 	<classpathentry kind="lib" path="lib/clustering-api-1.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/clustering-hierarchical-1.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/clustering-kmeans-1.0-SNAPSHOT.jar"/>
@@ -48,9 +46,11 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/ie-pipelines-2.2-20150804.121120-481.jar"/>
 	<classpathentry kind="lib" path="lib/ie-language-detection-core-2.2-20150802.123713-485.jar"/>
 	<classpathentry kind="lib" path="lib/jlangdetect-0.3.jar"/>
 	<classpathentry kind="lib" path="lib/ie-language-detection-model-en-2.2-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/ie-pipelines-2.2-SNAPSHOT.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/git-nlp"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/git-utility"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
