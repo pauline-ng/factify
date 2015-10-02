@@ -109,7 +109,7 @@ public class PdfExtractionPipeline implements PdfExtractor {
 	public  String global_path = "";
 	public PDF pdf;
 	public enum PdfExtractionBackend {
-	    PDFBox
+	    PDFBox 
 //	    ,
 //	    IText,
 //	    Poppler,
