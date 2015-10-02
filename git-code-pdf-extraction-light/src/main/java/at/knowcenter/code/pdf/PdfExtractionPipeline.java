@@ -116,7 +116,7 @@ public class PdfExtractionPipeline implements PdfExtractor {
 //	    Mootools,
 //	    JPod
 	}
-	
+	 
 	private static final PdfExtractionBackend BACKEND = PdfExtractionBackend.PDFBox;
 	
 	/**
