@@ -35,7 +35,7 @@ public class StanfordNLPLight {
 	 public StanfordCoreNLP pipeline;
 	 public HashSet<String> stopwords;
 	public String sourceFolder;
-	public  wordnet wn;
+//	public  wordnet wn;
 	public StanfordNLPLight() {
 	     Properties props = new Properties();
 //	     props.put("annotators", "tokenize, ssplit, pos, lemma, ner, depparse");
@@ -55,8 +55,23 @@ public class StanfordNLPLight {
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String text = "The precision is less than 0.1";
-		
+//		StanfordNLPLight nlp = new StanfordNLPLight()
+		testStanfordNLPLight(args);
+	}
+	
+	public static void testStanfordNLPLight(String[] args) {
+		// TODO Auto-generated method stub
+//		String text = "The precision is less than 0.1";
+//		String text = "However, both diphenhydramine and desloratadine+verapamil treated animals performed significantly less well on the rotarod than the MC treated animals (p<0.0001).";
+		String text = "Studies of genetic variation in African-American autism families are rare. Analysis of 557 "+
+"Caucasian and an independent population of 54 African-"+
+"American families with 35 SNPs within GABRB1 and "+
+"GABRA4 strengthened the evidence for involvement of "+
+"GABRA4 in autism risk in Caucasians (rs17599165, "+
+"p=0.0015; rs1912960, p=0.0073; and rs17599416, "+
+"p=0.0040) and gave evidence of significant association in "+
+"African-Americans (rs2280073, p=0.0287 and rs168"+ 
+"59788, p=0.0253). ";
 		 Properties props = new Properties();
 	     props.put("annotators", "tokenize, ssplit, pos, lemma");
 	     StanfordNLPLight nlp = new StanfordNLPLight(props);
@@ -72,7 +87,8 @@ public class StanfordNLPLight {
 	    	  System.out.println();
 	    	  for (CoreMap token : sentence.get(CoreAnnotations.TokensAnnotation.class)) 
 	    	        System.out.print(token.get(CoreAnnotations.PartOfSpeechAnnotation.class) + "\t");
-	    	   System.out.println();
+	    	  System.out.println();
+	    	   System.out.println("---Lemma next---");
 	    	   for (CoreMap token : sentence.get(CoreAnnotations.TokensAnnotation.class)) 
 	    	        System.out.print(token.get(CoreAnnotations.LemmaAnnotation.class) + "\t");
 	    	   System.out.println();
@@ -117,8 +133,8 @@ public class StanfordNLPLight {
 		List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
 		HashSet<String> knowNouns = new HashSet<String>();
 		if(this.stopwords == null) importStopWords();
-		if(wn == null) 
-			wn = new wordnet();
+//		if(wn == null) 
+//			wn = new wordnet();
 		for(CoreMap sentence : sentences) {
 				    	 System.out.println(sentence.toShorterString());
 			List<String> words = new ArrayList<String>();
@@ -127,7 +143,8 @@ public class StanfordNLPLight {
 			List<Span> spans = new ArrayList<Span>();
 			for(CoreMap token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
 				//	    		 String token_s = token.get(CoreAnnotations.LemmaAnnotation.class);
-				String stem = wn.StemWordWithWordNet(token.get(CoreAnnotations.TextAnnotation.class));
+//				String stem = wn.StemWordWithWordNet(token.get(CoreAnnotations.TextAnnotation.class));
+				String stem = token.get(CoreAnnotations.LemmaAnnotation.class);
 				//	    		 if(!nlp.stopwords.contains(token_s)) {
 				words.add(token.get(CoreAnnotations.OriginalTextAnnotation.class));
 				stems.add(stem);
@@ -166,7 +183,7 @@ public class StanfordNLPLight {
 		List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
 		HashSet<String> knowNouns = new HashSet<String>();
 		if(stopwords == null) importStopWords();
-		wn = new wordnet();
+//		wn = new wordnet();
 		int senIndex = 0;
 		for(CoreMap sentence : sentences) {
 			//	    	 System.out.println(sentence.toShorterString());
@@ -176,8 +193,9 @@ public class StanfordNLPLight {
 			List<Span> spans = new ArrayList<Span>();
 			for(CoreMap token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
 				//	    		 String token_s = token.get(CoreAnnotations.LemmaAnnotation.class);
-				String stem = wn.StemWordWithWordNet(token.get(CoreAnnotations.TextAnnotation.class));
+//				String stem = wn.StemWordWithWordNet(token.get(CoreAnnotations.TextAnnotation.class));
 				//	    		 if(!nlp.stopwords.contains(token_s)) {
+				String stem = token.get(CoreAnnotations.LemmaAnnotation.class);
 				words.add(token.get(CoreAnnotations.TextAnnotation.class));
 				stems.add(stem);
 				POSTag.add(token.get(CoreAnnotations.PartOfSpeechAnnotation.class));
@@ -203,13 +221,19 @@ public class StanfordNLPLight {
 	}
 	
 	public void importStopWords() {
-		utility util = new utility();
+//		utility util = new utility();
 		//	String path = "CORENLP_INPUT/stopwords.txt";
 		//	String s = util.readFromFile(path);
-		String s = getResourceAsString("stopwords.txt");
-		StringTokenizer st = new StringTokenizer(s, "\r\n");
-		stopwords = new HashSet<String>();
-		while(st.hasMoreTokens()) stopwords.add(st.nextToken().trim());
+		try{
+			String s = getResourceAsString("stopwords.txt");
+			StringTokenizer st = new StringTokenizer(s, "\r\n");
+			stopwords = new HashSet<String>();
+			while(st.hasMoreTokens()) stopwords.add(st.nextToken().trim());
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("error");
+		}
 	}
 	public static boolean isNoun(String pos) {
 		if(pos.equals("NN") || pos.equals("NNS") || pos.equals("NNP") || pos.equals("NNPS"))
@@ -220,9 +244,17 @@ public class StanfordNLPLight {
 	public String getResourceAsString(String fileName) {
 //		 ClassLoader classLoader = getClass().getClassLoader();
 		 //				File file = new File(classLoader.getResource("stopwords.txt").getFile());
-			 utility util = new utility();
-			 BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(fileName )));
+		try{	 
+		utility util = new utility();
+			 BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(fileName )));
 			 return util.toString(br);
+		}
+		catch(Exception e) {
+			 ClassLoader classLoader = getClass().getClassLoader();
+			System.out.println(classLoader.getClass().getName().toString());
+			e.printStackTrace();
+			return null;
+		}
 		 
 	 }
 	
