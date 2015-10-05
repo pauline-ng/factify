@@ -1,0 +1,78 @@
+﻿//This file contains list of keywords used.
+
+POS tag JJR //adjective, comparative
+POS tag RBR //adverb, comparative
+POS tag JJS //adjective, superlative
+POS tag RBS //adjective, superlative
+as <word> as //e.g. as good as
+
+
+
+
+
+all
+
+less
+
+
+twice
+thrice
+half
+
+either
+
+Number one
+one of few
+more
+like
+behind
+
+
+
+first
+
+before
+double
+
+nobody
+Vs
+last
+after
+thrice
+
+
+together
+altogether
+Alternate
+only
+
+ahead
+fraction
+outdo
+match
+
+peerless
+
+One of few
+
+
+alternate
+
+top
+exceed
+
+
+outstrip
+none
+near
+
+
+second
+
+advantage
+unlike
+least
+outclass
+outfox
+outdistance
+most

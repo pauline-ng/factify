@@ -1,0 +1,21 @@
+//verbs
+reveal
+show
+identify
+associate
+result in
+result from
+yield
+find
+found
+discover
+attain
+suggest
+confirm
+examine
+investigate
+present
+evaluate
+study
+validate
+endow
