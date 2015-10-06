@@ -3,28 +3,13 @@ package extractor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-//import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-//import java.io.OutputStreamWriter;
-//import java.io.PrintWriter;
-//import java.io.UnsupportedEncodingException;
-//import java.io.Writer;
-//import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-//import java.util.StringTokenizer;
-//import java.util.regex.Matcher;
-//import java.util.regex.Pattern;
-
-
-
-
-
-
 
 import nlp.Sequence;
 import nlp.StanfordNLPLight;
@@ -35,34 +20,22 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-
-
-
-
-
-
 import pattern.Acronym;
 import pattern.NGrams;
 import pattern.PatternMatcher;
 //import at.knowcenter.code.api.pdf.PdfParser.PdfParserException;
 import pdfStructure.PDF;
 import pdfStructure.Paragraph;
-import debug.Debug;
-import debug.Debug.DEBUG_CONFIG;
+import utility.Debug;
 import utility.utility;
+import utility.Debug.DEBUG_CONFIG;
 import knowledge_model.C_Facts;
 import knowledge_model.S_Facts;
 import PDFconverter.PDFConverter;
-import pdfStructure.*;
-//import reddit_anaysis.utility;
-//import reddit_anaysis.wordFrequency;
-//import PDFconverter.Refinement;
-//import PDFconverter.Refinement;
-//import model.PMC_PDF;
-//import model.PMC_Section;
 
 public class ExtractorBELExtractor {
 	static StanfordNLPLight nlp;
+//	static String debug_output_folder;
 	public static void main(String[]  args) {
 		boolean test = true;
 		if(!test) {
@@ -147,7 +120,7 @@ public class ExtractorBELExtractor {
 //		examplePDFExtractor("test\\PMC1513515\\PMC1513515.pdf1");
 //		prevalidation_1stRound();
 //		String path = "test\\for lawyer\\cbdgmlu\\cbdgmlu_text.xml";
-		String path = "test\\cbautw9_\\cbautw9_.pdf";
+		String path = "..\\git-BEL_extractor-test\\test\\cbautw9_\\cbautw9_.pdf";
 //		examplePDFExtractor(path, path + "_.fact");
 //		exampleXMLExtractor(path,path + "_");
 		ExtractorBELExtractor extractor = new ExtractorBELExtractor();
@@ -168,7 +141,7 @@ public class ExtractorBELExtractor {
 //		}
 	}
 
-	private static String reg_Number = "\\d+";
+//	private static String reg_Number = "\\d+";
 	
 //	public static void test() {
 //		String path = "test\\cbdgmlu_\\cbdgmlu_.pdf";//test\\papers_20 top journals\\cav6twh_.pdf
@@ -507,14 +480,14 @@ public class ExtractorBELExtractor {
 //		String path = "C:\\Users\\huangxc\\Desktop\\jayanthi\\2nd_paper\\result_disc.txt";
 //		String path = "test/PMC1513515/Methods_section.txt";
 		utility util = new utility();
-		outputPath = "d:/test.fact";
+//		outputPath = "d:/test.fact";
 		
-		String path = "~/";
+//		String path = "~/";
 //		String para = util.readFromFile(path);
 		String para = "it revealed an apple";
 		StanfordNLPLight nlp = new StanfordNLPLight( "tokenize, ssplit, pos, lemma");
 		List<Sequence> sentences = nlp.textToSequence(para, true);
-		NGrams ngram = new NGrams();
+//		NGrams ngram = new NGrams();
 		NGrams.nlp = nlp;
 //		ngrams.wn = nlp.wn;
 //		Map<String, Sequence> acronyms = Refinement.findAcronyms(para);
@@ -692,20 +665,28 @@ public class ExtractorBELExtractor {
 	}
 	*/
 	/**
-	 * output as JSON file
+	 * 
 	 * @param path
 	 * @param output
+	 * @return ErrorCode: 
+	 * 0: input file not exist; 
+	 * 1: succeeded
+	 * 2: PDF Converter Failed
+	 * 3: BELExtractor Failed
 	 */
-	
-	public  void examplePDFExtractor_JSON(String path, String output) {
+	public  int examplePDFExtractor_JSON(String path, String output) {
 		JSONArray factsToOutput = new JSONArray();
 		PDFConverter converter = new PDFConverter();
-		
-		PDF pdf =  converter.run(new File(path));
+		File file = new File(path);
+		if (!file.exists()) {
+			Debug.print("Input File " + path + " does not exist!", DEBUG_CONFIG.debug_error);
+			return 0;
+		}
+		PDF pdf =  converter.run(file);
 		if(pdf == null) {
 			Debug.println("PDF Converter Failed!",DEBUG_CONFIG.debug_error);
 			Debug.println("File Path: " + path,DEBUG_CONFIG.debug_error);
-			return;
+			return 2;
 		}
 		StanfordNLPLight nlp = new StanfordNLPLight( "tokenize, ssplit, pos, lemma");
 		HashMap<Paragraph, S_Facts> paraToFacts = new HashMap<Paragraph, S_Facts>();
@@ -789,6 +770,7 @@ public class ExtractorBELExtractor {
 //			Debug.println("-------------acronyms--------------------");
 //			for(String s : pdf.acronyms_.keySet()) Debug.println(s + "\t" + pdf.acronyms.get(s).sourceString);
 //		}
+		return 1;
 	}
 	
 }

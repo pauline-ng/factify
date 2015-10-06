@@ -19,10 +19,10 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
+import utility.Debug;
+import utility.Debug.DEBUG_CONFIG;
 import nlp.Sequence;
 import nlp.StanfordNLPLight;
-import debug.Debug;
-import debug.Debug.DEBUG_CONFIG;
 
 //import extractor.StanfordNLP;
 

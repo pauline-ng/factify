@@ -29,44 +29,33 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+
+//import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.compound.hyphenation.HyphenationException;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Element;
 
 import pdfStructure.PDF;
 import pdfStructure.PDFtoStructure;
 import pdfStructure.Paragraph;
-import weka.core.Attribute;
+import utility.Debug;
+import utility.Debug.DEBUG_CONFIG;
 import at.knowcenter.code.api.pdf.Block;
 import at.knowcenter.code.api.pdf.BlockLabel;
 import at.knowcenter.code.api.pdf.Document;
-import at.knowcenter.code.api.pdf.Page;
-import at.knowcenter.code.api.pdf.Page.Line;
-import at.knowcenter.code.api.pdf.PdfExtractor;
-import at.knowcenter.code.api.pdf.PdfExtractorResult;
 import at.knowcenter.code.api.pdf.PdfParser.PdfParserException;
 import at.knowcenter.code.api.pdf.ReadingOrder;
 import at.knowcenter.code.api.pdf.TableRegion;
-import at.knowcenter.code.pdf.AnnotatedDocumentBuilder.LineCollector;
 import at.knowcenter.code.pdf.blockclassification.BlockLabeling;
-//import at.knowcenter.code.pdf.blockclassification.detection.BlockMetadataDetector;
 import at.knowcenter.code.pdf.blockclassification.detection.CaptionDetector;
 import at.knowcenter.code.pdf.blockclassification.detection.DecorationDetector;
 import at.knowcenter.code.pdf.blockclassification.detection.Detector;
@@ -75,16 +64,11 @@ import at.knowcenter.code.pdf.blockclassification.detection.FigureDetector;
 import at.knowcenter.code.pdf.blockclassification.detection.HeadingDetector;
 import at.knowcenter.code.pdf.blockclassification.detection.MainTextDetector;
 import at.knowcenter.code.pdf.blockclassification.detection.TableDetector;
-//import at.knowcenter.code.pdf.blockclassification.detection.TokenMetadataDetector;
 import at.knowcenter.code.pdf.blockclassification.detection.metadata.ArticleMetadataCollector;
-//import at.knowcenter.code.pdf.blockclassification.detection.references.CitationAnnotator;
-//import at.knowcenter.code.pdf.blockclassification.detection.references.ReferenceDetector;
 import at.knowcenter.code.pdf.blockextraction.clustering.ClusteringPdfBlockExtractor;
 import at.knowcenter.code.pdf.blockrelation.geometric.BlockNeighborhood;
 import at.knowcenter.code.pdf.blockrelation.geometric.DefaultBlockNeighborhood;
 import at.knowcenter.code.pdf.blockrelation.readingorder.ReadingOrderExtractor;
-//import at.knowcenter.code.pdf.parsing.itext.ItextParser;
-//import at.knowcenter.code.pdf.parsing.jpod.JPodParser;
 import at.knowcenter.code.pdf.parsing.pdfbox.PdfBoxDocumentParser;
 import at.knowcenter.code.pdf.toc.DocumentStructureExtractor;
 import at.knowcenter.code.pdf.utils.table.PartitioningTableParser;
@@ -95,7 +79,6 @@ import at.knowcenter.code.pdf.utils.table.TableUtils;
 import at.knowcenter.code.pdf.utils.text.Dehyphenator;
 import at.knowcenter.ie.AnnotatedDocument;
 import at.knowcenter.ie.Language;
-//import at.knowcenter.ie.opennlp.SentenceAnnotator;
 import at.knowcenter.ie.pipelines.AnnotatorPipeline;
 
 /**
@@ -104,10 +87,19 @@ import at.knowcenter.ie.pipelines.AnnotatorPipeline;
  * @author sklampfl
  * 
  */
-public class PdfExtractionPipeline implements PdfExtractor {
-	private static Logger log = Logger.getLogger(PdfExtractionPipeline.class.getSimpleName());
-	public  String global_path = "";
-	public PDF pdf;
+public class PdfExtractionPipeline {
+//	private static Logger log = Logger.getLogger(PdfExtractionPipeline.class.getSimpleName());
+	//by huangxc: the following 3 strings are used to share among classes (e.g. DetectorPipeline)
+	public static String global_debug_dir = null;
+	public static String global_output_dir = null;
+	public static String global_id = null;
+	
+	private  String debug_dir = null;
+	private String output_dir = null;
+	private String id = null;
+	private PDF pdf;
+	
+	
 	public enum PdfExtractionBackend {
 	    PDFBox 
 //	    ,
@@ -210,26 +202,25 @@ public class PdfExtractionPipeline implements PdfExtractor {
 	protected final DetectorPipeline pipeline;
 	
 //	private static final String MODEL_DIR = "data/pubmed-10k/";
-	private static final String MODEL_DIR = "data/pubmed-1k-test/";
+//	private static final String MODEL_DIR = "data/pubmed-1k-test/";
 //  private static final String MODEL_DIR = "data/pubmed-1k-jpod-4/";
 //	private static final String MODEL_DIR = "data/pubmed-1k-pdfbox-centroid/";
-	private static final String DEFAULT_BLOCK_MODEL = MODEL_DIR + "block-type-classifier-model.bin";
-	private static final String DEFAULT_FEATURES =  MODEL_DIR + "block-features.arff";
-	private static final String DEFAULT_LANG_MODEL =  MODEL_DIR + "language-model";
-	private static final String DEFAULT_TOKEN_MODEL = MODEL_DIR + "token-classifier-model.bin";
-    private static final String DEFAULT_REFERENCE_MODEL = MODEL_DIR + "references-classifier-model.bin";
+//	private static final String DEFAULT_BLOCK_MODEL = MODEL_DIR + "block-type-classifier-model.bin";
+//	private static final String DEFAULT_FEATURES =  MODEL_DIR + "block-features.arff";
+//	private static final String DEFAULT_LANG_MODEL =  MODEL_DIR + "language-model";
+//	private static final String DEFAULT_TOKEN_MODEL = MODEL_DIR + "token-classifier-model.bin";
+//    private static final String DEFAULT_REFERENCE_MODEL = MODEL_DIR + "references-classifier-model.bin";
 
     /**
 	 * creates a new PDF extraction pipeline
 	 * @throws IOException 
 	 */
-	public PdfExtractionPipeline() {
+//	public PdfExtractionPipeline() {
 //		this(DEFAULT_BLOCK_MODEL, DEFAULT_FEATURES, DEFAULT_TOKEN_MODEL, DEFAULT_LANG_MODEL, DEFAULT_REFERENCE_MODEL);
-		this(DEFAULT_BLOCK_MODEL, DEFAULT_FEATURES, DEFAULT_TOKEN_MODEL, DEFAULT_LANG_MODEL);
-	}
+//		this(DEFAULT_BLOCK_MODEL, DEFAULT_FEATURES, DEFAULT_TOKEN_MODEL, DEFAULT_LANG_MODEL);
+//	}
 	
-	public PdfExtractionPipeline(String blockModelFile, String featuresFile, String tokenModelFile,
-			String languageModelDir) {
+	public PdfExtractionPipeline() {
 		pipeline = new DetectorPipeline(new DecorationDetector(), 
 				   new MainTextDetector(),
 				   new HeadingDetector(),
@@ -494,9 +485,7 @@ public class PdfExtractionPipeline implements PdfExtractor {
 	private List<Block> extractDocumentBody(List<Block> pageBlocks, BlockLabeling labeling, ReadingOrder readingOrder,
 			boolean clearHyphenations) {
 		
-		List<Block> mainTextLines = new LinkedList<Block>();		
 		List<Block> paragrahs_and_heading = new ArrayList<Block>();
-//		StringBuilder buffer = new StringBuilder();
 		for (int i = 0; i < pageBlocks.size(); i++) {
 			Block[] blocksOnPage = pageBlocks.get(i).getSubBlocks().toArray(new Block[0]);
 			List<Integer> readingOrderOnPage = readingOrder.getReadingOrder(i);
@@ -507,26 +496,8 @@ public class PdfExtractionPipeline implements PdfExtractor {
 				BlockLabel label = labeling.getLabel(currentBlock);
 				//by huangxc
 				if(label == BlockLabel.Main || label == BlockLabel.Heading) paragrahs_and_heading.add(currentBlock);
-//				if (label!=null) {
-//					if (label==BlockLabel.Main) {
-//						mainTextLines.addAll(currentBlock.getSubBlocks());
-//						if (!clearHyphenations) {
-//							buffer.append("\n").append(text).append("\n");
-//						}
-//					} else if (label==BlockLabel.Heading) {
-//						if (clearHyphenations && mainTextLines.size()>0) {
-//							buffer.append(clearHyphenations(mainTextLines)).append("\n");
-//						}
-//						mainTextLines.clear();
-//						buffer.append("\n").append(text).append("\n");
-//					}
-//				}
 			}
 		}
-//		if (clearHyphenations && mainTextLines.size()>0) {
-//			buffer.append(clearHyphenations(mainTextLines)).append("\n");
-//		}
-//		return buffer.toString();
 		return paragrahs_and_heading;
 	}
 
@@ -577,11 +548,11 @@ public class PdfExtractionPipeline implements PdfExtractor {
 	 * @param block the block
 	 * @return the text of the given block with hyphenations removed
 	 */
-	public String clearHyphenations(Block block) {
-		List<Block> mainTextLines = new ArrayList<Block>();
-		mainTextLines.addAll(block.getLineBlocks());
-		return clearHyphenations(mainTextLines);
-	}
+//	private String clearHyphenations(Block block) {
+//		List<Block> mainTextLines = new ArrayList<Block>();
+//		mainTextLines.addAll(block.getLineBlocks());
+//		return clearHyphenations(mainTextLines);
+//	}
 
 
 	/**
@@ -592,9 +563,17 @@ public class PdfExtractionPipeline implements PdfExtractor {
 	 * @throws PdfParserException
 	 * @throws  
 	 */
-	public PdfExtractionResult runPipeline(String id, File file)  {
+	public PdfExtractionResult runPipeline(File file)  {
 		try{
-			return runPipeline(id, parseDocument(file));
+			if(file.exists()) {
+				if(checkParameterSetting())
+				
+					return runPipeline(parseDocument(file));
+				return null;
+			}else{ 
+				Debug.print("File " + file.getAbsolutePath() + " does not exist!", DEBUG_CONFIG.debug_error);
+				return null;
+			}
 		}
 		catch (PdfParserException e) {
 			e.printStackTrace();
@@ -616,21 +595,21 @@ public class PdfExtractionPipeline implements PdfExtractor {
 	 */
 	
 
-	private PdfExtractionResult runPipeline(String id, Document document)  {		
-try{
-		log.info("Extracting blocks...");
+	private PdfExtractionResult runPipeline( Document document)  {		
+		try{
+//		log.info("Extracting blocks...");
 		List<Block> pageBlocks = extractBlocks(document, id);
 
-		log.info("Extracting reading order...");
+//		log.info("Extracting reading order...");
 		ReadingOrder readingOrder = extractReadingOrder(pageBlocks);
 		BlockNeighborhood neighborhood = extractBlockNeighborhood(pageBlocks);
 		BlockLabeling labeling = new BlockLabeling();
 		ArticleMetadataCollector articleMetadata = new ArticleMetadataCollector();
 		
-		log.info("Running detector pipeline...");
+//		log.info("Running detector pipeline...");
 		runDetectorPipeline(document, pageBlocks, labeling, readingOrder, neighborhood, articleMetadata);
 		
-		log.info("Extracting tables...");
+//		log.info("Extracting tables...");
 		extractTables(document, articleMetadata);
 		
 		List<Paragraph> paragraphs = new ArrayList<Paragraph>();
@@ -671,47 +650,18 @@ try{
 //			}
 
 		}
-//		try{
-//			org.w3c.dom.Document dom;
-//			
-//			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-//			DocumentBuilder db = dbf.newDocumentBuilder();
-//			dom = db.newDocument();
-//			Element root = dom.createElement("paper");
-//			root.setAttribute("id", id);
-//			dom.appendChild(root);
-//			for(Paragraph ad : paragraphs) {
-//				Element e = dom.createElement("node");
-//				e.setAttribute("label", ad.label == null? "null" : ad.label.getLabel());
-//				Element p = dom.createElement("p");
-//				p.setTextContent(ad.text);
-//				e.appendChild(p);
-//				root.appendChild(e);
-//			}
-//			File f = new File(path + ".xml");
-//			TransformerFactory tFactory = TransformerFactory.newInstance();
-//			Transformer transformer = tFactory.newTransformer();
-//			DOMSource source = new DOMSource(dom);
-////			PrintWriter writer = new PrintWriter(f, "utf-8");
-//			StreamResult result = new StreamResult(f);
-//			transformer.transform(source, result);
-//			
-//		}catch(Exception e) {
-//			e.printStackTrace();
-//		}
 		
 //		extractCitations(annotatedDocument, articleMetadata);
 		
-
-		log.info("Extracting document text...");
+//		log.info("Extracting document text...");
 		ReadingOrder postprocessedReadingOrder = postprocessReadingOrder(pageBlocks, labeling, readingOrder);
 		String text = extractDocumentText(pageBlocks, labeling, postprocessedReadingOrder, true);		
 		String rawText = extractDocumentText(pageBlocks, labeling, postprocessedReadingOrder, false);		
 		{
-			writeFile(global_path + "_body_standard.txt", text, false);
+			writeFile(debug_dir + id + "_body_standard.txt", text, false);
 		}
 		{
-			String path = global_path + "_new_paragraphs_3.txt";
+			String path = debug_dir + id + "_new_paragraphs_3.txt";
 			List<Block> blocks_body_and_heading = extractDocumentBody(pageBlocks, labeling, postprocessedReadingOrder, true);
 			PDFtoStructure pdftoStructure = new PDFtoStructure();
 			List<Paragraph> body_and_heading = pdftoStructure.convert(blocks_body_and_heading, labeling, this);
@@ -730,7 +680,9 @@ try{
 		return new PdfExtractionResult(document, pageBlocks, labeling, readingOrder, 
 				postprocessedReadingOrder, neighborhood, getDehyphenator(), text, rawText, annotatedDocument);
 }
-catch(Exception e) {return null;}
+catch(PdfParserException e) {
+	
+	return null;}
 	}
 
     private AnnotatorPipeline getAnnotatorPipeline() throws PdfParserException {
@@ -745,7 +697,7 @@ catch(Exception e) {return null;}
 		return annotatorPipeline;
 	}
 
-	public Dehyphenator getDehyphenator() {
+	private Dehyphenator getDehyphenator() {
 		Dehyphenator dehyphenator = null;
 		try {
 			dehyphenator = new Dehyphenator(1, 1);
@@ -795,44 +747,53 @@ catch(Exception e) {return null;}
 //    	}
 //    	try {
     		PdfExtractionPipeline pipeline = new PdfExtractionPipeline();
-    		String filePath = "data/960_PR2.pdf";
+//    		String filePath = "../git-BEL_extractor-test/data/960_PR2.pdf";
+    		String filePath = args[0];
     		File file = new File(filePath);
-    		pipeline.global_path = filePath.endsWith(".pdf") ? filePath.substring(0, filePath.length() - 4) : filePath;
-    		pipeline.runPipeline("", file );
+    		String fileName = file.getName();
+    		if(!pipeline.setParameter(fileName.endsWith(".pdf") ? fileName.substring(0, fileName.length() - 4) : fileName,
+    				file.getParent() == null ?  "output/" : file.getParent() + "/output/",
+    				file.getParent() == null ?  "debug_output/" : file.getParent() + "/debug_output/"))
+    			return ;
+    		pipeline.runPipeline(file);
 	}
 
-	@Override
-	public PdfExtractorResult extract(File pdf)
-			throws PdfParserException {
-		final PdfExtractionResult result = runPipeline("test", pdf);
-		return new PdfExtractorResult(result.doc, result.annotatedDocument);
-	}
+//	@Override
+//	public PdfExtractorResult extract(File pdf)
+//			throws PdfParserException {
+//		final PdfExtractionResult result = runPipeline(pdf);
+//		return new PdfExtractorResult(result.doc, result.annotatedDocument);
+//	}
+//	
 	
-	
-	public static void print(Document doc, List<Block> pageBlocks, BlockLabeling labeling,
-			ReadingOrder readingOrder, String output) {
-		writeFile(output,"",false);
-		  for (int i = 0; i < pageBlocks.size(); i++) {
-	        	Page page = doc.getPages().get(i);
-	            Block pageBlock = pageBlocks.get(i);
-	            List<Integer> ro = readingOrder.getReadingOrder(i);
-	            List<Block> blocks = new ArrayList<Block>(pageBlock.getSubBlocks());
-	            for (int j = 0; j < ro.size(); j++) {            	
-	                Block currentBlock = blocks.get(ro.get(j));
-	                BlockLabel label = labeling.getLabel(currentBlock);
-	                writeFile(output, "-------" + (label == null? "NULL" : label.getLabel()) + "----------\r\n",true);
-	                writeFile(output, currentBlock.getText() + "\r\n\r\n",true);
-	                
-	            }
-		  }
-	}
+//	public static void print(Document doc, List<Block> pageBlocks, BlockLabeling labeling,
+//			ReadingOrder readingOrder, String output) {
+//		writeFile(output,"",false);
+//		for (int i = 0; i < pageBlocks.size(); i++) {
+//			Block pageBlock = pageBlocks.get(i);
+//			List<Integer> ro = readingOrder.getReadingOrder(i);
+//			List<Block> blocks = new ArrayList<Block>(pageBlock.getSubBlocks());
+//			for (int j = 0; j < ro.size(); j++) {            	
+//				Block currentBlock = blocks.get(ro.get(j));
+//				BlockLabel label = labeling.getLabel(currentBlock);
+//				writeFile(output, "-------" + (label == null? "NULL" : label.getLabel()) + "----------\r\n",true);
+//				writeFile(output, currentBlock.getText() + "\r\n\r\n",true);
+//
+//			}
+//		}
+//	}
 	public static void writeFile(String path, String s, boolean append) {
 		File log_f;
 		log_f = new File(path);
 		Writer out; 
 		try {
 			
-			if(!log_f.exists()) log_f.createNewFile();
+			if(!log_f.exists()) {
+				Path pathToFile = Paths.get(path);
+				if(Files.createDirectories(pathToFile.getParent()) == null || Files.createFile(pathToFile) == null)
+					Debug.print("Failed to create file " + path, DEBUG_CONFIG.debug_error);
+					return;
+			}
 			out = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(new File(path), append), "UTF-8"));
 //			out = new BufferedWriter(new FileWriter(new File(path), append));
@@ -842,7 +803,7 @@ catch(Exception e) {return null;}
 			
 		}
 		catch(Exception e) {
-			System.out.println(path);
+			Debug.print("Failed to create file " + path, DEBUG_CONFIG.debug_error);
 			e.printStackTrace();
 			
 		}
@@ -861,4 +822,72 @@ catch(Exception e) {return null;}
 //				e.printStackTrace();
 //			}
 	}
-}
+	private boolean checkParameterSetting() {
+		if(this.id == null || this.debug_dir == null || this.output_dir == null) {
+			Debug.print("Please specify pipeline's parameters: id, debug_dir, and output_dir", DEBUG_CONFIG.debug_error);
+			return false;
+		}
+		{
+			File file = new File(this.debug_dir);
+			if(!file.exists()) {
+				Path pathToFile = Paths.get(file.getAbsolutePath());
+				try {
+					if(Files.createDirectories(pathToFile) == null ){
+						Debug.print("Failed to create folder " + file.getAbsolutePath(), DEBUG_CONFIG.debug_error);
+						return false;
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					Debug.print("Failed to create folder " + file.getAbsolutePath(), DEBUG_CONFIG.debug_error);
+					return false;
+				}	
+			}
+		}
+		{
+			File file = new File(this.output_dir);
+			if(!file.exists()) {
+				Path pathToFile = Paths.get(file.getAbsolutePath());
+				try {
+					if(Files.createDirectories(pathToFile) == null ){
+						Debug.print("Failed to create folder " + file.getAbsolutePath(), DEBUG_CONFIG.debug_error);
+						return false;
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					Debug.print("Failed to create folder " + file.getAbsolutePath(), DEBUG_CONFIG.debug_error);
+					return false;
+				}	
+			}
+		}
+		global_debug_dir = debug_dir;
+		global_id = id;
+		global_output_dir = output_dir;
+		return true;
+	}
+	/**
+	 * 
+	 * @param args
+	 * 0: id
+	 * 1: output_dir
+	 * 2: debug_dir
+	 * @return
+	 */
+	public boolean setParameter(String...args) {
+		if(args.length != 3) {
+			Debug.print("Please set 3 parameters for PDFExtractionPipeline: id, debug_dir, and output_dir." , DEBUG_CONFIG.debug_error);
+			return false;
+		}
+		this.id = args[0];
+		this.output_dir = args[1];
+		this.debug_dir = args[2];
+		if(checkParameterSetting())
+			return true;
+		return false;
+	}
+	
+	public PDF getPDF(){
+		return this.pdf;
+	}
+ }

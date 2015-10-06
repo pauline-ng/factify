@@ -17,10 +17,10 @@ import java.util.Properties;
 
 import java.util.Stack;
 
-import debug.Debug;
-import debug.Debug.DEBUG_CONFIG;
+import utility.Debug;
 import utility.Span;
 import utility.utility;
+import utility.Debug.DEBUG_CONFIG;
 //import reddit_anaysis.utility;
 //import edu.stanford.nlp.ling.CoreAnnotations;
 //import edu.stanford.nlp.ling.CoreAnnotations.IsURLAnnotation;

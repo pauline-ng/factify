@@ -38,6 +38,10 @@ import at.knowcenter.code.api.pdf.BlockLabel;
  */
 public class BlockLabeling implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final Map<Block, BlockLabel> labels;
 	
 	/**

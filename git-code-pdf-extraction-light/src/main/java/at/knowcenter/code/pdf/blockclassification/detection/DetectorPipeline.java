@@ -33,7 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
+//import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -43,6 +43,7 @@ import at.knowcenter.code.api.pdf.Block;
 import at.knowcenter.code.api.pdf.BlockLabel;
 import at.knowcenter.code.api.pdf.Document;
 import at.knowcenter.code.api.pdf.ReadingOrder;
+import at.knowcenter.code.pdf.PdfExtractionPipeline;
 import at.knowcenter.code.pdf.blockclassification.BlockLabeling;
 import at.knowcenter.code.pdf.blockclassification.detection.metadata.ArticleMetadataCollector;
 import at.knowcenter.code.pdf.blockrelation.geometric.BlockNeighborhood;
@@ -80,7 +81,7 @@ public class DetectorPipeline implements Detector {
 		if (detectors==null) {
 			return;
 		}
-		String debug_file = "";
+		String debug_file = PdfExtractionPipeline.global_debug_dir + "detectorPipeline";
 		{
 			
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");

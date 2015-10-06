@@ -1,4 +1,4 @@
-package debug;
+package utility;
 
 import java.util.HashMap;
 
@@ -45,8 +45,8 @@ public class Debug {
 		configs.put(DEBUG_CONFIG.debug_acronym, false);
 
 		
-		configs.put(DEBUG_CONFIG.debug_error, false);
-		configs.put(DEBUG_CONFIG.debug_warning, false);
+		configs.put(DEBUG_CONFIG.debug_error, true);
+		configs.put(DEBUG_CONFIG.debug_warning, true);
 		set = true;
 	}
 

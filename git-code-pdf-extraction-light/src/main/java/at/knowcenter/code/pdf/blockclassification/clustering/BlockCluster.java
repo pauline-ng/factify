@@ -25,7 +25,6 @@ package at.knowcenter.code.pdf.blockclassification.clustering;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
 
 import at.knowcenter.code.api.pdf.Block;
 

@@ -28,7 +28,6 @@
 	<classpathentry kind="lib" path="lib/featureengineering-api-1.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/fontbox-1.8.5.jar"/>
 	<classpathentry kind="lib" path="lib/ie-api-2.2-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="lib" path="lib/lucene-analyzers-3.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/lucene-core-3.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/lucene-memory-3.6.0.jar"/>
@@ -52,5 +51,6 @@
 	<classpathentry kind="lib" path="lib/ie-pipelines-2.2-SNAPSHOT.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/git-nlp"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/git-utility"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

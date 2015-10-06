@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import debug.Debug;
-import debug.Debug.DEBUG_CONFIG;
+import utility.Debug;
+import utility.Debug.DEBUG_CONFIG;
 /**
  * This is from https://ph.answers.yahoo.com/question/index?qid=20100820042716AAcemIX (http://pastebin.com/CbaRz14A;http://pastebin.com/cGSFUSBp;http://pastebin.com/fZLypaBn)
  * 

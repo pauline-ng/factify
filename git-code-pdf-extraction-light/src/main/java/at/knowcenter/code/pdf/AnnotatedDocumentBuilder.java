@@ -23,7 +23,6 @@
  */
 package at.knowcenter.code.pdf;
 
-import java.io.InputStream;
 import java.io.Serializable;
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -39,17 +38,8 @@ import java.util.Map.Entry;
 import pdfStructure.Paragraph;
 import nlp.StanfordNLPLight;
 import utility.Span;
-//import edu.stanford.nlp.ling.CoreAnnotations;
-//import edu.stanford.nlp.pipeline.Annotation;
-//import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-//import edu.stanford.nlp.util.CoreMap;
-//import extractor.StanfordNLP;
-//import opennlp.tools.sentdetect.SentenceDetectorME;
-//import opennlp.tools.sentdetect.SentenceModel;
-//import opennlp.tools.util.Span;
 import at.knowcenter.code.api.pdf.Block;
 import at.knowcenter.code.api.pdf.BlockLabel;
-import at.knowcenter.code.api.pdf.BoundingBox;
 import at.knowcenter.code.api.pdf.Document;
 import at.knowcenter.code.api.pdf.ImageRegion;
 import at.knowcenter.code.api.pdf.Page;
@@ -63,10 +53,6 @@ import at.knowcenter.code.api.pdf.ReadingOrder;
 import at.knowcenter.code.api.pdf.TableRegion;
 import at.knowcenter.code.pdf.blockclassification.BlockLabeling;
 import at.knowcenter.code.pdf.blockclassification.detection.metadata.ArticleMetadataCollector;
-//import at.knowcenter.code.pdf.blockclassification.detection.metadata.opennlp.references.ReferenceToken;
-//import at.knowcenter.code.pdf.blockclassification.detection.metadata.opennlp.tokens.TokenClassifierME;
-//import at.knowcenter.code.pdf.blockclassification.detection.references.DetectedReference;
-//import at.knowcenter.code.pdf.blockclassification.detection.references.ReferenceTokenTypes;
 import at.knowcenter.code.pdf.blockrelation.geometric.BlockNeighborhood;
 import at.knowcenter.code.pdf.toc.DocumentStructure;
 import at.knowcenter.code.pdf.toc.DocumentStructureExtractor;
@@ -76,10 +62,8 @@ import at.knowcenter.ie.AnnotatedDocument;
 import at.knowcenter.ie.BaseTypeSystem;
 import at.knowcenter.ie.Language;
 import at.knowcenter.ie.impl.DefaultDocument;
-//import at.knowcenter.ie.opennlp.SentenceAnnotator;
 import at.knowcenter.ie.pipelines.AnnotatorPipeline;
 import at.knowcenter.ie.tools.AnnotatedDocumentUtils;
-//import at.knowcenter.ie.tools.ResourceLoader;
 import at.knowcenter.util.typedkey.TypedKey;
 
 /**
@@ -443,13 +427,6 @@ public class AnnotatedDocumentBuilder {
 
 		private void processBlocks(Block block, BlockLabel label, Page page, Callback callback) {
         	boolean isSplitBlocks = paragraphInformation != null && (label == BlockLabel.Abstract || label == BlockLabel.Main); 
-        	if(label == BlockLabel.Main) {
-        		System.out.println("debug");
-        	}
-//        	if(block.getText().contains("if we now examine")) {
-//        		System.out.println("debug");
-//        	}
-        	
         	LineCollector lineCollector = textBlockLineList.remove(label);
         	if (lineCollector == null) {
         		lineCollector = new LineCollector(callback);
@@ -511,10 +488,7 @@ public class AnnotatedDocumentBuilder {
         
         public void flush() {
         	for (Entry<BlockLabel, LineCollector> e : textBlockLineList.entrySet()) {
-//        		Paragraph para = processParagraph(e.getValue());
-//        		para.label = e.getKey();
-//        		para.t = e.getValue();
-//    			paragraphs.add(para);
+        		processParagraph(e.getValue());
         	}
         }
         	

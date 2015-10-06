@@ -13,15 +13,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import nlp.StanfordNLPLight;
-import debug.Debug;
-import debug.Debug.DEBUG_CONFIG;
 import knowledge_model.C_Facts;
 import knowledge_model.S_Facts;
+import utility.Debug;
 //import edu.stanford.nlp.ling.CoreAnnotations;
 //import edu.stanford.nlp.pipeline.Annotation;
 //import edu.stanford.nlp.util.CoreMap;
 import utility.Span;
 import utility.utility;
+import utility.Debug.DEBUG_CONFIG;
 import nlp.Sequence;
 
 /**

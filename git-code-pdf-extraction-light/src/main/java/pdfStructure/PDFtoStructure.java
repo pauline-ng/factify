@@ -98,7 +98,6 @@ public class PDFtoStructure {
 		List<Paragraph> paragraphs = new ArrayList<Paragraph>();
 		for(Block old : blocks) {//assume all lines are adjusted aligned
 			if(labeling.getLabel(old) == BlockLabel.Heading) {
-				StringBuilder buffer = new StringBuilder();
 				String text = old.getText();
 				text = Normalizer.normalize(text, Normalizer.Form.NFKC);
 				Paragraph para = new Paragraph(text);
