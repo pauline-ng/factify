@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="resource"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/git-BEL_extractor-core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/git-code-pdf-extraction-light"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/git-nlp"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/git-utility"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
