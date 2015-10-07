@@ -20,6 +20,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import at.knowcenter.code.pdf.PdfExtractionPipeline;
 import pattern.Acronym;
 import pattern.NGrams;
 import pattern.PatternMatcher;
@@ -34,7 +35,7 @@ import knowledge_model.S_Facts;
 import PDFconverter.PDFConverter;
 
 public class ExtractorBELExtractor {
-	static StanfordNLPLight nlp;
+	public static StanfordNLPLight nlp;
 //	static String debug_output_folder;
 	public static void main(String[]  args) {
 		boolean test = true;
@@ -124,7 +125,7 @@ public class ExtractorBELExtractor {
 //		examplePDFExtractor(path, path + "_.fact");
 //		exampleXMLExtractor(path,path + "_");
 		ExtractorBELExtractor extractor = new ExtractorBELExtractor();
-		extractor.examplePDFExtractor_JSON(path, path + "_fact.json");
+		extractor.examplePDFExtractor_JSON(path, path);
 //		examplePDFExtractor("withingroup\\huan1.pdf", "withingroup\\huan1.pdf.fact");
 //		utility util = new utility();
 //		util.writeFile("d:/zotero.txt", "I love you", false);
@@ -666,29 +667,54 @@ public class ExtractorBELExtractor {
 	*/
 	/**
 	 * 
-	 * @param path
+	 * @param args
+	 * 0: path
+	 * 1: output_dir
+	 * 2: debug_dir
 	 * @param output
-	 * @return ErrorCode: 
+	 * @return ErrorCode:
+	 * -1: input parameter error 
 	 * 0: input file not exist; 
 	 * 1: succeeded
 	 * 2: PDF Converter Failed
 	 * 3: BELExtractor Failed
 	 */
-	public  int examplePDFExtractor_JSON(String path, String output) {
+	public static int examplePDFExtractor_JSON(String...args) {
+		if(args.length < 2) {
+			Debug.print("Please input PDF path, output directory!", DEBUG_CONFIG.debug_error);
+			return -1;
+		}
+		String path = args[0];
+			File file = new File(path);
+			if (!file.exists()) {
+				Debug.print("Input File " + path + " does not exist!", DEBUG_CONFIG.debug_error);
+				return 0;
+			}
+		String output_dir = args[1];
+		{
+			File file_temp = new File(output_dir);
+			if(file_temp.exists() && file_temp.isFile()) {
+				output_dir = file_temp.getParent() + "\\output\\";
+			}
+		}
+		String debug_dir = output_dir;
+		if(args.length > 2) {
+			debug_dir = args[2];
+			File file_temp = new File(debug_dir);
+			if(file_temp.exists() && file_temp.isFile()) {
+				debug_dir = file_temp.getParent() + "\\debug_output\\";
+			}
+		}
 		JSONArray factsToOutput = new JSONArray();
 		PDFConverter converter = new PDFConverter();
-		File file = new File(path);
-		if (!file.exists()) {
-			Debug.print("Input File " + path + " does not exist!", DEBUG_CONFIG.debug_error);
-			return 0;
-		}
-		PDF pdf =  converter.run(file);
+		PDF pdf =  converter.run(file, file.getName(), output_dir, debug_dir);
 		if(pdf == null) {
 			Debug.println("PDF Converter Failed!",DEBUG_CONFIG.debug_error);
 			Debug.println("File Path: " + path,DEBUG_CONFIG.debug_error);
 			return 2;
 		}
-		StanfordNLPLight nlp = new StanfordNLPLight( "tokenize, ssplit, pos, lemma");
+		if(PdfExtractionPipeline.nlp != null) nlp = PdfExtractionPipeline.nlp;
+		else nlp = new StanfordNLPLight( "tokenize, ssplit, pos, lemma");
 		HashMap<Paragraph, S_Facts> paraToFacts = new HashMap<Paragraph, S_Facts>();
 		HashMap<Paragraph, List<Sequence>> paraToSequence = new HashMap<Paragraph, List<Sequence>>();
 		List<Sequence> allSequences = new ArrayList<Sequence>();
@@ -715,15 +741,18 @@ public class ExtractorBELExtractor {
 		List<Sequence> freSeq = ngram.getFreqSequences(allSequences);
 		HashSet<Sequence> freSeq_ = new HashSet<Sequence>(); freSeq_.addAll(freSeq);
 		PatternMatcher pat = new PatternMatcher();
+		Debug.print("****Start pattern matching****", DEBUG_CONFIG.debug_timeline);
 		for(int i = 0; i < pdf.body_and_heading.size(); i++) {
 			Paragraph para = pdf.body_and_heading.get(i);
 			if(para.isHeading()) continue;
 			Debug.println("Section " + i,DEBUG_CONFIG.debug_temp);
+			
 				C_Facts cFact = pat.parsePara(paraToSequence.get(para), freSeq_, acronyms);
-				S_Facts sFact = new S_Facts(cFact);
-				sFact.mergeFacts();
-				paraToFacts.put(para, sFact);
-//				paras.item(i).setTextContent(sFact.toString());
+				if(cFact != null) { 
+					S_Facts sFact = new S_Facts(cFact);
+					sFact.mergeFacts();
+					paraToFacts.put(para, sFact);
+				}
 		}
 		{
 			 JSONObject obj=new JSONObject();
@@ -756,12 +785,21 @@ public class ExtractorBELExtractor {
 //				Debug.println(paraToFacts.get(sec.paragraphs.get(j)).toString(false, false, -1));
 //				if(write) util.writeFile(output, paraToFacts.get(sec.paragraphs.get(j)).toString(false, false, -1), true);
 //				if(write) util.writeFile(output, "\r\n", true);
+			if(i == 22) {
+				Debug.print("debug", DEBUG_CONFIG.debug_timeline);
+				System.out.println(para.text);
+				System.out.println(paraToSequence.get(para));
+			}
+			if(paraToFacts.get(para) == null) {
+				
+			}else {
 				factsToOutput.addAll(paraToFacts.get(para).toJSON(counter_facts));
 				counter_facts += paraToFacts.get(para).getSize();
+			}
 //			}
 			
 		}
-		util.writeFile(output, factsToOutput.toJSONString(), false);
+		util.writeFile(output_dir + file.getName() + "_facts.jason", factsToOutput.toJSONString(), false);
 //		if(nlp == null) nlp = new StanfordNLP("tokenize, ssplit, pos");
 //		{
 //			for(String s : pdf.acronyms_.keySet()) {

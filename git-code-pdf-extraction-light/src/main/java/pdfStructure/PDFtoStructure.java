@@ -32,9 +32,9 @@ public class PDFtoStructure {
 			
 			for(int i = 0; i < old_lines.size(); i++) {
 				Block cur_line = old_lines.get(i);
-				if(cur_line.getText().contains(", the polar ")) {
-					System.out.println("debug");
-				}
+//				if(cur_line.getText().contains(", the polar ")) {
+//					System.out.println("debug");
+//				}
 				boolean isCurLastLineOfPara = false; 
 				{//check if current line is the last line of a paragraph
 					if(i == old_lines.size() - 1) isCurLastLineOfPara = true;
@@ -114,9 +114,9 @@ public class PDFtoStructure {
 			
 			for(int i = 0; i < old_lines.size(); i++) {
 				Block cur_line = old_lines.get(i);
-				if(cur_line.getText().contains(", the polar ")) {
-					System.out.println("debug");
-				}
+//				if(cur_line.getText().contains(", the polar ")) {
+//					System.out.println("debug");
+//				}
 				boolean isCurLastLineOfPara = false; 
 				{//check if current line is the last line of a paragraph
 					if(i == old_lines.size() - 1) isCurLastLineOfPara = true;

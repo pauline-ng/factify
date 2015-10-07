@@ -140,16 +140,7 @@ public class Acronym {
 //	}
 	public static Map<String, Sequence> findAcronyms(List<Sequence> sentences, StanfordNLPLight nlp) {
 		Acronym acronym = new Acronym();
-//		Properties props = new Properties();
-//		props.put("annotators", "tokenize, ssplit, pos");
-//		StanfordNLP nlp = new StanfordNLP(props);
-//		if(nlp.stopwords == null) nlp.importStopWords();
-
 		Map<String, Sequence> acronyms_all = new HashMap<String, Sequence>();
-//		String s = text;
-//		Annotation annotation = new Annotation(s);
-//		nlp.pipeline.annotate(annotation);
-//		List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
 		for(Sequence sen_ : sentences) {
 			String sen = sen_.sourceString;
 			Stack<Integer> st = new Stack<Integer>();//stack for parenthesis

@@ -186,9 +186,9 @@ public class ParagraphExtractor {
                 mergeTargetSet.add(e.getValue());
             }
         }
-        for(Block block : mergeTargetSet) {
-        	System.out.println("--------\r\n" + block.getText() + "--------\r\n");
-        }
+//        for(Block block : mergeTargetSet) {
+//        	System.out.println("--------\r\n" + block.getText() + "--------\r\n");
+//        }
         return new ParagraphInformation(mergeSourceToTargetMap, mergeTargetSet, blocksToLeftOutlierLines);
     }
     

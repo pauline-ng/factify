@@ -3,7 +3,7 @@ package utility;
 import java.util.HashMap;
 
 public class Debug {
-	public  enum  DEBUG_CONFIG {
+	public  enum  DEBUG_CONFIG { 
 		debug_textpieces,
 		debug_getDocInfo,
 		debug_merge_textPiece,
@@ -23,7 +23,8 @@ public class Debug {
 		debug_acronym,
 		///
 		debug_error,//for alerting errors 
-		debug_warning
+		debug_warning,
+		debug_timeline
 	};
 	public static void init() {
 		configs.put(DEBUG_CONFIG.debug_textpieces, false);
@@ -47,6 +48,7 @@ public class Debug {
 		
 		configs.put(DEBUG_CONFIG.debug_error, true);
 		configs.put(DEBUG_CONFIG.debug_warning, true);
+		configs.put(DEBUG_CONFIG.debug_timeline, true);
 		set = true;
 	}
 
@@ -105,6 +107,7 @@ public class Debug {
 		
 		configs.put(DEBUG_CONFIG.debug_error, false);
 		configs.put(DEBUG_CONFIG.debug_warning, false);
+		configs.put(DEBUG_CONFIG.debug_timeline, false);
 		set = true;
 	}
 

@@ -136,7 +136,7 @@ public class StanfordNLPLight {
 //		if(wn == null) 
 //			wn = new wordnet();
 		for(CoreMap sentence : sentences) {
-				    	 System.out.println(sentence.toShorterString());
+//				    	 System.out.println(sentence.toShorterString());
 			List<String> words = new ArrayList<String>();
 			List<String> stems = new ArrayList<String>();
 			List<String> POSTag = new ArrayList<String>();
@@ -153,8 +153,8 @@ public class StanfordNLPLight {
 						token.get(CoreAnnotations.CharacterOffsetEndAnnotation.class)- sentence.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class)));
 				 if(isNoun(POSTag.get(POSTag.size() - 1))) knowNouns.add(stem);
 			}
-			System.out.println(words);
-			System.out.println(stems);
+//			System.out.println(words);
+//			System.out.println(stems);
 			sentences_.add(new Sequence(words, stems, POSTag, spans, para.substring(sentence.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class), sentence.get(CoreAnnotations.CharacterOffsetEndAnnotation.class))));
 		}
 		  //refine pos tag: because current taggger may not work for scientific content

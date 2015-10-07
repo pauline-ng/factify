@@ -41,6 +41,11 @@ import java.util.List;
 
 
 
+
+
+import nlp.StanfordNLPLight;
+
+
 //import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.compound.hyphenation.HyphenationException;
 
@@ -49,6 +54,7 @@ import pdfStructure.PDFtoStructure;
 import pdfStructure.Paragraph;
 import utility.Debug;
 import utility.Debug.DEBUG_CONFIG;
+import utility.utility;
 import at.knowcenter.code.api.pdf.Block;
 import at.knowcenter.code.api.pdf.BlockLabel;
 import at.knowcenter.code.api.pdf.Document;
@@ -98,7 +104,7 @@ public class PdfExtractionPipeline {
 	private String output_dir = null;
 	private String id = null;
 	private PDF pdf;
-	
+	public static StanfordNLPLight nlp = null;
 	
 	public enum PdfExtractionBackend {
 	    PDFBox 
@@ -599,7 +605,23 @@ public class PdfExtractionPipeline {
 		try{
 //		log.info("Extracting blocks...");
 		List<Block> pageBlocks = extractBlocks(document, id);
-
+		{
+            if(Debug.get(DEBUG_CONFIG.debug_textpieces)) {
+//        	String debug_output_location = PdfExtractionPipeline.global_debug_dir + PdfExtractionPipeline.global_id + "_textpieces_location.txt";
+        	String debug_output_text = PdfExtractionPipeline.global_debug_dir + PdfExtractionPipeline.global_id + "_textpieces_text.txt";
+        	utility util = new utility();
+        	util.writeFile(debug_output_text, "", false);
+//        	util.writeFile(debug_output_location, "", false);
+        	int counter = 0;
+        	for(int i = 0; i < pageBlocks.size(); i++) {
+        		for(int j = 0; j < pageBlocks.get(i).getLineBlocks().size(); j++) {
+        			util.writeFile(debug_output_text, counter + "\t" + pageBlocks.get(i).getLineBlocks().get(j).getText() + "\r\n", true);
+        			//        		util.writeFile(debug_output_text, counter + "\t" + pdfPage.getFragments().get(i).getText() + "\r\n", true);
+        			counter++;
+        		}
+        	}
+            }
+		}
 //		log.info("Extracting reading order...");
 		ReadingOrder readingOrder = extractReadingOrder(pageBlocks);
 		BlockNeighborhood neighborhood = extractBlockNeighborhood(pageBlocks);
@@ -875,13 +897,15 @@ catch(PdfParserException e) {
 	 * @return
 	 */
 	public boolean setParameter(String...args) {
-		if(args.length != 3) {
+		if(args.length < 2) {
 			Debug.print("Please set 3 parameters for PDFExtractionPipeline: id, debug_dir, and output_dir." , DEBUG_CONFIG.debug_error);
 			return false;
 		}
+		
 		this.id = args[0];
 		this.output_dir = args[1];
-		this.debug_dir = args[2];
+		if(args.length > 2) this.debug_dir = args[2];
+		else this.debug_dir = this.output_dir;
 		if(checkParameterSetting())
 			return true;
 		return false;

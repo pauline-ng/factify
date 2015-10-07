@@ -17,6 +17,7 @@ import java.util.Properties;
 
 import java.util.Stack;
 
+import extractor.ExtractorBELExtractor;
 import utility.Debug;
 import utility.Span;
 import utility.utility;
@@ -68,7 +69,8 @@ public class NGrams {
 		para = util.readFromFile("test/PMC1513515/Results_section.txt");
 //		Debug.println(paras.size());
 		List<Integer> stat = new ArrayList<Integer>();
-		if(nlp == null) nlp = new StanfordNLPLight();
+		if(ExtractorBELExtractor.nlp != null) nlp = ExtractorBELExtractor.nlp; 
+		else nlp = new StanfordNLPLight();
 		 ArrayList<Sequence> sentences_tokens = (ArrayList<Sequence>) nlp.textToSequence(para, true);//each sentence is a token sequence
 //			String[] sentences= nlp.sdetector.sentDetect(para);
 //			for(String senten : sentences) {//missing: as <word> as
@@ -170,7 +172,7 @@ public class NGrams {
 					indices_rel.add(i);
 			}
 			stat.add(enty_indices.size()/2); stat.add(indices_rel.size());
-			boolean toPrint = true;
+			boolean toPrint = false;
 			if(!toPrint) continue;
 			if(facts_outfile != null) util.writeFile(facts_outfile, "**", true);
 			if(enty_indices.size() > 0) {//print assuming indicies are ordered

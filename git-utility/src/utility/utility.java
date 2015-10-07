@@ -16,6 +16,9 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -39,6 +42,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 
+
 //import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 //import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.io.FileUtils;
@@ -47,6 +51,8 @@ import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import utility.Debug.DEBUG_CONFIG;
 
 import java.io.BufferedReader;
 
@@ -67,7 +73,12 @@ public class utility {
 			Writer out; 
 			try {
 				
-				if(!log_f.exists()) log_f.createNewFile();
+				if(!log_f.exists()) {
+					Path pathToFile = Paths.get(path);
+					if(Files.createDirectories(pathToFile.getParent()) == null || Files.createFile(pathToFile) == null)
+						Debug.print("Failed to create file " + path, DEBUG_CONFIG.debug_error);
+						return;
+				}
 				out = new BufferedWriter(new OutputStreamWriter(
 						new FileOutputStream(new File(path), append), "UTF-8"));
 //				out = new BufferedWriter(new FileWriter(new File(path), append));
@@ -77,7 +88,7 @@ public class utility {
 				
 			}
 			catch(Exception e) {
-				System.out.println(path);
+				Debug.print("Failed to create file " + path, DEBUG_CONFIG.debug_error);
 				e.printStackTrace();
 				
 			}

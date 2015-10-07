@@ -88,7 +88,7 @@ public class DetectorPipeline implements Detector {
 			Date date = new Date();
 			DateFormat dateFormat1 = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
 //			System.out.println(dateFormat.format(date)); //2014/08/06 15:59:48
-			debug_file = "debug_huangxc.txt" + dateFormat1.format(date);
+			debug_file = PdfExtractionPipeline.global_debug_dir + "debug_huangxc.txt" + dateFormat1.format(date);
 			writeFile(debug_file, dateFormat.format(date) + "\r\n", false);
 		}
 		Map<Block, String> afterFigDet = new HashMap<Block, String>();

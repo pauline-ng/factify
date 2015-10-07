@@ -47,12 +47,17 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.common.PDStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 
+import utility.Debug;
+import utility.Debug.DEBUG_CONFIG;
+import utility.utility;
 import at.knowcenter.code.api.pdf.Document;
 import at.knowcenter.code.api.pdf.Font;
 import at.knowcenter.code.api.pdf.ImageRegion;
 import at.knowcenter.code.api.pdf.Page;
 import at.knowcenter.code.api.pdf.Page.Image;
+import at.knowcenter.code.api.pdf.Page.Line;
 import at.knowcenter.code.api.pdf.PdfParser;
+import at.knowcenter.code.pdf.PdfExtractionPipeline;
 
 /**
  * Implementation of the PDF document parser based on the PDFBox library.
@@ -101,6 +106,16 @@ public class PdfBoxDocumentParser implements PdfParser {
 	        PDDocumentCatalog documentCatalog = document.getDocumentCatalog();
 	        List<PDPage> allPages = documentCatalog.getAllPages();
 	        int pageNumber = 1;
+	        
+//	        int counter = 0;
+//	        if(Debug.get(DEBUG_CONFIG.debug_textpieces)) {
+//            	String debug_output_text = PdfExtractionPipeline.global_debug_dir + PdfExtractionPipeline.global_id + "_textpieces_text.txt";
+//            	String debug_output_location = PdfExtractionPipeline.global_debug_dir + PdfExtractionPipeline.global_id + "_textpieces_location.txt";
+//
+//            	utility util = new utility();
+//            	util.writeFile(debug_output_text, "", false);
+//            	util.writeFile(debug_output_location, "", false);
+//            }
 	        for (PDPage page : allPages) {
 	            int pageRotation = page.findRotation();	            
 	            float pageWidth = page.findMediaBox().getWidth();
@@ -130,6 +145,18 @@ public class PdfBoxDocumentParser implements PdfParser {
 	                    BufferedImage image = convertToImage(page, BufferedImage.TYPE_INT_RGB, 72, drawer);
 	                    pdfPage.setCharacters(drawer.getFragments());
 	                }
+//	                if(Debug.get(DEBUG_CONFIG.debug_textpieces)) {
+//	                	String debug_output_location = PdfExtractionPipeline.global_debug_dir + PdfExtractionPipeline.global_id + "_textpieces_location.txt";
+//	                	String debug_output_text = PdfExtractionPipeline.global_debug_dir + PdfExtractionPipeline.global_id + "_textpieces_text.txt";
+//	           	     
+//	                	utility util = new utility();
+//	                	
+//	                	for(int i = 0; i < pdfPage.getLines().size(); i++) {
+//	                		util.writeFile(debug_output_location, counter + "\t" + pdfPage.getLines().get(i).toString() + "\r\n", true);
+//	                		util.writeFile(debug_output_text, counter + "\t" + pdfPage.getFragments().get(i).getText() + "\r\n", true);
+//	    	                counter++;
+//	                	}
+//	                }
 	            }
 	            pdfDocument.getPages().add(pdfPage);
 	        }

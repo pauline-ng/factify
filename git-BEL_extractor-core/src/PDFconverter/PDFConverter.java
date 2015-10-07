@@ -36,6 +36,23 @@ public class PDFConverter {
 		if(result == null) return null;
 		return pipeline.getPDF();
 	}
-
+	public PDF run(File file, String...args) {
+		Debug.print("****Start Parsing PDF****", DEBUG_CONFIG.debug_timeline);
+		if(!file.exists()) {
+			Debug.print("File " + file.getAbsolutePath() + " does not exist!", DEBUG_CONFIG.debug_error);
+			return null;
+		}else if(!file.isFile()) {
+			Debug.print("File " + file.getAbsolutePath() + " is not a file!", DEBUG_CONFIG.debug_error);
+			return null;
+		}
+//		System.out.println("File "+file.getAbsolutePath());
+		PdfExtractionPipeline pipeline = new PdfExtractionPipeline();
+		if(!pipeline.setParameter(args))
+			return null;
+		PdfExtractionResult result = pipeline.runPipeline(file);
+		if(result == null) return null;
+		return pipeline.getPDF();
+	}
+	
 }
  
