@@ -438,6 +438,7 @@ public class PdfExtractionPipeline {
 	}
 
 	/**
+	 * by huangxc: this function has a bug when clearHyphenations=true
 	 * extracts the document text using information from the extracted blocks and reading order
 	 * @param pageBlocks the list of blocks, one for each page
 	 * @param labeling the block labeling
@@ -681,6 +682,7 @@ public class PdfExtractionPipeline {
 		String rawText = extractDocumentText(pageBlocks, labeling, postprocessedReadingOrder, false);		
 		{
 			writeFile(debug_dir + id + "_body_standard.txt", text, false);
+			writeFile(debug_dir + id + "_body_standard_rawtext.txt", rawText, false);
 		}
 		{
 			String path = debug_dir + id + "_new_paragraphs_3.txt";
@@ -812,9 +814,12 @@ catch(PdfParserException e) {
 			
 			if(!log_f.exists()) {
 				Path pathToFile = Paths.get(path);
-				if(Files.createDirectories(pathToFile.getParent()) == null || Files.createFile(pathToFile) == null)
+				Path parent = Files.createDirectories(pathToFile.getParent());
+				Path current = Files.createFile(pathToFile);
+				if(parent == null || current== null) {
 					Debug.print("Failed to create file " + path, DEBUG_CONFIG.debug_error);
 					return;
+				}
 			}
 			out = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(new File(path), append), "UTF-8"));

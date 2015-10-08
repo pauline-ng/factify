@@ -677,7 +677,7 @@ public class ExtractorBELExtractor {
 	 * 0: input file not exist; 
 	 * 1: succeeded
 	 * 2: PDF Converter Failed
-	 * 3: BELExtractor Failed
+	 * 3: PDF Converter succeeded, but no body text (or section heading)
 	 */
 	public static int examplePDFExtractor_JSON(String...args) {
 		if(args.length < 2) {
@@ -785,11 +785,11 @@ public class ExtractorBELExtractor {
 //				Debug.println(paraToFacts.get(sec.paragraphs.get(j)).toString(false, false, -1));
 //				if(write) util.writeFile(output, paraToFacts.get(sec.paragraphs.get(j)).toString(false, false, -1), true);
 //				if(write) util.writeFile(output, "\r\n", true);
-			if(i == 22) {
-				Debug.print("debug", DEBUG_CONFIG.debug_timeline);
-				System.out.println(para.text);
-				System.out.println(paraToSequence.get(para));
-			}
+//			if(i == 22) {
+//				Debug.print("debug", DEBUG_CONFIG.debug_timeline);
+//				System.out.println(para.text);
+//				System.out.println(paraToSequence.get(para));
+//			}
 			if(paraToFacts.get(para) == null) {
 				
 			}else {
@@ -808,6 +808,7 @@ public class ExtractorBELExtractor {
 //			Debug.println("-------------acronyms--------------------");
 //			for(String s : pdf.acronyms_.keySet()) Debug.println(s + "\t" + pdf.acronyms.get(s).sourceString);
 //		}
+		if(pdf.body_and_heading.size() == 0) return 3;
 		return 1;
 	}
 	

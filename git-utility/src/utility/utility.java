@@ -72,40 +72,27 @@ public class utility {
 			log_f = new File(path);
 			Writer out; 
 			try {
-				
+
 				if(!log_f.exists()) {
 					Path pathToFile = Paths.get(path);
-					if(Files.createDirectories(pathToFile.getParent()) == null || Files.createFile(pathToFile) == null)
+					if(Files.createDirectories(pathToFile.getParent()) == null || Files.createFile(pathToFile) == null) {
 						Debug.print("Failed to create file " + path, DEBUG_CONFIG.debug_error);
 						return;
+					}
 				}
 				out = new BufferedWriter(new OutputStreamWriter(
 						new FileOutputStream(new File(path), append), "UTF-8"));
-//				out = new BufferedWriter(new FileWriter(new File(path), append));
+				//				out = new BufferedWriter(new FileWriter(new File(path), append));
 				out.append(s);
 				out.flush();
 				out.close();
-				
+
 			}
 			catch(Exception e) {
 				Debug.print("Failed to create file " + path, DEBUG_CONFIG.debug_error);
 				e.printStackTrace();
-				
+
 			}
-			
-//			try {
-//				PrintWriter writer;
-//				writer = new PrintWriter(path, "UTF-8");
-//				writer.println(s);
-////				writer.println("BEL");
-//				writer.close();
-//				} catch (FileNotFoundException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				} catch (UnsupportedEncodingException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
 		}
 		
 		String sortMap(Map<String, Integer> freqs) {

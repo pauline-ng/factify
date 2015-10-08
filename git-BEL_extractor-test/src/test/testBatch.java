@@ -18,6 +18,7 @@ public class testBatch {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		testFromFolder("D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\");
+//		clean();
 	}
 	
 	public static void testFromFolder(String path) {
@@ -36,9 +37,10 @@ public class testBatch {
 		HashSet<String> finished = getFinishedSet(output_stat);
 		System.out.println("finshed " + finished.size());
 		for(File file : listOfFiles) {
-//			if(!file.getName().equals("cav6qhz.pdf")) {
+//			if(!file.getName().equals("1hgs79.pdf")) {
 //				continue;
 //			}
+			if(total_pdf > 500) return;
 			if(finished.contains(file.getName())) {
 				System.out.println("skip " + file.getName());
 				continue;
@@ -46,11 +48,12 @@ public class testBatch {
 			if(file.getName().endsWith(".pdf")) {
 				total_pdf++;
 				System.out.println("process " + file.getName());
-				int error = ExtractorBELExtractor.examplePDFExtractor_JSON(file.getAbsolutePath(), output_dir);
-				util.writeFile(output_stat, file.getName() + "\t" + error + "\r\n", true);
+				int error = ExtractorBELExtractor.examplePDFExtractor_JSON(file.getAbsolutePath(), output_dir, output_dir + "debug\\");
+				util.writeFile(output_stat, total_pdf + "\t" + file.getName() + "\t" + error + "\r\n", true);
 			}
+			
 		}
-		util.writeFile(output_stat, "in total\t" + total_pdf, true);
+//		util.writeFile(output_stat, "in total\t" + total_pdf, true);
 		
 	}
 	public static HashSet<String> getFinishedSet(String path) {
@@ -72,6 +75,35 @@ public class testBatch {
 			 return null;
 		 }
 			
+		
+	}
+	public static void clean() {
+		String output_dir = "output\\resultOfTestingPDFs\\";
+		String output_stat = output_dir + "stat.txt";
+	
+		File file = new File(output_stat);
+		if(!file.exists() || !file.isFile()) return ;
+		utility util = new utility();
+		 BufferedReader br;
+		 try {
+				 br= new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+				 util.writeFile(output_stat + "1", "", false);
+				 String line;
+				 while((line = br.readLine())!=null) {
+					 StringTokenizer st = new StringTokenizer(line, "\t");
+					 String fileName = st.nextToken() ;
+					 String errorCode = st.nextToken();
+					 if(errorCode.equals("1") && util.readFromFile(new File(output_dir + fileName+ "_body_standard.txt")).length() == 0) {
+						 util.writeFile(output_stat + "1", fileName + "\t" + "3" + "\r\n", true);
+					 }else {
+						 util.writeFile(output_stat + "1", line + "\r\n", true);
+					 }
+				 }
+		 }
+		 catch(Exception e) {
+			 e.printStackTrace();
+			 return ;
+		 }
 		
 	}
 

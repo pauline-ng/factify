@@ -17,6 +17,8 @@ public class Debug {
 		debug_temp,
 		debug_highlight,
 		////
+		debug_detectorpipeline,
+		////
 		debug_C_Facts,
 		debug_S_Facts,
 		debug_pattern,
@@ -44,7 +46,8 @@ public class Debug {
 		configs.put(DEBUG_CONFIG.debug_S_Facts, false);
 		configs.put(DEBUG_CONFIG.debug_pattern, false);
 		configs.put(DEBUG_CONFIG.debug_acronym, false);
-
+		configs.put(DEBUG_CONFIG.debug_detectorpipeline, false);
+		
 		
 		configs.put(DEBUG_CONFIG.debug_error, true);
 		configs.put(DEBUG_CONFIG.debug_warning, true);
@@ -98,6 +101,8 @@ public class Debug {
 		configs.put(DEBUG_CONFIG.debug_section_title, false);
 		configs.put(DEBUG_CONFIG.debug_temp, false);
 		configs.put(DEBUG_CONFIG.debug_highlight, false);
+		
+		configs.put(DEBUG_CONFIG.debug_detectorpipeline, false);
 		
 		configs.put(DEBUG_CONFIG.debug_C_Facts, false);
 		configs.put(DEBUG_CONFIG.debug_S_Facts, false);

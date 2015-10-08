@@ -28,6 +28,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,6 +42,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import utility.Debug;
+import utility.Debug.DEBUG_CONFIG;
 import at.knowcenter.code.api.pdf.Block;
 import at.knowcenter.code.api.pdf.BlockLabel;
 import at.knowcenter.code.api.pdf.Document;
@@ -88,8 +93,8 @@ public class DetectorPipeline implements Detector {
 			Date date = new Date();
 			DateFormat dateFormat1 = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
 //			System.out.println(dateFormat.format(date)); //2014/08/06 15:59:48
-			debug_file = PdfExtractionPipeline.global_debug_dir + "debug_huangxc.txt" + dateFormat1.format(date);
-			writeFile(debug_file, dateFormat.format(date) + "\r\n", false);
+			debug_file = PdfExtractionPipeline.global_debug_dir + PdfExtractionPipeline.global_id + "_detectorPipeline.txt" + dateFormat1.format(date);
+			if(Debug.get(DEBUG_CONFIG.debug_detectorpipeline)) writeFile(debug_file, dateFormat.format(date) + "\r\n", false);
 		}
 		Map<Block, String> afterFigDet = new HashMap<Block, String>();
 		 for (Detector detector : detectors) {
@@ -101,10 +106,10 @@ public class DetectorPipeline implements Detector {
                 logger.log(Level.SEVERE, "Cannot exectute detector '" + detector + "' on document '" + doc + "'", e);
             }
 			{
-//				writeFile("debug_huangxc.txt", "*****AFTER DETECTOR " + detector.getClass() + "\r\n", true);
+				if(Debug.get(DEBUG_CONFIG.debug_detectorpipeline))writeFile(debug_file, "*****AFTER DETECTOR " + detector.getClass() + "\r\n", true);
 				
 				if(detector.getClass() ==  at.knowcenter.code.pdf.blockclassification.detection.FigureDetector.class) {
-					writeFile(debug_file, "*****AFTER DETECTOR " + detector.getClass() + "\r\n", true);
+					if(Debug.get(DEBUG_CONFIG.debug_detectorpipeline))writeFile(debug_file, "*****AFTER DETECTOR " + detector.getClass() + "\r\n", true);
 					for (int i = 0; i < pageBlocks.size(); i++) {
 //			        	Page page = doc.getPages().get(i);
 			            Block pageBlock = pageBlocks.get(i);
@@ -113,8 +118,8 @@ public class DetectorPipeline implements Detector {
 			            for (int j = 0; j < ro.size(); j++) {            	
 			                Block currentBlock = blocks.get(ro.get(j));
 			                BlockLabel label = labeling.getLabel(currentBlock);
-//			                writeFile(debug_file, "----" + (label == null ? "null" : label.getLabel()) + "----\r\n", true);
-//			                writeFile(debug_file,currentBlock.getText() + "\r\n" , true);
+			                if(Debug.get(DEBUG_CONFIG.debug_detectorpipeline))writeFile(debug_file, "----" + (label == null ? "null" : label.getLabel()) + "----\r\n", true);
+			                if(Debug.get(DEBUG_CONFIG.debug_detectorpipeline))writeFile(debug_file,currentBlock.getText() + "\r\n" , true);
 			                afterFigDet.put(currentBlock, (label == null? "null" : label.getLabel()));
 			            }
 			        }
@@ -153,13 +158,20 @@ public class DetectorPipeline implements Detector {
 		}
 		
 	}
+
 	public void writeFile(String path, String s, boolean append) {
 		File log_f;
 		log_f = new File(path);
 		Writer out; 
 		try {
 			
-			if(!log_f.exists()) log_f.createNewFile();
+			if(!log_f.exists()) {
+				Path pathToFile = Paths.get(path);
+				if(Files.createDirectories(pathToFile.getParent()) == null || Files.createFile(pathToFile) == null) {
+					Debug.print("Failed to create file " + path, DEBUG_CONFIG.debug_error);
+					return;
+				}
+			}
 			out = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(new File(path), append), "UTF-8"));
 //			out = new BufferedWriter(new FileWriter(new File(path), append));
@@ -169,7 +181,7 @@ public class DetectorPipeline implements Detector {
 			
 		}
 		catch(Exception e) {
-			System.out.println(path);
+			Debug.print("Failed to create file " + path, DEBUG_CONFIG.debug_error);
 			e.printStackTrace();
 			
 		}

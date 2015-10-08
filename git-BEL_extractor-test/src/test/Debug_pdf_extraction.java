@@ -23,11 +23,14 @@ public class Debug_pdf_extraction {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 //		findFile();
-		moveFiles();
+//		moveFiles();
+		testOneFile();
 	}
 	
 	public static void testOneFile() {
-		String pdfpath = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\cav6qhz.pdf";
+//		String pdfpath = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\cav6qhz.pdf";
+//		String pdfpath = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\cbvqoes_1.pdf";
+		String pdfpath = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\1hk4zt.pdf";
 		String outputPath = "output_pdf_extraction\\";
 		String debugPath = "debugOutput_pdf_extraction\\";
 		PdfExtractionPipeline  pipeline = new PdfExtractionPipeline();
