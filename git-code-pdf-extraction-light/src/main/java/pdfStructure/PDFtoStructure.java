@@ -4,12 +4,14 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import utility.Span;
 import at.knowcenter.code.api.pdf.Block;
 import at.knowcenter.code.api.pdf.BlockLabel;
 import at.knowcenter.code.pdf.AnnotatedDocumentBuilder.LineCollector;
@@ -93,7 +95,15 @@ public class PDFtoStructure {
 		}
 		return paragraphs;
 	}
-	public List<Paragraph> convert(List<Block> blocks, BlockLabeling labeling,PdfExtractionPipeline pipline) {
+	
+	/**
+	 * old; tried to split list of blocks to multiple paragraphs
+	 * @param blocks
+	 * @param labeling
+	 * @param pipline
+	 * @return
+	 */
+	public List<Paragraph> convert_old(List<Block> blocks, BlockLabeling labeling,PdfExtractionPipeline pipline) {
 		
 		List<Paragraph> paragraphs = new ArrayList<Paragraph>();
 		for(Block old : blocks) {//assume all lines are adjusted aligned
@@ -171,6 +181,48 @@ public class PDFtoStructure {
 				}
 			}
 			
+		}
+		return paragraphs;
+	}
+	public List<Paragraph> convert(List<Block> blocks, BlockLabeling labeling,PdfExtractionPipeline pipline) {
+		
+		List<Paragraph> paragraphs = new ArrayList<Paragraph>();
+		for(Block old : blocks) {//assume all lines are adjusted aligned
+			if(labeling.getLabel(old) == BlockLabel.Heading) {
+				String text = old.getText();
+				text = Normalizer.normalize(text, Normalizer.Form.NFKC);
+				Paragraph para = new Paragraph(text);
+				para.label = BlockLabel.Heading;
+				para.headingBlock = old;
+				HashSet<Integer> pages = new HashSet<Integer>();
+				for(Block each : old.getSubBlocks()) {
+					pages.add(each.getPage().getNumber());
+				}
+				para.pages = new Span(Collections.min(pages), Collections.max(pages) + 1);
+				paragraphs.add(para);
+				continue;
+			}
+		//now labeling.getLabel(old) == BlockLabel.Main
+			 List<Block> old_lines = new ArrayList<Block>();
+			 old_lines.addAll(old.getSubBlocks());//old.getLineBlocks(); 
+			 ArrayList<Block> new_para = new ArrayList<Block>();
+			 new_para.addAll(old_lines);
+			 String text = "";
+			 if (new_para.size()>0) {
+				 text = pipline.clearHyphenations(new_para);
+			 }
+			 Paragraph newPara = new Paragraph(text);
+			 newPara.bodySubBlocks = new ArrayList<Block>();
+			 newPara.bodySubBlocks.addAll(new_para);
+			 if(new_para.size() != old_lines.size()) {
+				 newPara.remark += "new paragraph;";
+			 }
+			 HashSet<Integer> pages = new HashSet<Integer>();
+			 for(Block each : old.getSubBlocks()) {
+				 pages.add(each.getPage().getNumber());
+			 }
+			 newPara.pages = new Span(Collections.min(pages), Collections.max(pages) + 1);
+			 paragraphs.add(newPara);
 		}
 		return paragraphs;
 	}

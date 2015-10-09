@@ -24,15 +24,34 @@ public class Debug_pdf_extraction {
 		// TODO Auto-generated method stub
 //		findFile();
 //		moveFiles();
-		testOneFile();
+		if(args.length != 3) {
+			Debug.print("Please specify 3 parameters: filePath, output_dir, and debug_dir!", DEBUG_CONFIG.debug_error);
+			return;
+		}
+		if(!new File(args[0]).exists()) {
+			Debug.print("Please specify a valid input file or folder!", DEBUG_CONFIG.debug_error);
+			return;
+		}
+		Boolean fileOrFolder = null;//true if it is a file
+		if(new File(args[0]).isFile()) {
+			fileOrFolder = true;
+		}else if (new File(args[0]).isDirectory()) {
+			fileOrFolder = false;
+		}
+		if(fileOrFolder == true) {
+			testOneFile(args[0], args[1], args[2]);
+		}else if(fileOrFolder == false) {
+//			testFromFolder(args[0], args[1], args[2]);
+		}
+//		testOneFile();
 	}
 	
-	public static void testOneFile() {
+	public static void testOneFile(String pdfpath, String outputPath, String debugPath) {
 //		String pdfpath = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\cav6qhz.pdf";
 //		String pdfpath = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\cbvqoes_1.pdf";
-		String pdfpath = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\1hk4zt.pdf";
-		String outputPath = "output_pdf_extraction\\";
-		String debugPath = "debugOutput_pdf_extraction\\";
+//		String pdfpath = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\1hk4zt.pdf";
+//		String outputPath = "output_pdf_extraction\\";
+//		String debugPath = "debugOutput_pdf_extraction\\";
 		PdfExtractionPipeline  pipeline = new PdfExtractionPipeline();
 		pipeline.setParameter((new File(pdfpath)).getName(), outputPath, debugPath);
 		Debug.set(DEBUG_CONFIG.debug_textpieces, true);
