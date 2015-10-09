@@ -19,10 +19,30 @@ public class testBatch {
 		// TODO Auto-generated method stub
 //		testFromFolder("D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\");
 //		clean();
-		System.out.println("test");
+//		System.out.println("test");
+		if(args.length != 3) {
+			Debug.print("Please specify 3 parameters: filePath, output_dir, and debug_dir!", DEBUG_CONFIG.debug_error);
+			return;
+		}
+		if(!new File(args[0]).exists()) {
+			Debug.print("Please specify a valid input file or folder!", DEBUG_CONFIG.debug_error);
+			return;
+		}
+		Boolean fileOrFolder = null;//true if it is a file
+		if(new File(args[0]).isFile()) {
+			fileOrFolder = true;
+		}else if (new File(args[0]).isDirectory()) {
+			fileOrFolder = false;
+		}
+		if(fileOrFolder == true) {
+			testOneFile(args[0], args[1], args[2]);
+		}else if(fileOrFolder == false) {
+			testFromFolder(args[0], args[1], args[2]);
+		}
+		
 	}
 	
-	public static void testFromFolder(String path) {
+	public static void testFromFolder(String path, String output_dir, String debug_dir) {
 //		String path = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers";
 		File folder = new File(path);
 		if(!folder.exists() || !folder.isDirectory()) {
@@ -32,7 +52,7 @@ public class testBatch {
 		File[] listOfFiles = folder.listFiles();
 		int total_pdf = 0;
 		utility util = new utility();
-		String output_dir = "output\\resultOfTestingPDFs\\";
+//		String output_dir = "output\\resultOfTestingPDFs\\";
 		String output_stat = output_dir + "stat.txt";
 //		util.writeFile(output_stat, "", false);
 		HashSet<String> finished = getFinishedSet(output_stat);
@@ -49,13 +69,26 @@ public class testBatch {
 			if(file.getName().endsWith(".pdf")) {
 				total_pdf++;
 				System.out.println("process " + file.getName());
-				int error = ExtractorBELExtractor.examplePDFExtractor_JSON(file.getAbsolutePath(), output_dir, output_dir + "debug\\");
+				int error = ExtractorBELExtractor.examplePDFExtractor_JSON(file.getAbsolutePath(), output_dir, debug_dir);
 				util.writeFile(output_stat, total_pdf + "\t" + file.getName() + "\t" + error + "\r\n", true);
 			}
 			
 		}
 //		util.writeFile(output_stat, "in total\t" + total_pdf, true);
 		
+	}
+	public static void testOneFile(String path, String output_dir, String debug_dir) {
+//		String path = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers";
+		File file = new File(path);
+		if(!file.exists() || !file.isFile()) {
+			Debug.print(path + " is not a valid file!", DEBUG_CONFIG.debug_error);
+			return;
+		}
+		if(file.getName().endsWith(".pdf")) {
+			System.out.println("process " + file.getName());
+			int error = ExtractorBELExtractor.examplePDFExtractor_JSON(file.getAbsolutePath(), output_dir, debug_dir);
+			Debug.print("Finished with errorcode " + error, DEBUG_CONFIG.debug_error);
+		}
 	}
 	public static HashSet<String> getFinishedSet(String path) {
 		File file = new File(path);
