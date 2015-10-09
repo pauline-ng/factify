@@ -28,6 +28,7 @@ import pattern.PatternMatcher;
 import pdfStructure.PDF;
 import pdfStructure.Paragraph;
 import utility.Debug;
+import utility.Span;
 import utility.utility;
 import utility.Debug.DEBUG_CONFIG;
 import knowledge_model.C_Facts;
@@ -497,7 +498,7 @@ public class ExtractorBELExtractor {
 		
 //		C_Facts cFact = patterns.parsePara(sentences, freSeq_, acronyms);
 		PatternMatcher pat = new PatternMatcher();
-		C_Facts cFact = pat.parsePara(sentences, null, null);
+		C_Facts cFact = pat.parsePara(sentences, null, null, new Span(-1,-1));
 		S_Facts sfact = new S_Facts(cFact);
 		sfact.mergeFacts();
 		
@@ -564,7 +565,7 @@ public class ExtractorBELExtractor {
 			NodeList paras = xmlDoc.getElementsByTagName("p");
 			PatternMatcher pat = new PatternMatcher();
 			for(int i = 0; i < paras.getLength(); i++) {
-				C_Facts cFact = pat.parsePara(NodeToSequence.get(paras.item(i)), freSeq_, acronyms);
+				C_Facts cFact = pat.parsePara(NodeToSequence.get(paras.item(i)), freSeq_, acronyms, new Span(-1,-1));
 				NodeToFacts.put(paras.item(i), cFact);
 				S_Facts sFact = new S_Facts(cFact);
 				sFact.mergeFacts();
@@ -747,7 +748,7 @@ public class ExtractorBELExtractor {
 			if(para.isHeading()) continue;
 			Debug.println("Section " + i,DEBUG_CONFIG.debug_temp);
 			
-				C_Facts cFact = pat.parsePara(paraToSequence.get(para), freSeq_, acronyms);
+				C_Facts cFact = pat.parsePara(paraToSequence.get(para), freSeq_, acronyms, para.pages);
 				if(cFact != null) { 
 					S_Facts sFact = new S_Facts(cFact);
 					sFact.mergeFacts();
@@ -775,6 +776,7 @@ public class ExtractorBELExtractor {
 			 obj.put("type", "SectionTitle");
 //			 obj.put("secID", i + 1);
 			 obj.put("sectionTitle", para.getHeadingText());
+			 obj.put("PageRange", para.pages.toString());
 			 factsToOutput.add(obj);
 			 continue;
 			}
@@ -797,6 +799,16 @@ public class ExtractorBELExtractor {
 				counter_facts += paraToFacts.get(para).getSize();
 			}
 //			}
+			
+		}
+		{//write tables
+			for(String s : pdf.getTables()) {
+				 JSONObject obj=new JSONObject();
+				 obj.put("type", "Table");
+//				 obj.put("secID", i + 1);
+				 obj.put("htmlTable", s);
+				 factsToOutput.add(obj);
+			}
 			
 		}
 		util.writeFile(output_dir + file.getName() + "_facts.jason", factsToOutput.toJSONString(), false);

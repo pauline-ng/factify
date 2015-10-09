@@ -240,6 +240,7 @@ public class S_Facts {
 			JSONObject obj = new JSONObject();
 			obj.put("type", "Sentence");
 			obj.put("senID", startingIndex);
+			obj.put("paragraphPageRange", cfacts.pageRange.toString());
 			obj.put("sentence", cfacts.sentences.get(i));
 			obj.put("fact", s.replace("-LRB-", "(").replace("-RRB-", ")").replace("-RSB-", "]").replace("-LSB-", "["));
 			startingIndex++;

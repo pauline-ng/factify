@@ -1,6 +1,7 @@
 package pdfStructure;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,5 +14,7 @@ public class PDF {
 	public PDF() {
 		body_and_heading = new ArrayList<Paragraph>();
 	}
-
+	public Collection<String> getTables() {
+		return htmlTables.values();
+	}
 }

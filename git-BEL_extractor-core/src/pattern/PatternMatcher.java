@@ -595,13 +595,13 @@ String para = "In contrast, behavioral economic theory suggests that incentives 
 //		List<Sequence> freSeq = ngram.getFreqSequences(sentences);
 //		freSeq_ = new HashSet<Sequence>(); freSeq_.addAll(freSeq);
 		
-		C_Facts cFact = parsePara(nlp.textToSequence(para, true), null, null);
+		C_Facts cFact = parsePara(nlp.textToSequence(para, true), null, null, new Span(-1,-1));
 		S_Facts sfact = new S_Facts(cFact);
 		sfact.mergeFacts();
 		sfact.printFacts();
 //		sfact.writeFacts("test/PMC1513515/Methods_section_ngram.fact");
 	}
-	public  C_Facts parsePara(List<Sequence> sentences, HashSet<Sequence> freSeq_, Map<String, Sequence> acronyms) {
+	public  C_Facts parsePara(List<Sequence> sentences, HashSet<Sequence> freSeq_, Map<String, Sequence> acronyms, Span pageRange) {
 //		String para = "This bag costs 100. It is a million dollars. It's improved by 10 % with p <= 0.001.Mine is better than his.";
 		utility util = new utility();
 //		para = util.readFromFile("test/PMC1513515/Results_section.txt");
@@ -749,7 +749,7 @@ String para = "In contrast, behavioral economic theory suggests that incentives 
 			details.add(detail);
 //			System.exit(0);
 		}
-		C_Facts cFact = formFacts(allFacts, sentences, details);
+		C_Facts cFact = formFacts(allFacts, sentences, details, pageRange);
 //		S_Facts sfact = new S_Facts(cFact);
 //		sfact.mergeFacts();
 //		sfact.printFacts();
@@ -843,7 +843,7 @@ String para = "In contrast, behavioral economic theory suggests that incentives 
 	 * @param senten: the source sentence
 	 * @return
 	 */
-	private  C_Facts formFacts(List<List<Span>> all_facts, List<Sequence> sentens, List<String> details) {
+	private  C_Facts formFacts(List<List<Span>> all_facts, List<Sequence> sentens, List<String> details, Span pageRange) {
 		if(sentens.size() == 0) return null; 
 		C_Facts cfacts = new C_Facts(sentens.get(0).pageNum, sentens.get(0).secNum, sentens.get(0).paraNum);
 		utility util = new utility();
@@ -876,7 +876,7 @@ String para = "In contrast, behavioral economic theory suggests that incentives 
 			cfacts.addFact(facts, senIndex, relativeOrders, spans, details.get(senIndex));
 			cfacts.sentences.add(sentens.get(senIndex).sourceString);
 		}
-		
+		cfacts.pageRange = new Span(pageRange.getStart(), pageRange.getEnd());
 		return cfacts;
 	}
 	

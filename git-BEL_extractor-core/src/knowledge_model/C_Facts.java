@@ -28,10 +28,13 @@ import org.omg.PortableInterceptor.INACTIVE;
 
 public class C_Facts {
 	
-	//location info//
+	//location info// the following 3 are not in use
 	public int pageNum;
 	public int secNum;
 	public int paraNum;
+	
+	//
+	public Span pageRange;
 
 	//the following coordinates are not in use because I have not found a good way to express paragraphs across two columns.
 //	float m_x;                       //the left-end X axis of the text piece
