@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry including="**/*.java" kind="src" output="target/classes" path="src">
+	<classpathentry including="**/*.java" kind="src" path="src">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="CORENLP_INPUT"/>
-	<classpathentry kind="src" path="at.knowcenter.resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
@@ -20,5 +19,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/git-utility"/>
 	<classpathentry kind="lib" path="lib/JNumWu_1_1_12.jar"/>
 	<classpathentry kind="lib" path="lib/simmetrics_jar_v1_6_2_d07_02_07.jar"/>
-	<classpathentry kind="output" path="target/classes"/>
+	<classpathentry kind="output" path="nonegit-bin"/>
 </classpath>

@@ -27,4 +27,11 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>nonegit-target</name>
+			<type>2</type>
+			<location>D:/GitHub/n-projects-ws-repo-nonegit/n-projects-ws-repo-nonegit/nonegit-code-pdf-extraction-light/target</location>
+		</link>
+	</linkedResources>
 </projectDescription>

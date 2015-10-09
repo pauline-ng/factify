@@ -17,8 +17,9 @@ public class testBatch {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		testFromFolder("D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\");
+//		testFromFolder("D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\");
 //		clean();
+		System.out.println("test");
 	}
 	
 	public static void testFromFolder(String path) {
