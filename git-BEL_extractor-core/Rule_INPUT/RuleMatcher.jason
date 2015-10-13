@@ -1,0 +1,47 @@
+{
+  "version":1.0,
+   "Rules":[
+    {
+    "type": "postag",
+    "inputFilePath":"D:\\GitHub\\new-projects-ws-repo\\test-multiple-projects\\git-BEL_extractor-core\\Rule_INPUT\\Rule_POSTag_Nouns.txt",
+    "inputFileVersion":"1.0",
+    "description": "nouns"
+  },
+  {
+    "type": "postag",
+    "inputFilePath":"D:\\GitHub\\new-projects-ws-repo\\test-multiple-projects\\git-BEL_extractor-core\\Rule_INPUT\\Rule_POSTag_Comparatives.txt",
+    "inputFileVersion": "1.0",
+    "description": "comparatives"
+  }
+  {
+    "type": "regExp",
+    "inputFilePath":"D:\\GitHub\\new-projects-ws-repo\\test-multiple-projects\\git-BEL_extractor-core\\Rule_INPUT\\Rule_RegExp.txt",
+    "inputFileVersion": "1.0",
+    "description": "regularExpression"
+  }
+  {
+    "type": "preBuiltWordList",
+    "inputFilePath":"D:\\GitHub\\new-projects-ws-repo\\test-multiple-projects\\git-BEL_extractor-core\\Rule_INPUT\\comparative_1.txt",
+    "inputFileVersion": "1.0",
+    "description": "regularExpression"
+  }
+  {
+    "type": "preBuiltWordList",
+    "inputFilePath":"D:\\GitHub\\new-projects-ws-repo\\test-multiple-projects\\git-BEL_extractor-core\\Rule_INPUT\\signal_1.txt",
+    "inputFileVersion": "1.0",
+    "description": "regularExpression"
+  }
+  {
+    "type": "preBuiltWordList",
+    "inputFilePath":"D:\\GitHub\\new-projects-ws-repo\\test-multiple-projects\\git-BEL_extractor-core\\Rule_INPUT\\rel_1.txt",
+    "inputFileVersion": "1.0",
+    "description": "regularExpression"
+  }
+  {
+    "type": "preBuiltWordList",
+    "inputFilePath":"D:\\GitHub\\new-projects-ws-repo\\test-multiple-projects\\git-BEL_extractor-core\\Rule_INPUT\\operator_1.txt",
+    "inputFileVersion": "1.0",
+    "description": "regularExpression"
+  }
+  ]
+}

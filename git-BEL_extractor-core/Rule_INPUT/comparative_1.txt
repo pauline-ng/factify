@@ -36,6 +36,8 @@ outsell
 double
 outmatch
 Compare
+compare with
+compare to
 lead
 win
 dominate

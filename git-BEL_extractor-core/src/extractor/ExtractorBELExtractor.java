@@ -24,6 +24,7 @@ import at.knowcenter.code.pdf.PdfExtractionPipeline;
 import pattern.Acronym;
 import pattern.NGrams;
 import pattern.PatternMatcher;
+import pattern.RootMatcher;
 //import at.knowcenter.code.api.pdf.PdfParser.PdfParserException;
 import pdfStructure.PDF;
 import pdfStructure.Paragraph;
@@ -36,7 +37,6 @@ import knowledge_model.S_Facts;
 import PDFconverter.PDFConverter;
 
 public class ExtractorBELExtractor {
-	public static StanfordNLPLight nlp;
 //	static String debug_output_folder;
 	public static void main(String[]  args) {
 		boolean test = true;
@@ -477,48 +477,45 @@ public class ExtractorBELExtractor {
 //			}
 //		}
 //	}
-	public static void exampleExtractor(String outputPath, String[] test) {
-		//String path = "test\\for lawyer2\\lunar_paper\\machine\\cbautw9.pdf_resultSection_clean.txt";
-//		String path = "C:\\Users\\huangxc\\Desktop\\jayanthi\\2nd_paper\\result_disc.txt";
-//		String path = "test/PMC1513515/Methods_section.txt";
-		utility util = new utility();
-//		outputPath = "d:/test.fact";
-		
-//		String path = "~/";
-//		String para = util.readFromFile(path);
-		String para = "it revealed an apple";
-		StanfordNLPLight nlp = new StanfordNLPLight( "tokenize, ssplit, pos, lemma");
-		List<Sequence> sentences = nlp.textToSequence(para, true);
-//		NGrams ngram = new NGrams();
-		NGrams.nlp = nlp;
-//		ngrams.wn = nlp.wn;
-//		Map<String, Sequence> acronyms = Refinement.findAcronyms(para);
-//		List<Sequence> freSeq = ngram.getFreqSequences(sentences);
-//		HashSet<Sequence> freSeq_ = new HashSet<Sequence>(); freSeq_.addAll(freSeq);
-		
-//		C_Facts cFact = patterns.parsePara(sentences, freSeq_, acronyms);
-		PatternMatcher pat = new PatternMatcher();
-		C_Facts cFact = pat.parsePara(sentences, null, null, new Span(-1,-1));
-		S_Facts sfact = new S_Facts(cFact);
-		sfact.mergeFacts();
-		
-		sfact.printFacts();
-		util.writeFile(outputPath, "", false);
-//		for(String s : test)
-//		util.writeFile(outputPath, s + "\r\n", true);
-		util.writeFile(outputPath, sfact.toString(false, true, 0,false), true);
-//		sfact.writeFacts(path + ".fact");
-		
-			
-//			String s = sfact.toString();
-			
-	}
+//	public static void exampleExtractor(String outputPath, String[] test) {
+//		//String path = "test\\for lawyer2\\lunar_paper\\machine\\cbautw9.pdf_resultSection_clean.txt";
+////		String path = "C:\\Users\\huangxc\\Desktop\\jayanthi\\2nd_paper\\result_disc.txt";
+////		String path = "test/PMC1513515/Methods_section.txt";
+//		utility util = new utility();
+////		outputPath = "d:/test.fact";
+//		
+////		String path = "~/";
+////		String para = util.readFromFile(path);
+//		String para = "it revealed an apple";
+//		StanfordNLPLight nlp = new StanfordNLPLight( "tokenize, ssplit, pos, lemma");
+//		List<Sequence> sentences = nlp.textToSequence(para, true);
+////		Map<String, Sequence> acronyms = Refinement.findAcronyms(para);
+////		List<Sequence> freSeq = ngram.getFreqSequences(sentences);
+////		HashSet<Sequence> freSeq_ = new HashSet<Sequence>(); freSeq_.addAll(freSeq);
+//		
+////		C_Facts cFact = patterns.parsePara(sentences, freSeq_, acronyms);
+//		PatternMatcher pat = new PatternMatcher();
+//		C_Facts cFact = pat.parsePara(sentences, null, null, new Span(-1,-1));
+//		S_Facts sfact = new S_Facts(cFact);
+//		sfact.mergeFacts();
+//		
+//		sfact.printFacts();
+//		util.writeFile(outputPath, "", false);
+////		for(String s : test)
+////		util.writeFile(outputPath, s + "\r\n", true);
+//		util.writeFile(outputPath, sfact.toString(false, true, 0,false), true);
+////		sfact.writeFacts(path + ".fact");
+////			String s = sfact.toString();
+//			
+//	}
 
 	private static void exampleXMLExtractor(String path, String outputPath) {
 //		String path = "withingroup\\panlu1.xml";
 //		path = "validation_round1/joelyons123/joelyons123.xml";
 		outputPath = path + "_.xml";
 		System.out.println("process " + path);
+		RootMatcher pat = new RootMatcher();
+		if(!pat.readMacher("RuleMatcher.jason")) return;
 		utility util = new utility();
 		String xmlContent = util.readFromFile(path);
 		xmlContent = xmlContent.replace("\n", " ").replace("\r", "");
@@ -528,8 +525,9 @@ public class ExtractorBELExtractor {
 //		writeChildren(xmlDoc, path + "_");;
 		
 //		util.writeFile(outputPath, xmlContent, false);
-		StanfordNLPLight nlp = new StanfordNLPLight( "tokenize, ssplit, pos");
-	
+//		StanfordNLPLight nlp = new StanfordNLPLight( "tokenize, ssplit, pos, lemma");
+		if(StanfordNLPLight.nlp == null) 
+			StanfordNLPLight.nlp = new StanfordNLPLight( "tokenize, ssplit, pos, lemma");
 		HashMap<Node, C_Facts> NodeToFacts = new HashMap<Node, C_Facts>();
 		HashMap<Node, List<Sequence>> NodeToSequence = new HashMap<Node, List<Sequence>>();
 //		String fullTextWithoutSectionTitle = "";
@@ -539,7 +537,7 @@ public class ExtractorBELExtractor {
 			for(int i = 0; i < paras.getLength(); i++) {
 				Node para = paras.item(i);
 				String para_text = para.getTextContent().replace("&lt;", "<").replace("&amp;", "&").replace("&gt;", ">");
-				List<Sequence> seqOfPara =  nlp.textToSequence(para_text, true);
+				List<Sequence> seqOfPara =  StanfordNLPLight.nlp.textToSequence(para_text, true);
 				NodeToSequence.put(para, seqOfPara);
 //				fullTextWithoutSectionTitle += para_text + "\r\n";
 				allSequences.addAll(seqOfPara);
@@ -547,9 +545,7 @@ public class ExtractorBELExtractor {
 		}
 		
 		NGrams ngram = new NGrams();
-		NGrams.nlp = nlp;
-//		ngrams.wn = nlp.wn;
-		Map<String, Sequence> acronyms = Acronym.findAcronyms(allSequences, nlp);
+		Map<String, Sequence> acronyms = Acronym.findAcronyms(allSequences, StanfordNLPLight.nlp);
 		{
 			util.writeFile(outputPath + "_synonyms","" , false);
 			for(String s : acronyms.keySet()) {
@@ -563,7 +559,7 @@ public class ExtractorBELExtractor {
 		int counter_fact = 1;
 		{
 			NodeList paras = xmlDoc.getElementsByTagName("p");
-			PatternMatcher pat = new PatternMatcher();
+			
 			for(int i = 0; i < paras.getLength(); i++) {
 				C_Facts cFact = pat.parsePara(NodeToSequence.get(paras.item(i)), freSeq_, acronyms, new Span(-1,-1));
 				NodeToFacts.put(paras.item(i), cFact);
@@ -672,6 +668,7 @@ public class ExtractorBELExtractor {
 	 * 0: path
 	 * 1: output_dir
 	 * 2: debug_dir
+	 * 3: matcher file (by default: RuleMatcher.jason)
 	 * @param output
 	 * @return ErrorCode:
 	 * -1: input parameter error 
@@ -706,6 +703,20 @@ public class ExtractorBELExtractor {
 				debug_dir = file_temp.getParent() + "\\debug_output\\";
 			}
 		}
+		String matcherFile = "RuleMatcher.jason";
+		if(args.length > 3) {
+			matcherFile = args[3];
+		}
+		{
+			File file_temp = new File(matcherFile);
+			if(!file_temp.exists() || !file_temp.isFile()) {
+				Debug.println("Fatal Error: No matcher file (RuleMatcher.jason) is found in path " + matcherFile + "!",DEBUG_CONFIG.debug_error );
+				Debug.println("Input parameters are " , DEBUG_CONFIG.debug_error);
+				for(String s : args)
+					Debug.println(s , DEBUG_CONFIG.debug_error);
+				return -1;
+			}
+		}
 		JSONArray factsToOutput = new JSONArray();
 		PDFConverter converter = new PDFConverter();
 		PDF pdf =  converter.run(file, file.getName(), output_dir, debug_dir);
@@ -714,8 +725,8 @@ public class ExtractorBELExtractor {
 			Debug.println("File Path: " + path,DEBUG_CONFIG.debug_error);
 			return 2;
 		}
-		if(PdfExtractionPipeline.nlp != null) nlp = PdfExtractionPipeline.nlp;
-		else nlp = new StanfordNLPLight( "tokenize, ssplit, pos, lemma");
+		if(StanfordNLPLight.nlp == null) 
+			StanfordNLPLight.nlp = new StanfordNLPLight( "tokenize, ssplit, pos, lemma");
 		HashMap<Paragraph, S_Facts> paraToFacts = new HashMap<Paragraph, S_Facts>();
 		HashMap<Paragraph, List<Sequence>> paraToSequence = new HashMap<Paragraph, List<Sequence>>();
 		List<Sequence> allSequences = new ArrayList<Sequence>();
@@ -723,16 +734,14 @@ public class ExtractorBELExtractor {
 			for(Paragraph para : pdf.body_and_heading) {
 				//					Debug.println("**Section " + i);
 				if(para.isHeading()) continue;
-				List<Sequence> para_seq = nlp.textToSequence(para.text, -1, -1, -1, true);
+				List<Sequence> para_seq = StanfordNLPLight.nlp.textToSequence(para.text, -1, -1, -1, true);
 				paraToSequence.put(para, para_seq);
 				allSequences.addAll(para_seq);
 			}
 			
 		}
 		NGrams ngram = new NGrams();
-		NGrams.nlp = nlp;
-//		ngrams.wn = nlp.wn;
-		Map<String, Sequence> acronyms = Acronym.findAcronyms(allSequences, nlp);
+		Map<String, Sequence> acronyms = Acronym.findAcronyms(allSequences, StanfordNLPLight.nlp);
 		{
 //			for(String s : acronyms.keySet()) {
 //				Debug.println(s + "\t" + acronyms.get(s).sourceString);
@@ -741,7 +750,10 @@ public class ExtractorBELExtractor {
 		}
 		List<Sequence> freSeq = ngram.getFreqSequences(allSequences);
 		HashSet<Sequence> freSeq_ = new HashSet<Sequence>(); freSeq_.addAll(freSeq);
-		PatternMatcher pat = new PatternMatcher();
+		RootMatcher pat = new RootMatcher();
+		if(!pat.readMacher(matcherFile)) {
+			return -1;
+		}
 		Debug.print("****Start pattern matching****", DEBUG_CONFIG.debug_timeline);
 		for(int i = 0; i < pdf.body_and_heading.size(); i++) {
 			Paragraph para = pdf.body_and_heading.get(i);

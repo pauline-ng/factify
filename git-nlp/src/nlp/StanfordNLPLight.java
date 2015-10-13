@@ -32,18 +32,20 @@ import edu.stanford.nlp.util.CoreMap;
 //import extractor.wordnet;
 
 public class StanfordNLPLight {
+	public static StanfordNLPLight nlp;
 	 public StanfordCoreNLP pipeline;
 	 public HashSet<String> stopwords;
 	public String sourceFolder;
 //	public  wordnet wn;
-	public StanfordNLPLight() {
-	     Properties props = new Properties();
-//	     props.put("annotators", "tokenize, ssplit, pos, lemma, ner, depparse");
-	     props.put("annotators", "tokenize, ssplit, pos, lemma");
-//	     props.put("ner.model", "edu/stanford/nlp/models/ner/english.all.3class.distsim.crf.ser.gz");
-//	     props.put("ner.applyNumericClassifiers", "false");
-	     
-	}
+//	public StanfordNLPLight() {
+//	     Properties props = new Properties();
+////	     props.put("annotators", "tokenize, ssplit, pos, lemma, ner, depparse");
+//	     props.put("annotators", "tokenize, ssplit, pos, lemma");
+////	     props.put("ner.model", "edu/stanford/nlp/models/ner/english.all.3class.distsim.crf.ser.gz");
+////	     props.put("ner.applyNumericClassifiers", "false");
+//	     StanfordNLPLight(props);
+//	     
+//	}
 	public StanfordNLPLight( Properties props) {
 	      pipeline = new StanfordCoreNLP(props);
 	}
@@ -145,13 +147,14 @@ public class StanfordNLPLight {
 				//	    		 String token_s = token.get(CoreAnnotations.LemmaAnnotation.class);
 //				String stem = wn.StemWordWithWordNet(token.get(CoreAnnotations.TextAnnotation.class));
 				String stem = token.get(CoreAnnotations.LemmaAnnotation.class);
+//				if(stem == null) stem = token.get(CoreAnnotations.OriginalTextAnnotation.class);
 				//	    		 if(!nlp.stopwords.contains(token_s)) {
 				words.add(token.get(CoreAnnotations.OriginalTextAnnotation.class));
 				stems.add(stem);
 				POSTag.add(token.get(CoreAnnotations.PartOfSpeechAnnotation.class));
 				spans.add(new Span(token.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class) - sentence.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class),
 						token.get(CoreAnnotations.CharacterOffsetEndAnnotation.class)- sentence.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class)));
-				 if(isNoun(POSTag.get(POSTag.size() - 1))) knowNouns.add(stem);
+				 if(isNoun(POSTag.get(POSTag.size() - 1)) && stem != null) knowNouns.add(stem);
 			}
 //			System.out.println(words);
 //			System.out.println(stems);

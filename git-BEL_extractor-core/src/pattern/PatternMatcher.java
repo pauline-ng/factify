@@ -83,9 +83,9 @@ public class PatternMatcher {
 	 //4 out of 6; 4 of/in the 6; 4 of/in 6
 //	public static final String reg_outof =	reg_rational + "\\s((out of)|(of)|(in)|(of the)|(in the))\\s" + reg_rational;
 	
-	private RelationKeywords rk = new RelationKeywords();
-	private SignalKeywords sk = new SignalKeywords();
-	private UncertainKeywords uk = new UncertainKeywords();
+//	private RelationKeywords rk = new RelationKeywords();
+//	private SignalKeywords sk = new SignalKeywords();
+//	private UncertainKeywords uk = new UncertainKeywords();
 	public static String reg_equation; //contains epsilon, be careful
 	//http://www.utf8-chartable.de/unicode-utf8-table.pl?utf8=dec //TODO
 	private final static String[] operators = {"\\+", "-", "/", "%", "\\*", ">", "<","=",
@@ -130,7 +130,7 @@ public class PatternMatcher {
 				Debug.println("pavalue:" + matcher.group(),DEBUG_CONFIG.debug_pattern);
 			}
 		}
-		{
+		{//not in use
 			pat.formReg_Equation();
 			//be careful "1/9 0.1" will become " 1" "/9" and " 0.1" through matcher.find();
 			Pattern pattern = Pattern.compile(pat.reg_equation);
@@ -203,10 +203,7 @@ public class PatternMatcher {
 //		return false;
 //	}
 	
-	public  void extract(Sequence senten) {
-		List<Span>	fact_spans = new ArrayList<Span>();
-		
-	}
+
 	/**
 	 * NOT IN USE
 	 * find the equation/rational in a sentence (represented by sequence)
@@ -265,7 +262,7 @@ public class PatternMatcher {
 		return results_;
 	}
 	
-	private  List<Span> extractP_Value(Sequence senten) {
+	public  List<Span> extractP_Value(Sequence senten) {
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		Pattern pattern = Pattern.compile(reg_pvalue);
 		Matcher matcher = pattern.matcher(senten.sourceString);
@@ -285,7 +282,7 @@ public class PatternMatcher {
 		return results_;
 	}
 	
-	private  List<Span> extractTextToNum(Sequence senten) {//need to do it by token
+	public  List<Span> extractTextToNum(Sequence senten) {//need to do it by token
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		TextToNum textToNum = new TextToNum();
 		String curInteger = "";
@@ -340,30 +337,30 @@ public class PatternMatcher {
 		return results_;
 	}
 	
-	/**
+	/**NOT IN USE
 	 * Currently support one-token comparatives
 	 * @param senten
 	 * @return
 	 */
-	private  List<Span> extractComparatives(Sequence senten) {//need to do it by token
-		HashSet<Span>	results = new HashSet<Span>();//[)
-		String preTag = "";
-		ComparativeKeywords ck = new ComparativeKeywords();
-		for(int i = 0; i < senten.size(); i++) {
-			String tag = senten.POSTags.get(i);
-			if(ck.containPOS(tag)||
-					ck.contain(senten.stems.get(i))) results.add(new Span(senten.spans.get(i).getStart(), senten.spans.get(i).getEnd()));
-			if((preTag.equals("RBR") || preTag.equals("JJR")) && senten.words.get(i).equals("than")) {//e.g. less than
-				results.add(new Span(senten.spans.get(i).getStart(), senten.spans.get(i).getEnd()));
-			}
-			preTag = tag;
-		}
-		
-		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
-		return results_;
-	}
+//	private  List<Span> extractComparatives(Sequence senten) {//need to do it by token
+//		HashSet<Span>	results = new HashSet<Span>();//[)
+//		String preTag = "";
+//		ComparativeKeywords ck = new ComparativeKeywords();
+//		for(int i = 0; i < senten.size(); i++) {
+//			String tag = senten.POSTags.get(i);
+//			if(ck.containPOS(tag)||
+//					ck.contain(senten.stems.get(i))) results.add(new Span(senten.spans.get(i).getStart(), senten.spans.get(i).getEnd()));
+//			if((preTag.equals("RBR") || preTag.equals("JJR")) && senten.words.get(i).equals("than")) {//e.g. less than
+//				results.add(new Span(senten.spans.get(i).getStart(), senten.spans.get(i).getEnd()));
+//			}
+//			preTag = tag;
+//		}
+//		
+//		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
+//		return results_;
+//	}
 	
-	private  List<Span> extractAcronyms(Sequence senten, Map<String, Sequence> acronyms) {//need to do it by token
+	public  List<Span> extractAcronyms(Sequence senten, Map<String, Sequence> acronyms) {//need to do it by token
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		HashSet<Sequence> longforms = new HashSet<Sequence>();
 		longforms.addAll(acronyms.values());
@@ -376,55 +373,57 @@ public class PatternMatcher {
 		return results_;
 	}
 	/**
+	 * NOT IN USE
 	 * A relation keyword may contain multiple tokens e.g. result in / result from
 	 * @param senten
 	 * @return
 	 */
-	private  List<Span> extractRelations(Sequence senten) {
-		HashSet<String> keywords_ = rk.getAllKeywords();
-		HashSet<Sequence> keywords = new HashSet<Sequence>();
- 		for(String s : keywords_) {
-			StringTokenizer st = new StringTokenizer(s, " ");
-			List<String> ele = new ArrayList<String>();
-			while(st.hasMoreTokens()) ele.add(st.nextToken());
-			keywords.add(new Sequence(null, ele, null, null, s));//sequence equality is based on stems
-		}
-		return findMatches(senten, keywords);
-	}
-	/**
-	 * A signal keyword may contain multiple tokens e.g. a few
-	 * @param senten
-	 * @return
-	 */
-	private  List<Span> extractSingalWords(Sequence senten) {
-		HashSet<String> keywords_ = sk.getAllKeywords();
-		HashSet<Sequence> keywords = new HashSet<Sequence>();
- 		for(String s : keywords_) {
-			StringTokenizer st = new StringTokenizer(s, " ");
-			List<String> ele = new ArrayList<String>();
-			while(st.hasMoreTokens()) ele.add(st.nextToken());
-			keywords.add(new Sequence(null, ele, null, null, s));//sequence equality is based on stems
-		}
-		return findMatches(senten, keywords);
-	}
+//	private  List<Span> extractRelations(Sequence senten) {
+//		HashSet<String> keywords_ = rk.getAllKeywords();
+//		HashSet<Sequence> keywords = new HashSet<Sequence>();
+// 		for(String s : keywords_) {
+//			StringTokenizer st = new StringTokenizer(s, " ");
+//			List<String> ele = new ArrayList<String>();
+//			while(st.hasMoreTokens()) ele.add(st.nextToken());
+//			keywords.add(new Sequence(null, ele, null, null, s));//sequence equality is based on stems
+//		}
+//		return findMatches(senten, keywords);
+//	}
 	/**
 	 * NOT IN USE
 	 * A signal keyword may contain multiple tokens e.g. a few
 	 * @param senten
 	 * @return
 	 */
-	private  List<Span> extractUncertaintyWords(Sequence senten) {
-		HashSet<String> keywords_ = uk.getAllKeywords();
-		HashSet<Sequence> keywords = new HashSet<Sequence>();
- 		for(String s : keywords_) {
-			StringTokenizer st = new StringTokenizer(s, " ");
-			List<String> ele = new ArrayList<String>();
-			while(st.hasMoreTokens()) ele.add(st.nextToken());
-			keywords.add(new Sequence(null, ele, null, null, s));//sequence equality is based on stems
-		}
-		return findMatches(senten, keywords);
-	}
-	private  List<Span> extractUnits(Sequence senten) {
+//	private  List<Span> extractSingalWords(Sequence senten) {
+//		HashSet<String> keywords_ = sk.getAllKeywords();
+//		HashSet<Sequence> keywords = new HashSet<Sequence>();
+// 		for(String s : keywords_) {
+//			StringTokenizer st = new StringTokenizer(s, " ");
+//			List<String> ele = new ArrayList<String>();
+//			while(st.hasMoreTokens()) ele.add(st.nextToken());
+//			keywords.add(new Sequence(null, ele, null, null, s));//sequence equality is based on stems
+//		}
+//		return findMatches(senten, keywords);
+//	}
+	/**
+	 * NOT IN USE
+	 * A signal keyword may contain multiple tokens e.g. a few
+	 * @param senten
+	 * @return
+	 */
+//	private  List<Span> extractUncertaintyWords(Sequence senten) {
+//		HashSet<String> keywords_ = uk.getAllKeywords();
+//		HashSet<Sequence> keywords = new HashSet<Sequence>();
+// 		for(String s : keywords_) {
+//			StringTokenizer st = new StringTokenizer(s, " ");
+//			List<String> ele = new ArrayList<String>();
+//			while(st.hasMoreTokens()) ele.add(st.nextToken());
+//			keywords.add(new Sequence(null, ele, null, null, s));//sequence equality is based on stems
+//		}
+//		return findMatches(senten, keywords);
+//	}
+	public  List<Span> extractUnits(Sequence senten) {
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		UnitsRecognizer unitsRecognizer = new UnitsRecognizer();
 		for(int i = 1; i < senten.size(); i++) {
@@ -437,7 +436,7 @@ public class PatternMatcher {
 		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
 		return results_;
 	}
-	private  List<Span> extractNGrams(Sequence senten, HashSet<Sequence> freNGrams ) {
+	public  List<Span> extractNGrams(Sequence senten, HashSet<Sequence> freNGrams ) {
 		return findMatches(senten, freNGrams);
 	}
 	
@@ -474,7 +473,7 @@ public class PatternMatcher {
 	 * @param freNGrams
 	 * @return
 	 */
-	private  List<Span> findMatches(Sequence senten, HashSet<Sequence> freNGrams ) {
+	public  List<Span> findMatches(Sequence senten, HashSet<Sequence> freNGrams ) {
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		HashSet<Integer> freSeqLen = new HashSet<Integer>();
 		for(Sequence s : freNGrams) freSeqLen.add(s.size());
@@ -518,7 +517,7 @@ public class PatternMatcher {
 		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
 		return results_;
 	}
-	private  List<Span> extractParenthesis(Sequence senten) {
+	public  List<Span> extractParenthesis(Sequence senten) {
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		for(int i = 0; i < senten.size(); i++) {
 			String word = senten.words.get(i).trim();
@@ -588,188 +587,189 @@ String para = "In contrast, behavioral economic theory suggests that incentives 
 //		for(int i = 0; i < para.length(); i++) Debug.println(para.charAt(i) +  "\t" + "\\u" + Integer.toHexString(para.charAt(i) | 0x10000).substring(1) + "\t" + Character.getType(para.charAt(i)));
 //		System.exit(0);
 		Debug.println(para,DEBUG_CONFIG.debug_pattern);
-		StanfordNLPLight nlp = new StanfordNLPLight("tokenize, ssplit, pos");
+		StanfordNLPLight nlp = new StanfordNLPLight("tokenize, ssplit, pos, lemma");
 //		ngrams ngram = new ngrams();
-		NGrams.nlp = nlp;
-//		ngrams.wn = nlp.wn;
 //		List<Sequence> freSeq = ngram.getFreqSequences(sentences);
 //		freSeq_ = new HashSet<Sequence>(); freSeq_.addAll(freSeq);
 		
-		C_Facts cFact = parsePara(nlp.textToSequence(para, true), null, null, new Span(-1,-1));
-		S_Facts sfact = new S_Facts(cFact);
-		sfact.mergeFacts();
-		sfact.printFacts();
-//		sfact.writeFacts("test/PMC1513515/Methods_section_ngram.fact");
-	}
-	public  C_Facts parsePara(List<Sequence> sentences, HashSet<Sequence> freSeq_, Map<String, Sequence> acronyms, Span pageRange) {
-//		String para = "This bag costs 100. It is a million dollars. It's improved by 10 % with p <= 0.001.Mine is better than his.";
-		utility util = new utility();
-//		para = util.readFromFile("test/PMC1513515/Results_section.txt");
-//		List<Sequence> sentences = nlp.textToSequence(para, true);
-//		HashSet<Sequence> freSeq_ = null;
-//		if(withNGrams) {
-//			ngrams ngram = new ngrams();
-//			ngrams.nlp = nlp;
-//			ngrams.wn = nlp.wn;
-//			List<Sequence> freSeq = ngram.getFreqSequences(sentences);
-//			freSeq_ = new HashSet<Sequence>(); freSeq_.addAll(freSeq);
-//		}
-		List<List<Span>> allFacts = new ArrayList<List<Span>>();
-		List<String> details = new ArrayList<String>();
-		boolean printDetail = false;
-		String detail = "";
-		for(Sequence s : sentences) {
-//			Debug.println(s.sourceString);
-			List<List<Span>> all = new ArrayList<List<Span>>();
-			{
-				List<Span> rational = extractReg_Rational(s);
-				if(printDetail)	for(Span span : rational) Debug.println("rational:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-				all.add(rational);
-				for(Span span : rational) {
-					detail += "Rule Rational: " + span.getCoveredText(s.sourceString) + "\r\n"; 
-				}
-			}
-			{
-//				List<Span> outOf = extractReg_OutOf(s);
-//				if(printDetail)	for(Span span : outOf) Debug.println("Out of:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-//				all.add(outOf);
-			}
-			{
-				List<Span> textToNum = extractTextToNum(s);
-				if(printDetail)				for(Span span : textToNum) Debug.println("textToNum:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-				all.add(textToNum);
-				for(Span span : textToNum) {
-					detail += "Rule textToNum: " + span.getCoveredText(s.sourceString) + "\r\n"; 
-				}
-			}
-			{
-				List<Span> nouns = extractNouns(s);
-				if(printDetail)				for(Span span : nouns) Debug.println("nouns:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-				all.add(nouns);
-				for(Span span : nouns) {
-					detail += "Rule Nouns: " + span.getCoveredText(s.sourceString) + "\r\n"; 
-				}
-			}
-			{
-				List<Span> pvalues = extractP_Value(s);
-				if(printDetail)				for(Span span : pvalues) Debug.println("pvalues:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-				all.add(pvalues);
-				for(Span span : pvalues) {
-					detail += "Rule P Value: " + span.getCoveredText(s.sourceString) + "\r\n"; 
-				}
-			}
-			{
-				List<Span> com = extractComparatives(s);
-				if(printDetail)				for(Span span : com) Debug.println("comparatives:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-				all.add(com);
-				for(Span span : com) {
-					detail += "Rule Comparatives: " + span.getCoveredText(s.sourceString) + "\r\n"; 
-				}
-			}
-			{
-//				List<Span> uncertain = extractUncertaintyWords(s);
-//				if(printDetail)				for(Span span : uncertain) Debug.println("uncertainties:" + span.getCoveredText(s.sourceString));
-//				all.add(uncertain);
-			}
-			{
-				List<Span> units = extractUnits(s);
-				if(printDetail) for(Span span : units) Debug.println("units:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-				all.add(units);
-				for(Span span : units) {
-					detail += "Rule Units: " + span.getCoveredText(s.sourceString) + "\r\n"; 
-				}
-			}
-			if(freSeq_ != null){
-				
-				List<Span> ngrams_s = extractNGrams(s, freSeq_);
-				if(printDetail)				for(Span span : ngrams_s) Debug.println("ngrams:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-				all.add(ngrams_s);
-				for(Span span : ngrams_s) {
-					detail += "Rule Freq NGrams: " + span.getCoveredText(s.sourceString) + "\r\n"; 
-				}
-			}
-			{
-				List<Span> rels = extractRelations(s);
-				if(printDetail)				
-					for(Span rel : rels) Debug.println("rel:" + rel.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-				all.add(rels);
-				for(Span span : rels) {
-					detail += "Rule Relations: " + span.getCoveredText(s.sourceString) + "\r\n"; 
-				}
-			}
-			{
-				List<Span> signals = extractSingalWords(s);
-				if(printDetail)				
-					for(Span signal : signals) Debug.println("signals:" + signal.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-				all.add(signals);
-				for(Span span : signals) {
-					detail += "Rule Signals: " + span.getCoveredText(s.sourceString) + "\r\n"; 
-				}
-			}
-			if(acronyms!= null){
-//				acronyms.add("subunit");
-				 List<Span> acros = extractAcronyms(s, acronyms);
-				if(printDetail)				for(Span acro : acros) Debug.println("acronyms:" + acro.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-				all.add(acros);
-				for(Span span : acros) {
-					detail += "Rule Acronyms: " + span.getCoveredText(s.sourceString) + "\r\n"; 
-				}
-			}
-			{
-				List<Span> parenthesis = extractParenthesis(s);
-				if(printDetail)				for(Span p : parenthesis) Debug.println("parenthesis:" + p.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-				all.add(parenthesis);
-				
-			}
-			{
-				List<Span> operators = extractOperators(s);
-				if(printDetail) for(Span o : operators) Debug.println("operators:" + o.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-				all.add(operators);
-				for(Span span : operators) {
-					detail += "Rule Operators: " + span.getCoveredText(s.sourceString) + "\r\n"; 
-				}
-			}
-			{
-				List<Span> puncs = extractPunc(s);
-				if(printDetail) for(Span o : puncs) Debug.println("puncs:" + o.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-				all.add(puncs);
-			}
-//			for(List<Span> l : all) for(Span span : l) if(span.getCoveredText(s.sourceString).toString().contains("studies")) Debug.print("here" + all.indexOf(l) + " " + span.toString() );
-//			for(List<Span> l : all) for(Span span : l) if(span.getCoveredText(s.sourceString).toString().contains("70")) Debug.print("lala" + all.indexOf(l)+ " " + span.toString() );
-			
-			List<Span> after = resolveSpans(all, s);
-//			Debug.print("--\t");
-//			for(String word : s.words) Debug.print(word + "\t");
-//			Debug.println("--");
-//			Debug.print("**\t");
-//			for(Span span : after) 
-//				Debug.print(span.getCoveredText(s.sourceString) + "\t");
-//			Debug.println("**");
-			allFacts.add(after);
-			details.add(detail);
-//			System.exit(0);
-		}
-		C_Facts cFact = formFacts(allFacts, sentences, details, pageRange);
+//		C_Facts cFact = parsePara(nlp.textToSequence(para, true), null, null, new Span(-1,-1));
 //		S_Facts sfact = new S_Facts(cFact);
 //		sfact.mergeFacts();
 //		sfact.printFacts();
-		return cFact;
-		
-//		for(int i = 0; i < sentences.size(); i++) {
-//			Debug.println(sentences.get(i).sourceString);
-//			Debug.print("**\t");
-//			for(Span span : allFacts.get(i)) Debug.print(span.getCoveredText(sentences.get(i).sourceString) + "\t");
-//			Debug.println("**");
-//		}
-		
-		
-		
+//		sfact.writeFacts("test/PMC1513515/Methods_section_ngram.fact");
 	}
+/**
+ * NOT IN USE
+ * @param all
+ * @param seq
+ * @return
+ */
+//	public  C_Facts parsePara(List<Sequence> sentences, HashSet<Sequence> freSeq_, Map<String, Sequence> acronyms, Span pageRange) {
+////		String para = "This bag costs 100. It is a million dollars. It's improved by 10 % with p <= 0.001.Mine is better than his.";
+//		utility util = new utility();
+////		para = util.readFromFile("test/PMC1513515/Results_section.txt");
+////		List<Sequence> sentences = nlp.textToSequence(para, true);
+////		HashSet<Sequence> freSeq_ = null;
+////		if(withNGrams) {
+////			ngrams ngram = new ngrams();
+////			ngrams.nlp = nlp;
+////			ngrams.wn = nlp.wn;
+////			List<Sequence> freSeq = ngram.getFreqSequences(sentences);
+////			freSeq_ = new HashSet<Sequence>(); freSeq_.addAll(freSeq);
+////		}
+//		List<List<Span>> allFacts = new ArrayList<List<Span>>();
+//		List<String> details = new ArrayList<String>();
+//		boolean printDetail = false;
+//		String detail = "";
+//		for(Sequence s : sentences) {
+////			Debug.println(s.sourceString);
+//			List<List<Span>> all = new ArrayList<List<Span>>();
+//			{
+//				List<Span> rational = extractReg_Rational(s);
+//				if(printDetail)	for(Span span : rational) Debug.println("rational:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+//				all.add(rational);
+//				for(Span span : rational) {
+//					detail += "Rule Rational: " + span.getCoveredText(s.sourceString) + "\r\n"; 
+//				}
+//			}
+//			{
+////				List<Span> outOf = extractReg_OutOf(s);
+////				if(printDetail)	for(Span span : outOf) Debug.println("Out of:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+////				all.add(outOf);
+//			}
+//			{
+//				List<Span> textToNum = extractTextToNum(s);
+//				if(printDetail)				for(Span span : textToNum) Debug.println("textToNum:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+//				all.add(textToNum);
+//				for(Span span : textToNum) {
+//					detail += "Rule textToNum: " + span.getCoveredText(s.sourceString) + "\r\n"; 
+//				}
+//			}
+//			{
+//				List<Span> nouns = extractNouns(s);
+//				if(printDetail)				for(Span span : nouns) Debug.println("nouns:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+//				all.add(nouns);
+//				for(Span span : nouns) {
+//					detail += "Rule Nouns: " + span.getCoveredText(s.sourceString) + "\r\n"; 
+//				}
+//			}
+//			{
+//				List<Span> pvalues = extractP_Value(s);
+//				if(printDetail)				for(Span span : pvalues) Debug.println("pvalues:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+//				all.add(pvalues);
+//				for(Span span : pvalues) {
+//					detail += "Rule P Value: " + span.getCoveredText(s.sourceString) + "\r\n"; 
+//				}
+//			}
+//			{
+//				List<Span> com = extractComparatives(s);
+//				if(printDetail)				for(Span span : com) Debug.println("comparatives:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+//				all.add(com);
+//				for(Span span : com) {
+//					detail += "Rule Comparatives: " + span.getCoveredText(s.sourceString) + "\r\n"; 
+//				}
+//			}
+//			{
+////				List<Span> uncertain = extractUncertaintyWords(s);
+////				if(printDetail)				for(Span span : uncertain) Debug.println("uncertainties:" + span.getCoveredText(s.sourceString));
+////				all.add(uncertain);
+//			}
+//			{
+//				List<Span> units = extractUnits(s);
+//				if(printDetail) for(Span span : units) Debug.println("units:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+//				all.add(units);
+//				for(Span span : units) {
+//					detail += "Rule Units: " + span.getCoveredText(s.sourceString) + "\r\n"; 
+//				}
+//			}
+//			if(freSeq_ != null){
+//				
+//				List<Span> ngrams_s = extractNGrams(s, freSeq_);
+//				if(printDetail)				for(Span span : ngrams_s) Debug.println("ngrams:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+//				all.add(ngrams_s);
+//				for(Span span : ngrams_s) {
+//					detail += "Rule Freq NGrams: " + span.getCoveredText(s.sourceString) + "\r\n"; 
+//				}
+//			}
+//			{
+//				List<Span> rels = extractRelations(s);
+//				if(printDetail)				
+//					for(Span rel : rels) Debug.println("rel:" + rel.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+//				all.add(rels);
+//				for(Span span : rels) {
+//					detail += "Rule Relations: " + span.getCoveredText(s.sourceString) + "\r\n"; 
+//				}
+//			}
+//			{
+//				List<Span> signals = extractSingalWords(s);
+//				if(printDetail)				
+//					for(Span signal : signals) Debug.println("signals:" + signal.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+//				all.add(signals);
+//				for(Span span : signals) {
+//					detail += "Rule Signals: " + span.getCoveredText(s.sourceString) + "\r\n"; 
+//				}
+//			}
+//			if(acronyms!= null){
+////				acronyms.add("subunit");
+//				 List<Span> acros = extractAcronyms(s, acronyms);
+//				if(printDetail)				for(Span acro : acros) Debug.println("acronyms:" + acro.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+//				all.add(acros);
+//				for(Span span : acros) {
+//					detail += "Rule Acronyms: " + span.getCoveredText(s.sourceString) + "\r\n"; 
+//				}
+//			}
+//			{
+//				List<Span> parenthesis = extractParenthesis(s);
+//				if(printDetail)				for(Span p : parenthesis) Debug.println("parenthesis:" + p.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+//				all.add(parenthesis);
+//				
+//			}
+//			{
+//				List<Span> operators = extractOperators(s);
+//				if(printDetail) for(Span o : operators) Debug.println("operators:" + o.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+//				all.add(operators);
+//				for(Span span : operators) {
+//					detail += "Rule Operators: " + span.getCoveredText(s.sourceString) + "\r\n"; 
+//				}
+//			}
+//			{
+//				List<Span> puncs = extractPunc(s);
+//				if(printDetail) for(Span o : puncs) Debug.println("puncs:" + o.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+//				all.add(puncs);
+//			}
+////			for(List<Span> l : all) for(Span span : l) if(span.getCoveredText(s.sourceString).toString().contains("studies")) Debug.print("here" + all.indexOf(l) + " " + span.toString() );
+////			for(List<Span> l : all) for(Span span : l) if(span.getCoveredText(s.sourceString).toString().contains("70")) Debug.print("lala" + all.indexOf(l)+ " " + span.toString() );
+//			
+//			List<Span> after = resolveSpans(all, s);
+////			Debug.print("--\t");
+////			for(String word : s.words) Debug.print(word + "\t");
+////			Debug.println("--");
+////			Debug.print("**\t");
+////			for(Span span : after) 
+////				Debug.print(span.getCoveredText(s.sourceString) + "\t");
+////			Debug.println("**");
+//			allFacts.add(after);
+//			details.add(detail);
+////			System.exit(0);
+//		}
+//		C_Facts cFact = formFacts(allFacts, sentences, details, pageRange);
+////		S_Facts sfact = new S_Facts(cFact);
+////		sfact.mergeFacts();
+////		sfact.printFacts();
+//		return cFact;
+//		
+////		for(int i = 0; i < sentences.size(); i++) {
+////			Debug.println(sentences.get(i).sourceString);
+////			Debug.print("**\t");
+////			for(Span span : allFacts.get(i)) Debug.print(span.getCoveredText(sentences.get(i).sourceString) + "\t");
+////			Debug.println("**");
+////		}
+//	}
 	
 	
 
 	
-	private  List<Span> resolveSpans(List<List<Span>> all, Sequence seq) {
+	public  List<Span> resolveSpans(List<List<Span>> all, Sequence seq) {
 		HashSet<Span> hsAll = new HashSet<Span>(); 
 		for(List<Span> spans : all) for(Span span : spans) 
 //			hsAll.add(getFullSpan(span,seq));
@@ -843,7 +843,7 @@ String para = "In contrast, behavioral economic theory suggests that incentives 
 	 * @param senten: the source sentence
 	 * @return
 	 */
-	private  C_Facts formFacts(List<List<Span>> all_facts, List<Sequence> sentens, List<String> details, Span pageRange) {
+	public  C_Facts formFacts(List<List<Span>> all_facts, List<Sequence> sentens, List<String> details, Span pageRange) {
 		if(sentens.size() == 0) return null; 
 		C_Facts cfacts = new C_Facts(sentens.get(0).pageNum, sentens.get(0).secNum, sentens.get(0).paraNum);
 		utility util = new utility();
