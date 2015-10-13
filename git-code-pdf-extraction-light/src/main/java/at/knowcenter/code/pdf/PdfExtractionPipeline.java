@@ -104,7 +104,6 @@ public class PdfExtractionPipeline {
 	private String output_dir = null;
 	private String id = null;
 	private PDF pdf;
-	public static StanfordNLPLight nlp = null;
 	
 	public enum PdfExtractionBackend {
 	    PDFBox 

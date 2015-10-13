@@ -29,7 +29,7 @@ public class Debug_BEL_extractor {
 			Debug.set(DEBUG_CONFIG.debug_temp, true);
 			RootMatcher matcher = new RootMatcher();
 			if(!matcher.readMacher(args[0])) return;
-				String para = "A few apples are proved to be better compared with lexus 1 + - / * 1. ; it is 2.";
+				String para = "A few apples are proved to be better compared with lexus 1 + - / * 1. ; it is 2(.)";
 				//		Debug.println("\\u" + Integer.toHexString('-' | 0x10000).substring(1));
 //				for(int i = 0; i < para.length(); i++) Debug.println(para.charAt(i) +  "\t" + "\\u" + Integer.toHexString(para.charAt(i) | 0x10000).substring(1) + "\t" + Character.getType(para.charAt(i)));
 //				System.exit(0);

@@ -73,4 +73,7 @@ public class PreBuiltWordListMatcher implements Match{
 	public String getInputFileName() {
 		return fileName;
 	}
+	public String getInputFileVersion() {
+		return this.inputFileVersion;
+	}
 }

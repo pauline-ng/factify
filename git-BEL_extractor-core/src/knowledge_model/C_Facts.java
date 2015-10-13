@@ -3,7 +3,9 @@ package knowledge_model;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map.Entry;
+
 
 
 
@@ -49,7 +51,7 @@ public class C_Facts {
 	//facts///
 	ArrayList<ArrayList<String>> facts;//each element corresponds to a sentence
 //	ArrayList<Integer> senIndexToID;//each element is the location of a sentence in the paragraph: senIndexToID(i) is the absolute order of the sentence within the para
-	ArrayList<String> details;
+//	ArrayList<String> details;
 	
 	//Note: don't mess up with the formal definition of Span
 	ArrayList<ArrayList<Span>> relativeOrder;// each element is the start-end index of facts of a sentence e.g. <1,1> corresponds to the first TOKEN/WORD of the sentence.
@@ -64,6 +66,12 @@ public class C_Facts {
 	////////////////////////////
 	
 	
+	//for the flexibility of removing some rule////////////
+	public List<List<List<Span>>> matchingDetail;
+	public List<String> matchingDetial_description;
+	/////////////
+	
+	
 	public C_Facts(int pageNum, int secNum, int paraNum) {
 		this.pageNum = pageNum;
 		this.secNum = secNum;
@@ -74,7 +82,9 @@ public class C_Facts {
 		this.spans = new ArrayList<>();
 		this.sentences = new ArrayList<String>();
 		this.sentences_spans = new ArrayList<Span[]>();
-		this.details = new ArrayList<String>();
+//		this.details = new ArrayList<String>();
+		this.matchingDetail = new ArrayList<>();
+		this.matchingDetial_description = new ArrayList<>();
 		
 	}
 	
@@ -90,7 +100,8 @@ public class C_Facts {
 //		this.senIndexToID.add(senID);
 		this.relativeOrder.add(relativeOrder);
 		this.spans.add(span);
-		this.details.add(detail);
+//		this.details.add(detail);
+		this.matchingDetial_description.add(detail);
 	}
 	
 	public void printFacts(boolean showPos) {
@@ -472,7 +483,8 @@ public void printFacts(boolean showPos, int senIndex) {
 		return this.facts.toString();
 	}
 	public String getFactDetail(int id) {
-		if(this.details.size() > id) return this.details.get(id);
+//		if(this.details.size() > id) return this.details.get(id);
+		if(this.matchingDetial_description.size() > id) return this.matchingDetial_description.get(id);
 		return null;
 	}
 	

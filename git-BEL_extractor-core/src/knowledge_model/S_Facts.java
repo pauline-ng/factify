@@ -207,7 +207,7 @@ public class S_Facts {
 			if(withOriginalText && xml) output += cfacts.sentences.get(i);
 			if(startingIndex != -1) output += "fact" + startingIndex + "\t";
 			output += s + "\r\n";
-			if(withDetails) output += cfacts.details.get(i) + "\r\n";
+			if(withDetails) output += cfacts.matchingDetial_description.get(i) + "\r\n";
 			if(!xml) output += "\r\n";
 			if(startingIndex != -1) startingIndex++;
 			
@@ -243,6 +243,7 @@ public class S_Facts {
 			obj.put("paragraphPageRange", cfacts.pageRange.toString());
 			obj.put("sentence", cfacts.sentences.get(i));
 			obj.put("fact", s.replace("-LRB-", "(").replace("-RRB-", ")").replace("-RSB-", "]").replace("-LSB-", "["));
+			obj.put("details", cfacts.matchingDetial_description.get(i));
 			startingIndex++;
 			objs.add(obj);
 //			util.writeFile(path, "\r\n",true);

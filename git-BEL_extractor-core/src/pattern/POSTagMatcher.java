@@ -2,8 +2,10 @@ package pattern;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import nlp.Sequence;
 import utility.Debug;
@@ -64,6 +66,9 @@ public class POSTagMatcher implements Match{
 	}
 	public String getInputFileName() {
 		return fileName;
+	}
+	public String getinputFileVersion() {
+		return this.inputFileVersion;
 	}
 	
 }

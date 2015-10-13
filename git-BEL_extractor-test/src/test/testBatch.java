@@ -20,8 +20,8 @@ public class testBatch {
 //		testFromFolder("D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\");
 //		clean();
 //		System.out.println("test");
-		if(args.length != 3) {
-			Debug.print("Please specify 3 parameters: filePath, output_dir, and debug_dir!", DEBUG_CONFIG.debug_error);
+		if(args.length != 4) {
+			Debug.print("Please specify 3 parameters: filePath, output_dir, debug_dir, and matcher file!", DEBUG_CONFIG.debug_error);
 			return;
 		}
 		if(!new File(args[0]).exists()) {
@@ -37,12 +37,12 @@ public class testBatch {
 		if(fileOrFolder == true) {
 			testOneFile(args[0], args[1], args[2]);
 		}else if(fileOrFolder == false) {
-			testFromFolder(args[0], args[1], args[2]);
+			testFromFolder(args[0], args[1], args[2], args[3]);
 		}
 		
 	}
 	
-	public static void testFromFolder(String path, String output_dir, String debug_dir) {
+	public static void testFromFolder(String path, String output_dir, String debug_dir, String matcherFile) {
 //		String path = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers";
 		File folder = new File(path);
 		if(!folder.exists() || !folder.isDirectory()) {
@@ -69,7 +69,7 @@ public class testBatch {
 			if(file.getName().endsWith(".pdf")) {
 				total_pdf++;
 				System.out.println("process " + file.getName());
-				int error = ExtractorBELExtractor.examplePDFExtractor_JSON(file.getAbsolutePath(), output_dir, debug_dir);
+				int error = ExtractorBELExtractor.examplePDFExtractor_JSON(file.getAbsolutePath(), output_dir, debug_dir, matcherFile);
 				util.writeFile(output_stat, total_pdf + "\t" + file.getName() + "\t" + error + "\r\n", true);
 			}
 			

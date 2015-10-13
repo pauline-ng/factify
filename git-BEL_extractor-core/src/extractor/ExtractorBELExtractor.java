@@ -759,19 +759,21 @@ public class ExtractorBELExtractor {
 			Paragraph para = pdf.body_and_heading.get(i);
 			if(para.isHeading()) continue;
 			Debug.println("Section " + i,DEBUG_CONFIG.debug_temp);
-			
-				C_Facts cFact = pat.parsePara(paraToSequence.get(para), freSeq_, acronyms, para.pages);
-				if(cFact != null) { 
-					S_Facts sFact = new S_Facts(cFact);
-					sFact.mergeFacts();
-					paraToFacts.put(para, sFact);
-				}
+			C_Facts cFact = pat.parsePara(paraToSequence.get(para), freSeq_, acronyms, para.pages);
+			if(cFact != null) { 
+				S_Facts sFact = new S_Facts(cFact);
+				sFact.mergeFacts();
+				paraToFacts.put(para, sFact);
+			}
 		}
 		{
 			 JSONObject obj=new JSONObject();
 			 obj.put("type", "paper");
 			 obj.put("path", path);
 //			 obj.put("sectionTitle", sec.getTitle(pdf));
+			 obj.put("freq ngrams", freSeq.toString());
+			 obj.put("acronyms", acronyms.toString());
+//			 Debug.println("frequent ngrams are:\r\n" + freSeq.toString(), DEBUG_CONFIG.debug_error);
 			 factsToOutput.add(obj);
 			}
 		utility util = new utility();

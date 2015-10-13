@@ -87,9 +87,7 @@ public class AnnotatedDocumentBuilder {
 			Dehyphenator dehyphenator) {
 		this.annotatorPipeline = annotatorPipeline;
 		this.dehyphenator = dehyphenator;
-		 Properties props = new Properties();
-	     props.put("annotators", "tokenize, ssplit, pos, lemma");
-	     if(PdfExtractionPipeline.nlp == null) PdfExtractionPipeline.nlp = new StanfordNLPLight(props);
+	     if(StanfordNLPLight.nlp == null) StanfordNLPLight.nlp = new StanfordNLPLight("tokenize, ssplit, pos, lemma");
 //		try {
 //			InputStream in = ResourceLoader.getInputStream(SentenceAnnotator.class, "en-sent.bin" );		
 //			SentenceModel sentenceModel = new SentenceModel(in);		
@@ -644,7 +642,8 @@ public class AnnotatedDocumentBuilder {
         
         private void finishSentence(StringBuilder builder, List<Block> sentenceBeginnings, ArrayList<Block> posToWord) {
 //            Span[] sentPosDetect = sentenceDetector.sentPosDetect(builder.toString());
-        	List<Span> sentPosDetect = PdfExtractionPipeline.nlp.splitSentences(builder.toString());
+        	if(StanfordNLPLight.nlp == null) StanfordNLPLight.nlp = new StanfordNLPLight("tokenize, ssplit, pos, lemma");
+        	List<Span> sentPosDetect = StanfordNLPLight.nlp.splitSentences(builder.toString());
             for (Span span : sentPosDetect) {
             	int start = span.getStart();
             	Block block = posToWord.get(start);

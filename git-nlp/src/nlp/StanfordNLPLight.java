@@ -46,13 +46,13 @@ public class StanfordNLPLight {
 //	     StanfordNLPLight(props);
 //	     
 //	}
-	public StanfordNLPLight( Properties props) {
-	      pipeline = new StanfordCoreNLP(props);
-	}
+//	public StanfordNLPLight( Properties props) {
+//	      pipeline = new StanfordCoreNLP(props);
+//	}
 	public StanfordNLPLight( String props_str) {
 		 Properties prop = new Properties();
 	     prop.put("annotators",props_str);
-	      pipeline = new StanfordCoreNLP(prop);
+	     pipeline = new StanfordCoreNLP(prop);
 	      
 	}
 	public static void main(String[] args) {
@@ -76,7 +76,7 @@ public class StanfordNLPLight {
 "59788, p=0.0253). ";
 		 Properties props = new Properties();
 	     props.put("annotators", "tokenize, ssplit, pos, lemma");
-	     StanfordNLPLight nlp = new StanfordNLPLight(props);
+	     StanfordNLPLight nlp = new StanfordNLPLight("tokenize, ssplit, pos, lemma");
 	     Annotation annotation = new Annotation(text);
 	     nlp.pipeline.annotate(annotation);
 	     List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);

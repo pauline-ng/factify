@@ -118,7 +118,7 @@ public class RootMatcher {
 				line = line.trim();
 				if(line.startsWith("--")) {
 					if(line.startsWith("--version:")) {
-						String version = line.substring("//version:".length());
+						String version = line.substring("--version:".length());
 						if(!version.equals(inputFileVersionFromRoot)) {
 							Debug.println("Warning: inputFile has a version: " + version + " while the root file says " + inputFileVersionFromRoot, DEBUG_CONFIG.debug_warning);
 						}
@@ -142,14 +142,14 @@ public class RootMatcher {
 		}
 		utility util = new utility();
 		List<List<Span>> allFacts = new ArrayList<List<Span>>();
-		List<String> details = new ArrayList<String>();
+		List<String> matchingDetail_description = new ArrayList<String>();
 		boolean printDetail = true;
-		String detail = "";
 		PatternMatcher pm = new PatternMatcher();
 		for(Sequence s : sentences) {
 //			Debug.println(s.sourceString);
 			Debug.println(s.POSTags, DEBUG_CONFIG.debug_pattern);
-			List<List<Span>> all = new ArrayList<List<Span>>();
+			List<List<Span>> matchingDetail = new ArrayList<List<Span>>();
+			String detail = "";
 			for(Object matcher : matchers)
 			{
 				if(matcher instanceof POSTagMatcher) {
@@ -158,10 +158,14 @@ public class RootMatcher {
 					if(printDetail)	
 						for(Span span : result) 
 							Debug.println("POSTagMatcher (" + posTagMatcher.getInputFileName() + "): " + span.getCoveredText(s.sourceString), DEBUG_CONFIG.debug_pattern);
-					all.add(result);
+					matchingDetail.add(result);
+					detail += "{POSTagMatcher: " + posTagMatcher.getInputFileName() + "\t" + posTagMatcher.getinputFileVersion() + "\r\n";
+					detail += "Spans: \r\n"; 
 					for(Span span : result) {
-						detail += "Rule " + posTagMatcher.getInputFilePath() + ": " + span.getCoveredText(s.sourceString) + "\r\n"; 
+						String postag = s.POSTags.get(s.spans.indexOf(span));
+						detail += span.toString() + "\t" + span.getCoveredText(s.sourceString) + "\t" + postag + "\r\n";
 					}
+					detail += "}\r\n";
 				}
 				if(matcher instanceof RegularExpressionMatcher) {
 					RegularExpressionMatcher regExpMatcher = (RegularExpressionMatcher) matcher;
@@ -169,10 +173,13 @@ public class RootMatcher {
 					if(printDetail)	
 						for(Span span : result) 
 							Debug.println("RegularExpressionMatcher (" + regExpMatcher.getInputFileName() + "): " + span.getCoveredText(s.sourceString), DEBUG_CONFIG.debug_pattern);
-					all.add(result);
+					matchingDetail.add(result);
+					detail += "{RegularExpressionMatcher: " + regExpMatcher.getInputFileName()+ "\t"  + regExpMatcher.getInputFileVersion() + "\r\n";
+					detail += "Spans: \r\n"; 
 					for(Span span : result) {
-						detail += "Rule " + regExpMatcher.getInputFilePath() + ": " + span.getCoveredText(s.sourceString) + "\r\n"; 
+						detail += span.toString()+ "\t" + span.getCoveredText(s.sourceString) + "\r\n";
 					}
+					detail += "}\r\n";
 				}
 				if(matcher instanceof PreBuiltWordListMatcher) {
 					PreBuiltWordListMatcher preBuiltWordMatcher = (PreBuiltWordListMatcher) matcher;
@@ -180,73 +187,79 @@ public class RootMatcher {
 					if(printDetail)	
 						for(Span span : result) 
 							Debug.println("PreBuiltWordListMatcher (" + preBuiltWordMatcher.getInputFileName() + "): " + span.getCoveredText(s.sourceString), DEBUG_CONFIG.debug_pattern);
-					all.add(result);
+					matchingDetail.add(result);
+					detail += "{PreBuiltWordListMatcher: " + preBuiltWordMatcher.getInputFileName()+ "\t"  + preBuiltWordMatcher.getInputFileVersion() + "\r\n";
+					detail += "Spans: \r\n"; 
 					for(Span span : result) {
-						detail += "Rule " + preBuiltWordMatcher.getInputFilePath() + ": " + span.getCoveredText(s.sourceString) + "\r\n"; 
+						detail += span.toString()+ "\t" + span.getCoveredText(s.sourceString) + "\r\n";
 					}
+					detail += "}\r\n";
 				}
-				{
-					if(freSeq_ != null){
-						List<Span> ngrams_s = pm.extractNGrams(s, freSeq_);
-						if(printDetail)				for(Span span : ngrams_s) Debug.println("ngrams:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-						all.add(ngrams_s);
-						for(Span span : ngrams_s) {
-							detail += "Rule Freq NGrams: " + span.getCoveredText(s.sourceString) + "\r\n"; 
-						}
-					}
-				}
-				{
-					
-					List<Span> units = pm.extractUnits(s);
-					if(printDetail) for(Span span : units) Debug.println("units:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-					all.add(units);
-					for(Span span : units) {
-						detail += "Rule Units: " + span.getCoveredText(s.sourceString) + "\r\n"; 
-					}
-					
-				}
-				{
-					List<Span> textToNum = pm.extractTextToNum(s);
-					if(printDetail)				for(Span span : textToNum) Debug.println("textToNum:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-					all.add(textToNum);
-					for(Span span : textToNum) {
-						detail += "Rule textToNum: " + span.getCoveredText(s.sourceString) + "\r\n"; 
-					}
-				}
-				if(acronyms!= null){
-//					acronyms.add("subunit");
-					 List<Span> acros = pm.extractAcronyms(s, acronyms);
-					if(printDetail)				for(Span acro : acros) Debug.println("acronyms:" + acro.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-					all.add(acros);
-					for(Span span : acros) {
-						detail += "Rule Acronyms: " + span.getCoveredText(s.sourceString) + "\r\n"; 
-					}
-				}
-				{
-					List<Span> parenthesis = pm.extractParenthesis(s);
-					if(printDetail)				for(Span p : parenthesis) Debug.println("parenthesis:" + p.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-					all.add(parenthesis);
-					
-				}
-				{
-					List<Span> pvalues = pm.extractP_Value(s);
-					if(printDetail)				for(Span span : pvalues) Debug.println("pvalues:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
-					all.add(pvalues);
-					for(Span span : pvalues) {
-						detail += "Rule P Value: " + span.getCoveredText(s.sourceString) + "\r\n"; 
-					}
-				}
-				
-				
 			}
-			List<Span> after = pm.resolveSpans(all, s);
+			{
+				if(freSeq_ != null){
+					List<Span> ngrams_s = pm.extractNGrams(s, freSeq_);
+					if(printDetail)				for(Span span : ngrams_s) Debug.println("ngrams:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+					matchingDetail.add(ngrams_s);
+					detail += "freq ngrams: \r\n";
+					detail += "Spans: \r\n"; 
+					for(Span span : ngrams_s) {
+						detail += span.toString() + "\t" + span.getCoveredText(s.sourceString)+ "\r\n";
+					}
+					detail += "}\r\n";
+				}
+			}
+			{
+
+				List<Span> units = pm.extractUnits(s);
+				if(printDetail) for(Span span : units) Debug.println("units:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+				matchingDetail.add(units);
+				detail += "Units: \r\n";
+				detail += "Spans: \r\n"; 
+				for(Span span : units) {
+					detail += span.toString() + "\t" + span.getCoveredText(s.sourceString)+ "\r\n";
+				}
+				detail += "}\r\n";
+
+			}
+			{
+				List<Span> textToNum = pm.extractTextToNum(s);
+				if(printDetail)				for(Span span : textToNum) Debug.println("textToNum:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+				matchingDetail.add(textToNum);
+				detail += "textToNum: \r\n";
+				detail += "Spans: \r\n"; 
+				for(Span span : textToNum) {
+					detail += span.toString() + "\t" + span.getCoveredText(s.sourceString)+ "\r\n";
+				}
+				detail += "}\r\n";
+			}
+			if(acronyms!= null){
+				//					acronyms.add("subunit");
+				List<Span> acros = pm.extractAcronyms(s, acronyms);
+				matchingDetail.add(acros);
+				detail += "Acronyms: \r\n";
+				detail += "Spans: \r\n"; 
+				for(Span span : acros) {
+					detail += span.toString() + "\t" + span.getCoveredText(s.sourceString)+ "\r\n";
+				}
+				detail += "}\r\n";
+			}
+			{
+				List<Span> pvalues = pm.extractP_Value(s);
+				matchingDetail.add(pvalues);
+				detail += "PValue: \r\n";
+				detail += "Spans: \r\n"; 
+				for(Span span : pvalues) {
+					detail += span.toString() + "\t" + span.getCoveredText(s.sourceString)+ "\r\n";
+				}
+				detail += "}\r\n";
+			}
+			List<Span> after = pm.resolveSpans(matchingDetail, s);
 			allFacts.add(after);
-			details.add(detail);
+			matchingDetail_description.add(detail);
+			Debug.print(detail, DEBUG_CONFIG.debug_C_Facts);
 		}
-		C_Facts cFact = pm.formFacts(allFacts, sentences, details, pageRange);
-//		S_Facts sfact = new S_Facts(cFact);
-//		sfact.mergeFacts();
-//		sfact.printFacts();
+		C_Facts cFact = pm.formFacts(allFacts, sentences, matchingDetail_description, pageRange);
 		return cFact;
 		
 //		for(int i = 0; i < sentences.size(); i++) {

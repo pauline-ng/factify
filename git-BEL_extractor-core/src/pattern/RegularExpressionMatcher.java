@@ -67,6 +67,9 @@ public class RegularExpressionMatcher implements Match{
 		return inputFilePath;
 	}
 	public String getInputFileName() {
-		return fileName;
+		return this.fileName;
+	}
+	public String getInputFileVersion() {
+		return this.inputFileVersion;
 	}
 }
