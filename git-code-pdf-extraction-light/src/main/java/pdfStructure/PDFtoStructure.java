@@ -3,13 +3,8 @@ package pdfStructure;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import utility.Span;
 import at.knowcenter.code.api.pdf.Block;
@@ -19,7 +14,7 @@ import at.knowcenter.code.pdf.PdfExtractionPipeline;
 import at.knowcenter.code.pdf.blockclassification.BlockLabeling;
 
 public class PDFtoStructure {
-	
+
 	public List<Paragraph> convert(List<Paragraph> blocks) {
 		List<Paragraph> paragraphs = new ArrayList<Paragraph>();
 		for(Paragraph old : blocks) {//assume all lines are adjusted aligned
@@ -27,16 +22,12 @@ public class PDFtoStructure {
 				paragraphs.add(old);
 				continue;
 			}
-		
-			 List<Block> old_lines = old.t.lines;
-//			 List<ArrayList<Block>> all_paras = new ArrayList<ArrayList<Block>>();
-			 ArrayList<Block> new_para = new ArrayList<Block>();
-			
+
+			List<Block> old_lines = old.t.lines;
+			ArrayList<Block> new_para = new ArrayList<Block>();
+
 			for(int i = 0; i < old_lines.size(); i++) {
 				Block cur_line = old_lines.get(i);
-//				if(cur_line.getText().contains(", the polar ")) {
-//					System.out.println("debug");
-//				}
 				boolean isCurLastLineOfPara = false; 
 				{//check if current line is the last line of a paragraph
 					if(i == old_lines.size() - 1) isCurLastLineOfPara = true;
@@ -76,7 +67,7 @@ public class PDFtoStructure {
 				}
 				new_para.add(cur_line);
 				if(isCurLastLineOfPara) {
-					
+
 					LineCollector lc = new LineCollector(old.t.callback);
 					lc.lines.addAll(new_para);
 					for(Block line : new_para) {
@@ -91,11 +82,11 @@ public class PDFtoStructure {
 					new_para = new ArrayList<Block>();
 				}
 			}
-			
+
 		}
 		return paragraphs;
 	}
-	
+
 	/**
 	 * old; tried to split list of blocks to multiple paragraphs
 	 * @param blocks
@@ -104,7 +95,7 @@ public class PDFtoStructure {
 	 * @return
 	 */
 	public List<Paragraph> convert_old(List<Block> blocks, BlockLabeling labeling,PdfExtractionPipeline pipline) {
-		
+
 		List<Paragraph> paragraphs = new ArrayList<Paragraph>();
 		for(Block old : blocks) {//assume all lines are adjusted aligned
 			if(labeling.getLabel(old) == BlockLabel.Heading) {
@@ -116,17 +107,13 @@ public class PDFtoStructure {
 				paragraphs.add(para);
 				continue;
 			}
-		//now labeling.getLabel(old) == BlockLabel.Main
-			 List<Block> old_lines = new ArrayList<Block>();
-			 old_lines.addAll(old.getSubBlocks());//old.getLineBlocks(); 
-//			 List<ArrayList<Block>> all_paras = new ArrayList<ArrayList<Block>>();
-			 ArrayList<Block> new_para = new ArrayList<Block>();
-			
+			//now labeling.getLabel(old) == BlockLabel.Main
+			List<Block> old_lines = new ArrayList<Block>();
+			old_lines.addAll(old.getSubBlocks());//old.getLineBlocks(); 
+			ArrayList<Block> new_para = new ArrayList<Block>();
+
 			for(int i = 0; i < old_lines.size(); i++) {
 				Block cur_line = old_lines.get(i);
-//				if(cur_line.getText().contains(", the polar ")) {
-//					System.out.println("debug");
-//				}
 				boolean isCurLastLineOfPara = false; 
 				{//check if current line is the last line of a paragraph
 					if(i == old_lines.size() - 1) isCurLastLineOfPara = true;
@@ -180,12 +167,12 @@ public class PDFtoStructure {
 					new_para = new ArrayList<Block>();
 				}
 			}
-			
+
 		}
 		return paragraphs;
 	}
 	public List<Paragraph> convert(List<Block> blocks, BlockLabeling labeling,PdfExtractionPipeline pipline) {
-		
+
 		List<Paragraph> paragraphs = new ArrayList<Paragraph>();
 		for(Block old : blocks) {//assume all lines are adjusted aligned
 			if(labeling.getLabel(old) == BlockLabel.Heading) {
@@ -202,27 +189,27 @@ public class PDFtoStructure {
 				paragraphs.add(para);
 				continue;
 			}
-		//now labeling.getLabel(old) == BlockLabel.Main
-			 List<Block> old_lines = new ArrayList<Block>();
-			 old_lines.addAll(old.getSubBlocks());//old.getLineBlocks(); 
-			 ArrayList<Block> new_para = new ArrayList<Block>();
-			 new_para.addAll(old_lines);
-			 String text = "";
-			 if (new_para.size()>0) {
-				 text = pipline.clearHyphenations(new_para);
-			 }
-			 Paragraph newPara = new Paragraph(text);
-			 newPara.bodySubBlocks = new ArrayList<Block>();
-			 newPara.bodySubBlocks.addAll(new_para);
-			 if(new_para.size() != old_lines.size()) {
-				 newPara.remark += "new paragraph;";
-			 }
-			 HashSet<Integer> pages = new HashSet<Integer>();
-			 for(Block each : old.getSubBlocks()) {
-				 pages.add(each.getPage().getNumber());
-			 }
-			 newPara.pages = new Span(Collections.min(pages), Collections.max(pages) + 1);
-			 paragraphs.add(newPara);
+			//now labeling.getLabel(old) == BlockLabel.Main
+			List<Block> old_lines = new ArrayList<Block>();
+			old_lines.addAll(old.getSubBlocks());//old.getLineBlocks(); 
+			ArrayList<Block> new_para = new ArrayList<Block>();
+			new_para.addAll(old_lines);
+			String text = "";
+			if (new_para.size()>0) {
+				text = pipline.clearHyphenations(new_para);
+			}
+			Paragraph newPara = new Paragraph(text);
+			newPara.bodySubBlocks = new ArrayList<Block>();
+			newPara.bodySubBlocks.addAll(new_para);
+			if(new_para.size() != old_lines.size()) {
+				newPara.remark += "new paragraph;";
+			}
+			HashSet<Integer> pages = new HashSet<Integer>();
+			for(Block each : old.getSubBlocks()) {
+				pages.add(each.getPage().getNumber());
+			}
+			newPara.pages = new Span(Collections.min(pages), Collections.max(pages) + 1);
+			paragraphs.add(newPara);
 		}
 		return paragraphs;
 	}

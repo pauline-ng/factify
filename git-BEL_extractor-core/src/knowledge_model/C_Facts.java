@@ -6,16 +6,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-
-
-
-
 import utility.Debug;
-//import opennlp.tools.util.Span;
 import utility.Span;
 import utility.Debug.DEBUG_CONFIG;
-
-import org.omg.PortableInterceptor.INACTIVE;
 
 /**
  * Facts at the client side.

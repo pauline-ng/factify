@@ -39,14 +39,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-
-
-
-
-import nlp.StanfordNLPLight;
-
-
-//import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.compound.hyphenation.HyphenationException;
 
 import pdfStructure.PDF;

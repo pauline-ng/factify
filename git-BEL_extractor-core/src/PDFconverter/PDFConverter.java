@@ -1,13 +1,10 @@
 package PDFconverter;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 
 import pdfStructure.PDF;
 import utility.Debug;
 import utility.Debug.DEBUG_CONFIG;
-//import at.knowcenter.code.api.pdf.PdfParser.PdfParserException;
 import at.knowcenter.code.pdf.PdfExtractionPipeline;
 import at.knowcenter.code.pdf.PdfExtractionPipeline.PdfExtractionResult;
 

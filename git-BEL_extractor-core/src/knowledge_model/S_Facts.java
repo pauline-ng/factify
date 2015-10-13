@@ -3,16 +3,6 @@ package knowledge_model;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Map;
-
-
-
-import java.util.Map.Entry;
-
-
-
-
-
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -21,8 +11,6 @@ import org.json.simple.JSONObject;
 
 
 import utility.Debug;
-//import opennlp.tools.util.Span;
-//import reddit_anaysis.utility;
 import utility.utility;
 import utility.Span;
 import utility.Debug.DEBUG_CONFIG;
@@ -180,7 +168,6 @@ public class S_Facts {
 	}
 	
 	public String toString(boolean xml, boolean withOriginalText, int startingIndex, boolean withDetails) {
-		utility util = new utility();
 		String output = "";
 		for(int i = 0; i < merge_facts.size(); i++) {
 			String s = "* ";
@@ -219,7 +206,6 @@ public class S_Facts {
 	}
 	
 	public JSONArray toJSON(int startingIndex) {
-		utility util = new utility();
 		String output = "";
 		JSONArray objs = new JSONArray();
 		for(int i = 0; i < merge_facts.size(); i++) {

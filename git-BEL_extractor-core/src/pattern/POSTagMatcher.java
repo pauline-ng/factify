@@ -2,14 +2,10 @@ package pattern;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import nlp.Sequence;
-import utility.Debug;
-import utility.Debug.DEBUG_CONFIG;
 import utility.Span;
 
 public class POSTagMatcher implements Match{
@@ -43,7 +39,7 @@ public class POSTagMatcher implements Match{
 			if(file.exists()) fileName = file.getName();
 		}
 		if(length > 3) {
-			inputFileVersionFromRoot = args[3];
+			setInputFileVersionFromRoot(args[3]);
 		}
 	}
 
@@ -70,5 +66,17 @@ public class POSTagMatcher implements Match{
 	public String getinputFileVersion() {
 		return this.inputFileVersion;
 	}
-	
+
+	public String getType() {
+		return type;
+	}
+
+	public String getInputFileVersionFromRoot() {
+		return inputFileVersionFromRoot;
+	}
+
+	public void setInputFileVersionFromRoot(String inputFileVersionFromRoot) {
+		this.inputFileVersionFromRoot = inputFileVersionFromRoot;
+	}
+
 }

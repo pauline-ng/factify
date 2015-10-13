@@ -2,23 +2,16 @@ package pattern;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import nlp.StanfordNLPLight;
 import knowledge_model.C_Facts;
-import knowledge_model.S_Facts;
 import utility.Debug;
-//import edu.stanford.nlp.ling.CoreAnnotations;
-//import edu.stanford.nlp.pipeline.Annotation;
-//import edu.stanford.nlp.util.CoreMap;
 import utility.Span;
 import utility.utility;
 import utility.Debug.DEBUG_CONFIG;
@@ -111,10 +104,6 @@ public class PatternMatcher {
 	
 	public static void main(String[] args) {
 		char c = '\u2265';
-//		Debug.println(Character.toString((char )'\u2265'));
-//		System.err.print("test");
-//		test();
-		System.exit(0);
 		PatternMatcher pat = new PatternMatcher();
 		{
 			Pattern pattern = Pattern.compile(pat.reg_rational);
@@ -530,41 +519,6 @@ public class PatternMatcher {
 	}
 	
 	
-	private  List<Span> extractOperators(Sequence senten) {
-//		//http://www.utf8-chartable.de/unicode-utf8-table.pl?utf8=dec 
-		HashSet<String> operators = new HashSet<String>(); 
-		for(String s : PatternMatcher.operators) operators.add(s);
-		HashSet<Span>	results = new HashSet<Span>();//[)
-		for(int i = 0; i < senten.size(); i++) {
-			String word = senten.words.get(i).trim();
-//			if(word.length() != 1) continue;
-			boolean found = false;
-			for(String s : operators) 
-				if(word.contains(s)) {
-					found = true; break;
-				}
-			
-			if(found)
-					results.add(new Span(senten.spans.get(i).getStart(), senten.spans.get(i).getEnd()));
-		}
-		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
-		return results_;
-	}
-	private  List<Span> extractPunc(Sequence senten) {
-
-		HashSet<String> puncs = new HashSet<String>(); 
-		for(String s : PatternMatcher.puncs) puncs.add(s);
-		HashSet<Span>	results = new HashSet<Span>();//[)
-		for(int i = 0; i < senten.size(); i++) {
-			String word = senten.words.get(i).trim();
-			if(word.length() != 1) continue;
-			
-			if(puncs.contains(word))
-					results.add(new Span(senten.spans.get(i).getStart(), senten.spans.get(i).getEnd()));
-		}
-		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
-		return results_;
-	}
 	public  void test() {
 		utility util = new utility();
 //		String para = util.readFromFile("test/PMC1513515/Methods_section.txt");
@@ -587,7 +541,7 @@ String para = "In contrast, behavioral economic theory suggests that incentives 
 //		for(int i = 0; i < para.length(); i++) Debug.println(para.charAt(i) +  "\t" + "\\u" + Integer.toHexString(para.charAt(i) | 0x10000).substring(1) + "\t" + Character.getType(para.charAt(i)));
 //		System.exit(0);
 		Debug.println(para,DEBUG_CONFIG.debug_pattern);
-		StanfordNLPLight nlp = new StanfordNLPLight("tokenize, ssplit, pos, lemma");
+//		StanfordNLPLight nlp = new StanfordNLPLight("tokenize, ssplit, pos, lemma");
 //		ngrams ngram = new ngrams();
 //		List<Sequence> freSeq = ngram.getFreqSequences(sentences);
 //		freSeq_ = new HashSet<Sequence>(); freSeq_.addAll(freSeq);
@@ -880,35 +834,35 @@ String para = "In contrast, behavioral economic theory suggests that incentives 
 		return cfacts;
 	}
 	
-	/**
-	 * 
-	 * @param s [)
-	 * @param seq [)
-	 * @return
-	 */
-	private  Span getFullSpan(Span s, Sequence seq) {
-		List<Span> continuousSeq = new ArrayList<Span>();
-		Span prvSpan = null;
-		for(int i = 0; i < seq.size(); i++) {
-			Span curSpan = seq.spans.get(i);
-			if(prvSpan == null) prvSpan = new Span(curSpan.getStart(), curSpan.getEnd());
-			else{
-				if(prvSpan.getEnd() == curSpan.getStart()) {
-					prvSpan = new Span(prvSpan.getStart(), curSpan.getEnd());
-				}else {
-					continuousSeq.add(prvSpan);
-					prvSpan = curSpan;
-				}
-			}
-			if(i == seq.size() - 1) continuousSeq.add(prvSpan);
-		}
-		Debug.println(continuousSeq,DEBUG_CONFIG.debug_pattern);
-		Debug.println(s,DEBUG_CONFIG.debug_pattern);
-		for(int i = 0; i < continuousSeq.size(); i++) {
-			if(continuousSeq.get(i).crosses(s)) return continuousSeq.get(i);
-		}
-		
-		return null;
-	}
+//	/**
+//	 * 
+//	 * @param s [)
+//	 * @param seq [)
+//	 * @return
+//	 */
+//	private  Span getFullSpan(Span s, Sequence seq) {
+//		List<Span> continuousSeq = new ArrayList<Span>();
+//		Span prvSpan = null;
+//		for(int i = 0; i < seq.size(); i++) {
+//			Span curSpan = seq.spans.get(i);
+//			if(prvSpan == null) prvSpan = new Span(curSpan.getStart(), curSpan.getEnd());
+//			else{
+//				if(prvSpan.getEnd() == curSpan.getStart()) {
+//					prvSpan = new Span(prvSpan.getStart(), curSpan.getEnd());
+//				}else {
+//					continuousSeq.add(prvSpan);
+//					prvSpan = curSpan;
+//				}
+//			}
+//			if(i == seq.size() - 1) continuousSeq.add(prvSpan);
+//		}
+//		Debug.println(continuousSeq,DEBUG_CONFIG.debug_pattern);
+//		Debug.println(s,DEBUG_CONFIG.debug_pattern);
+//		for(int i = 0; i < continuousSeq.size(); i++) {
+//			if(continuousSeq.get(i).crosses(s)) return continuousSeq.get(i);
+//		}
+//		
+//		return null;
+//	}
 
 }

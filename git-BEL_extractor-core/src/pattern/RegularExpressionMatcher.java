@@ -8,9 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import nlp.Sequence;
-import utility.Debug;
 import utility.Span;
-import utility.Debug.DEBUG_CONFIG;
 
 public class RegularExpressionMatcher implements Match{
 	private HashSet<String> regExpressions;
@@ -30,7 +28,7 @@ public class RegularExpressionMatcher implements Match{
 		this.regExpressions.addAll(regExps);
 		int length = args.length;
 		if(length > 0) {
-			type = args[0];
+			setType(args[0]);
 		} 
 		if(length > 1) {
 			inputFileVersion = args[1];
@@ -41,7 +39,7 @@ public class RegularExpressionMatcher implements Match{
 			if(file.exists()) fileName = file.getName();
 		}
 		if(length > 3) {
-			inputFileVersionFromRoot = args[3];
+			setInputFileVersionFromRoot(args[3]);
 		}
 	}
 
@@ -71,5 +69,21 @@ public class RegularExpressionMatcher implements Match{
 	}
 	public String getInputFileVersion() {
 		return this.inputFileVersion;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getInputFileVersionFromRoot() {
+		return inputFileVersionFromRoot;
+	}
+
+	public void setInputFileVersionFromRoot(String inputFileVersionFromRoot) {
+		this.inputFileVersionFromRoot = inputFileVersionFromRoot;
 	}
 }

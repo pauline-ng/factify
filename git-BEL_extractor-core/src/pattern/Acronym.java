@@ -1,30 +1,16 @@
 package pattern;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import java.util.StringTokenizer;
 
 import utility.Debug;
 import utility.Debug.DEBUG_CONFIG;
 import nlp.Sequence;
 import nlp.StanfordNLPLight;
 
-//import extractor.StanfordNLP;
 
 /**
  * this class is from a paper

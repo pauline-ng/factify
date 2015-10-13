@@ -20,12 +20,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import at.knowcenter.code.pdf.PdfExtractionPipeline;
 import pattern.Acronym;
 import pattern.NGrams;
-import pattern.PatternMatcher;
 import pattern.RootMatcher;
-//import at.knowcenter.code.api.pdf.PdfParser.PdfParserException;
 import pdfStructure.PDF;
 import pdfStructure.Paragraph;
 import utility.Debug;
@@ -37,7 +34,6 @@ import knowledge_model.S_Facts;
 import PDFconverter.PDFConverter;
 
 public class ExtractorBELExtractor {
-//	static String debug_output_folder;
 	public static void main(String[]  args) {
 		boolean test = true;
 		if(!test) {
@@ -122,11 +118,11 @@ public class ExtractorBELExtractor {
 //		examplePDFExtractor("test\\PMC1513515\\PMC1513515.pdf1");
 //		prevalidation_1stRound();
 //		String path = "test\\for lawyer\\cbdgmlu\\cbdgmlu_text.xml";
-		String path = "..\\git-BEL_extractor-test\\test\\cbautw9_\\cbautw9_.pdf";
+//		String path = "..\\git-BEL_extractor-test\\test\\cbautw9_\\cbautw9_.pdf";
 //		examplePDFExtractor(path, path + "_.fact");
 //		exampleXMLExtractor(path,path + "_");
 		ExtractorBELExtractor extractor = new ExtractorBELExtractor();
-		extractor.examplePDFExtractor_JSON(path, path);
+		extractor.examplePDFExtractor_JSON(args);
 //		examplePDFExtractor("withingroup\\huan1.pdf", "withingroup\\huan1.pdf.fact");
 //		utility util = new utility();
 //		util.writeFile("d:/zotero.txt", "I love you", false);
