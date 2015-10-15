@@ -35,7 +35,7 @@ public class testBatch {
 			fileOrFolder = false;
 		}
 		if(fileOrFolder == true) {
-			testOneFile(args[0], args[1], args[2]);
+			testOneFile(args[0], args[1], args[2], args[3]);
 		}else if(fileOrFolder == false) {
 			testFromFolder(args[0], args[1], args[2], args[3]);
 		}
@@ -77,7 +77,7 @@ public class testBatch {
 //		util.writeFile(output_stat, "in total\t" + total_pdf, true);
 		
 	}
-	public static void testOneFile(String path, String output_dir, String debug_dir) {
+	public static void testOneFile(String path, String output_dir, String debug_dir, String matcherFile) {
 //		String path = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers";
 		File file = new File(path);
 		if(!file.exists() || !file.isFile()) {
@@ -86,7 +86,7 @@ public class testBatch {
 		}
 		if(file.getName().endsWith(".pdf")) {
 			System.out.println("process " + file.getName());
-			int error = ExtractorBELExtractor.examplePDFExtractor_JSON(file.getAbsolutePath(), output_dir, debug_dir);
+			int error = ExtractorBELExtractor.examplePDFExtractor_JSON(file.getAbsolutePath(), output_dir, debug_dir, matcherFile);
 			Debug.print("Finished with errorcode " + error, DEBUG_CONFIG.debug_error);
 		}
 	}

@@ -68,7 +68,7 @@ public class Debug_BEL_extractor {
 //			fileOrFolder = false;
 //		}
 //		if(fileOrFolder == true) {
-			ExtractorBELExtractor.examplePDFExtractor_JSON(args);
+			ExtractorBELExtractor.main(args);
 //		}else if(fileOrFolder == false) {
 //			testFromFolder(args[0], args[1], args[2]);
 //		}
