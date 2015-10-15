@@ -724,7 +724,7 @@ public class ExtractorBELExtractor {
 			}
 			
 		}
-		util.writeFile(output_dir + file.getName() + "_facts.jason", factsToOutput.toJSONString(), false);
+		util.writeFile(output_dir + file.getName() + "_facts.json", factsToOutput.toJSONString(), false);
 //		if(nlp == null) nlp = new StanfordNLP("tokenize, ssplit, pos");
 //		{
 //			for(String s : pdf.acronyms_.keySet()) {
