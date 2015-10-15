@@ -34,109 +34,9 @@ import knowledge_model.S_Facts;
 import PDFconverter.PDFConverter;
 
 public class ExtractorBELExtractor {
+	
 	public static void main(String[]  args) {
-		boolean test = true;
-		if(!test) {
-		String pdfPath = null;
-		String xmlPath = null;
-		String outputPath = null;
-		if(args.length == 0) {
-			Debug.println("Please enter a valid parameter (-pdf/-txt inputFilePath -o outputFilePath)",DEBUG_CONFIG.debug_error);
-			return;
-		}
-		for(int i = 0; i < args.length;) {
-			switch(args[i].toLowerCase().trim()) {
-			case "-pdf":
-			{
-				i++;
-				if(i < args.length) {
-					pdfPath = args[i];
-					i++;
-				}else {
-					Debug.println("ERROR: Please specify input file path!",DEBUG_CONFIG.debug_error);
-					return;
-				}
-				
-			}
-			break;
-			case "-xml":
-				Debug.println("-xml is not supported yet",DEBUG_CONFIG.debug_error);
-				System.exit(0);
-				i++;
-				if(i < args.length) {
-					xmlPath = args[i];
-					i++;
-				}else {
-					Debug.println("ERROR: Please specify input file path!",DEBUG_CONFIG.debug_error);
-					return;
-				}
-				break;
-			case "-o":
-				i++;
-				if(i < args.length) {
-					outputPath = args[i];
-					i++;
-				}else {
-					Debug.println("ERROR: Please specify output file path!",DEBUG_CONFIG.debug_error);
-					return;
-				}
-				break;
-			default:
-				Debug.println("Please enter a valid parameter (-pdf/-txt inputFilePath -o outputFilePath)",DEBUG_CONFIG.debug_error);
-				 Debug.println("**" + args[i] + "\t",DEBUG_CONFIG.debug_error);
-				for(String t : args) Debug.println(t + "\t",DEBUG_CONFIG.debug_error);
-				return;
-			}
-		}
-		if(pdfPath != null && xmlPath != null) {
-			Debug.println("Please specify if the input file is PDF or Txt",DEBUG_CONFIG.debug_error);
-			return;
-		}
-		if(outputPath == null) {
-			Debug.println("Please specify output file path",DEBUG_CONFIG.debug_error);
-			return;
-		}
-		if(pdfPath != null && outputPath != null) {
-//			examplePDFExtractor(pdfPath, outputPath);
-//			examplePDFExtractor_JSON(pdfPath, outputPath);
-		}
-		if(xmlPath != null && outputPath != null) {
-//			exampleXMLExtractor(xmlPath, outputPath);
-		}
-		return;
-		}
-		
-//		anaylizeSectionTitle();
-//		test();
-//		test_forLawyer();
-//		if(args.length != 2) {
-//			Debug.println("Please specify ONE parameter!");
-//			return;
-//		}
-//		exampleExtractor("", args);
-//		System.exit(0);
-//		examplePDFExtractor("test\\PMC1513515\\PMC1513515.pdf1");
-//		prevalidation_1stRound();
-//		String path = "test\\for lawyer\\cbdgmlu\\cbdgmlu_text.xml";
-//		String path = "..\\git-BEL_extractor-test\\test\\cbautw9_\\cbautw9_.pdf";
-//		examplePDFExtractor(path, path + "_.fact");
-//		exampleXMLExtractor(path,path + "_");
-		ExtractorBELExtractor extractor = new ExtractorBELExtractor();
-		extractor.examplePDFExtractor_JSON(args);
-//		examplePDFExtractor("withingroup\\huan1.pdf", "withingroup\\huan1.pdf.fact");
-//		utility util = new utility();
-//		util.writeFile("d:/zotero.txt", "I love you", false);
-//		File file = util.getResourceFile();
-//		Debug.println(util.getResourceAsString("stopwords.txt"));
-//		Debug.println(util.readFromFile(file));
-//		exampleExtractingResultSection();
-//		test_few();
-//		try {
-//			test___();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		examplePDFExtractor_JSON(args);
 	}
 
 //	private static String reg_Number = "\\d+";
@@ -674,8 +574,8 @@ public class ExtractorBELExtractor {
 	 * 3: PDF Converter succeeded, but no body text (or section heading)
 	 */
 	public static int examplePDFExtractor_JSON(String...args) {
-		if(args.length < 2) {
-			Debug.print("Please input PDF path, output directory!", DEBUG_CONFIG.debug_error);
+		if(args.length < 4) {
+			Debug.print("Please input PDF path, output directory, debug directory, and matcher file path!", DEBUG_CONFIG.debug_error);
 			return -1;
 		}
 		String path = args[0];
@@ -699,14 +599,14 @@ public class ExtractorBELExtractor {
 				debug_dir = file_temp.getParent() + "\\debug_output\\";
 			}
 		}
-		String matcherFile = "RuleMatcher.jason";
+		String matcherFile = "RuleMatcher.json";
 		if(args.length > 3) {
 			matcherFile = args[3];
 		}
 		{
 			File file_temp = new File(matcherFile);
 			if(!file_temp.exists() || !file_temp.isFile()) {
-				Debug.println("Fatal Error: No matcher file (RuleMatcher.jason) is found in path " + matcherFile + "!",DEBUG_CONFIG.debug_error );
+				Debug.println("Fatal Error: No matcher file (RuleMatcher.json) is found in path " + matcherFile + "!",DEBUG_CONFIG.debug_error );
 				Debug.println("Input parameters are " , DEBUG_CONFIG.debug_error);
 				for(String s : args)
 					Debug.println(s , DEBUG_CONFIG.debug_error);
@@ -806,6 +706,9 @@ public class ExtractorBELExtractor {
 				
 			}else {
 				factsToOutput.addAll(paraToFacts.get(para).toJSON(counter_facts));
+				 JSONObject obj=new JSONObject();
+				 obj.put("type", "Paragraph Break");
+				 factsToOutput.add(obj);
 				counter_facts += paraToFacts.get(para).getSize();
 			}
 //			}
