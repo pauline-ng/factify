@@ -21,7 +21,7 @@ public class Debug_BEL_extractor {
 //		examplePDFExtractor(path, path + "_.fact");
 //		exampleXMLExtractor(path,path + "_");
 //		ExtractorBELExtractor extractor = new ExtractorBELExtractor();
-		if(false){
+		if(true){
 			if(args.length != 1) {
 				Debug.print("Please specify the matcher file!", DEBUG_CONFIG.debug_error);
 				return;
@@ -29,7 +29,8 @@ public class Debug_BEL_extractor {
 			Debug.set(DEBUG_CONFIG.debug_temp, true);
 			RootMatcher matcher = new RootMatcher();
 			if(!matcher.readMacher(args[0])) return;
-				String para = "A few apples are proved to be better compared with lexus 1 + - / * 1. ; it is 2(.)";
+//				String para = "A few apples are proved to be better compared with lexus 1 + - / * 1. ; it is 2(.)";
+			String para = "This allows otherwise poorly invasive bacteria to exploit lipid raft-mediated transcytotic pathways to cross the intestinal mucosa.";
 				//		Debug.println("\\u" + Integer.toHexString('-' | 0x10000).substring(1));
 //				for(int i = 0; i < para.length(); i++) Debug.println(para.charAt(i) +  "\t" + "\\u" + Integer.toHexString(para.charAt(i) | 0x10000).substring(1) + "\t" + Character.getType(para.charAt(i)));
 //				System.exit(0);

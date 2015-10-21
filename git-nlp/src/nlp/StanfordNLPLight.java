@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import utility.Debug.DEBUG_CONFIG;
 import utility.Span;
 import utility.utility;
-
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
@@ -37,15 +37,16 @@ public class StanfordNLPLight {
 		// TODO Auto-generated method stub
 		//		String text = "The precision is less than 0.1";
 		//		String text = "However, both diphenhydramine and desloratadine+verapamil treated animals performed significantly less well on the rotarod than the MC treated animals (p<0.0001).";
-		String text = "Studies of genetic variation in African-American autism families are rare. Analysis of 557 "+
-				"Caucasian and an independent population of 54 African-"+
-				"American families with 35 SNPs within GABRB1 and "+
-				"GABRA4 strengthened the evidence for involvement of "+
-				"GABRA4 in autism risk in Caucasians (rs17599165, "+
-				"p=0.0015; rs1912960, p=0.0073; and rs17599416, "+
-				"p=0.0040) and gave evidence of significant association in "+
-				"African-Americans (rs2280073, p=0.0287 and rs168"+ 
-				"59788, p=0.0253). ";
+//		String text = "Studies of genetic variation in African-American autism families are rare. Analysis of 557 "+
+//				"Caucasian and an independent population of 54 African-"+
+//				"American families with 35 SNPs within GABRB1 and "+
+//				"GABRA4 strengthened the evidence for involvement of "+
+//				"GABRA4 in autism risk in Caucasians (rs17599165, "+
+//				"p=0.0015; rs1912960, p=0.0073; and rs17599416, "+
+//				"p=0.0040) and gave evidence of significant association in "+
+//				"African-Americans (rs2280073, p=0.0287 and rs168"+ 
+//				"59788, p=0.0253). ";
+		String text = "This allows otherwise poorly invasive bacteria to exploit lipid raft-mediated transcytotic pathways to cross the intestinal mucosa.";
 		Properties props = new Properties();
 		props.put("annotators", "tokenize, ssplit, pos, lemma");
 		StanfordNLPLight nlp = new StanfordNLPLight("tokenize, ssplit, pos, lemma");
@@ -55,10 +56,10 @@ public class StanfordNLPLight {
 
 		for(CoreMap sentence : sentences) {
 			System.out.println(sentence.keySet());
-
+			System.out.println("---token text next---");
 			for (CoreMap token : sentence.get(CoreAnnotations.TokensAnnotation.class)) 
 				System.out.print(token.get(CoreAnnotations.TextAnnotation.class) + "\t");
-			System.out.println();
+			System.out.println("---POSTage next---");
 			for (CoreMap token : sentence.get(CoreAnnotations.TokensAnnotation.class)) 
 				System.out.print(token.get(CoreAnnotations.PartOfSpeechAnnotation.class) + "\t");
 			System.out.println();
@@ -99,16 +100,11 @@ public class StanfordNLPLight {
 		para = para.replace("ref.", "ref-").replace("Ref.", "Ref-");//to avoid broken sentences 
 		para = para.replace("eq.", "eq-").replace("Eq.", "Eq-");//to avoid broken sentences 
 		List<Sequence> sentences_ = new ArrayList<Sequence>();
-		//		Properties props = new Properties();
-		//		props.put("annotators", "tokenize, ssplit, pos");
-		//		nlp = new StanfordNLP(props);
 		Annotation annotation = new Annotation(para);
 		pipeline.annotate(annotation);
 		List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
 		HashSet<String> knowNouns = new HashSet<String>();
 		if(this.stopwords == null) importStopWords();
-		//		if(wn == null) 
-		//			wn = new wordnet();
 		for(CoreMap sentence : sentences) {
 			//				    	 System.out.println(sentence.toShorterString());
 			List<String> words = new ArrayList<String>();

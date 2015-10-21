@@ -19,6 +19,8 @@ public class Debug {
 		////
 		debug_detectorpipeline,
 		////
+		debug_nlp,
+		////
 		debug_C_Facts,
 		debug_S_Facts,
 		debug_pattern,

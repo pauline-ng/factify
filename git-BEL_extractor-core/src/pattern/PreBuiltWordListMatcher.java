@@ -17,10 +17,11 @@ public class PreBuiltWordListMatcher implements Match{
 	private String fileName;
 	private String inputFileVersion;
 	private String inputFileVersionFromRoot;
+	private String match;//if match is not null (="contains") then this is a "contain" match. For "contain" match, each word in wordlist should be single word, otherwise the program will overwrite "contain" match to match.
 	/**
 	 * 
 	 * @param postags
-	 * @param args: type; inputFileVersion; inputFilePath
+	 * @param args: type; inputFileVersion; inputFilePath; inputFileVersionFromRoot; match
 	 */
 	public PreBuiltWordListMatcher(HashSet<String> words, String...args) {
 		// TODO Auto-generated constructor stub
@@ -52,13 +53,22 @@ public class PreBuiltWordListMatcher implements Match{
 		if(length > 3) {
 			setInputFileVersionFromRoot(args[3]);
 		}
+		if(length > 4) {
+			this.match = args[4];
+		}
 	}
 
 	@Override
 	public List<Span> Match(Sequence senten) {
 		// TODO Auto-generated method stub
- 		PatternMatcher pm = new PatternMatcher();
-		return pm.findMatches(senten, wordList);
+		if(this.match == null) {
+			PatternMatcher pm = new PatternMatcher();
+			return pm.findMatches(senten, wordList); 
+		}
+		else {
+			PatternMatcher pm = new PatternMatcher();
+			return pm.findContainingMatches(senten, wordList);
+		}
 	}
 
 	public String getInputFilePath() {

@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import nlp.StanfordNLPLight;
 import knowledge_model.C_Facts;
 import utility.Debug;
 import utility.Span;
@@ -95,62 +94,56 @@ public class PatternMatcher {
 		Character.toString((char) '\u2013'),//end dash; \u002D is minus sign
 
 		};
-	private final static String[] puncs = {
-		",",
-		";",
-	};
-//	private final static char[] operators = {'+'};
 	
-	
-	public static void main(String[] args) {
-		char c = '\u2265';
-		PatternMatcher pat = new PatternMatcher();
-		{
-			Pattern pattern = Pattern.compile(pat.reg_rational);
-			Matcher matcher = pattern.matcher("I have 100.");
-			while (matcher.find()) {
-				Debug.println("rational:" + matcher.group(),DEBUG_CONFIG.debug_pattern);
-			}
-		}
-		{
-			Pattern pattern = Pattern.compile(pat.reg_pvalue);
-			Matcher matcher = pattern.matcher(" p =0.0053 ");
-			while (matcher.find()) {
-				Debug.println("pavalue:" + matcher.group(),DEBUG_CONFIG.debug_pattern);
-			}
-		}
-		{//not in use
-			pat.formReg_Equation();
-			//be careful "1/9 0.1" will become " 1" "/9" and " 0.1" through matcher.find();
-			Pattern pattern = Pattern.compile(pat.reg_equation);
-			Matcher matcher = pattern.matcher("aa 1/9 0.1 ");
-			while (matcher.find()) {
-				String matchString = matcher.group();
-				if(!matchString.trim().equals("")) {
-				Debug.println("equation:" + matchString,DEBUG_CONFIG.debug_pattern);
-				int trimB = 0; int trimE = 0;
-				for(trimB = 0; trimB < matchString.length(); trimB++) {
-					if(matchString.charAt(trimB) != ' ') break;
-				}
-				for(trimE = matchString.length() -1; trimE > -1; trimE--) {
-					if(matchString.charAt(trimE) != ' ') break;
-				}
-				trimE++; //[trimB, trimE) of matchString is the trimed string
-				Debug.println(new Span(matcher.start() + trimB, matcher.start() + trimE),DEBUG_CONFIG.debug_pattern);
-				}
-			}
-			Debug.println("matches equation?" + pat.matchReg_Equation("ab"),DEBUG_CONFIG.debug_pattern);
-		}
-		{
-			//negation: ^(?!.*DontMatchThis).*$ //not helpful
-			//and: (?:match this expression)(?:match this too)(?:oh, and this)//not helpful
-			Pattern pattern = Pattern.compile(reg_equation);//(?:a*)
-			Matcher matcher = pattern.matcher("10%");
-			while (matcher.find()) {
-				Debug.println("test:" + matcher.group(),DEBUG_CONFIG.debug_pattern);
-			}
-		}
-		{
+//	public static void main(String[] args) {
+//		char c = '\u2265';
+//		PatternMatcher pat = new PatternMatcher();
+//		{
+//			Pattern pattern = Pattern.compile(pat.reg_rational);
+//			Matcher matcher = pattern.matcher("I have 100.");
+//			while (matcher.find()) {
+//				Debug.println("rational:" + matcher.group(),DEBUG_CONFIG.debug_pattern);
+//			}
+//		}
+//		{
+//			Pattern pattern = Pattern.compile(pat.reg_pvalue);
+//			Matcher matcher = pattern.matcher(" p =0.0053 ");
+//			while (matcher.find()) {
+//				Debug.println("pavalue:" + matcher.group(),DEBUG_CONFIG.debug_pattern);
+//			}
+//		}
+//		{//not in use
+//			pat.formReg_Equation();
+//			//be careful "1/9 0.1" will become " 1" "/9" and " 0.1" through matcher.find();
+//			Pattern pattern = Pattern.compile(pat.reg_equation);
+//			Matcher matcher = pattern.matcher("aa 1/9 0.1 ");
+//			while (matcher.find()) {
+//				String matchString = matcher.group();
+//				if(!matchString.trim().equals("")) {
+//				Debug.println("equation:" + matchString,DEBUG_CONFIG.debug_pattern);
+//				int trimB = 0; int trimE = 0;
+//				for(trimB = 0; trimB < matchString.length(); trimB++) {
+//					if(matchString.charAt(trimB) != ' ') break;
+//				}
+//				for(trimE = matchString.length() -1; trimE > -1; trimE--) {
+//					if(matchString.charAt(trimE) != ' ') break;
+//				}
+//				trimE++; //[trimB, trimE) of matchString is the trimed string
+//				Debug.println(new Span(matcher.start() + trimB, matcher.start() + trimE),DEBUG_CONFIG.debug_pattern);
+//				}
+//			}
+//			Debug.println("matches equation?" + pat.matchReg_Equation("ab"),DEBUG_CONFIG.debug_pattern);
+//		}
+//		{
+//			//negation: ^(?!.*DontMatchThis).*$ //not helpful
+//			//and: (?:match this expression)(?:match this too)(?:oh, and this)//not helpful
+//			Pattern pattern = Pattern.compile(reg_equation);//(?:a*)
+//			Matcher matcher = pattern.matcher("10%");
+//			while (matcher.find()) {
+//				Debug.println("test:" + matcher.group(),DEBUG_CONFIG.debug_pattern);
+//			}
+//		}
+//		{
 //			List<Sequence> sentences = nlp.textToSequence("It has been improved by 10% and resulted in a good performance", true);
 //			for(Sequence s : sentences) {
 //				Debug.println(s.sourceString);
@@ -158,12 +151,12 @@ public class PatternMatcher {
 //			for(Span rel : rels) Debug.println("rel:" + rel.getCoveredText(s.sourceString));
 //			}
 			
-		}
-		{
-			TextToNum textToNum = new TextToNum();
-			Debug.println("text to num: " + textToNum.parse("less than 0.3"),DEBUG_CONFIG.debug_pattern);
-		}
-	}
+//		}
+//		{
+//			TextToNum textToNum = new TextToNum();
+//			Debug.println("text to num: " + textToNum.parse("less than 0.3"),DEBUG_CONFIG.debug_pattern);
+//		}
+//	}
 	
 	public  void formReg_Equation() {
 		if(reg_equation != null) return;
@@ -201,29 +194,29 @@ public class PatternMatcher {
 	 * @param senten
 	 * @return
 	 */
-	private  List<Span> extractReg_Equa(Sequence senten) {
-		HashSet<Span>	results = new HashSet<Span>();//[)
-		formReg_Equation();
-		Pattern pattern = Pattern.compile(reg_equation);
-		Matcher matcher = pattern.matcher(senten.sourceString);
-		while (matcher.find()) {
-			String matchString = matcher.group();
-			if(!matchString.trim().equals("")) {
-//				Debug.println("equation:" + matchString);
-				int trimB = 0; int trimE = 0;
-				for(trimB = 0; trimB < matchString.length(); trimB++) {
-					if(matchString.charAt(trimB) != ' ') break;
-				}
-				for(trimE = matchString.length() -1; trimE > -1; trimE--) {
-					if(matchString.charAt(trimE) != ' ') break;
-				}
-				trimE++; //[trimB, trimE) of matchString is the trimmed string
-				results.add(new Span(matcher.start() + trimB, matcher.start() + trimE));
-			}
-		}
-		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
-		return results_;
-	}
+//	private  List<Span> extractReg_Equa(Sequence senten) {
+//		HashSet<Span>	results = new HashSet<Span>();//[)
+//		formReg_Equation();
+//		Pattern pattern = Pattern.compile(reg_equation);
+//		Matcher matcher = pattern.matcher(senten.sourceString);
+//		while (matcher.find()) {
+//			String matchString = matcher.group();
+//			if(!matchString.trim().equals("")) {
+////				Debug.println("equation:" + matchString);
+//				int trimB = 0; int trimE = 0;
+//				for(trimB = 0; trimB < matchString.length(); trimB++) {
+//					if(matchString.charAt(trimB) != ' ') break;
+//				}
+//				for(trimE = matchString.length() -1; trimE > -1; trimE--) {
+//					if(matchString.charAt(trimE) != ' ') break;
+//				}
+//				trimE++; //[trimB, trimE) of matchString is the trimmed string
+//				results.add(new Span(matcher.start() + trimB, matcher.start() + trimE));
+//			}
+//		}
+//		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
+//		return results_;
+//	}
 	
 	private  List<Span> extractReg_Rational(Sequence senten) {
 		HashSet<Span>	results = new HashSet<Span>();//[)
@@ -239,17 +232,17 @@ public class PatternMatcher {
 		return results_;
 	}
 	
-	private  List<Span> extractNouns(Sequence senten) {
-		HashSet<Span>	results = new HashSet<Span>();//[)
-		for(int i = 0; i < senten.size(); i++) {
-			String tag = senten.POSTags.get(i);
-			if (nlp.StanfordNLPLight.isNoun(tag)) {
-					results.add(new Span(senten.spans.get(i).getStart(), senten.spans.get(i).getEnd()));
-			}
-		}
-		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
-		return results_;
-	}
+//	private  List<Span> extractNouns(Sequence senten) {
+//		HashSet<Span>	results = new HashSet<Span>();//[)
+//		for(int i = 0; i < senten.size(); i++) {
+//			String tag = senten.POSTags.get(i);
+//			if (nlp.StanfordNLPLight.isNoun(tag)) {
+//					results.add(new Span(senten.spans.get(i).getStart(), senten.spans.get(i).getEnd()));
+//			}
+//		}
+//		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
+//		return results_;
+//	}
 	
 	public  List<Span> extractP_Value(Sequence senten) {
 		HashSet<Span>	results = new HashSet<Span>();//[)
@@ -506,6 +499,27 @@ public class PatternMatcher {
 		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
 		return results_;
 	}
+	/**
+	 * find matches based on stem
+	 * @param senten
+	 * @param freNGrams: one token only
+	 * @return
+	 */
+	public  List<Span> findContainingMatches(Sequence senten, HashSet<Sequence> freNGrams ) {
+		HashSet<Span>	results = new HashSet<Span>();//[)
+		for(int i = 0; i < senten.words.size(); i++) {
+			String word = senten.words.get(i);
+			boolean contains = false;
+			for(Sequence s : freNGrams) {
+				if(word.contains(s.sourceString)) {
+					contains = true; break;
+				}
+			}
+			if(contains) results.add(new Span(senten.spans.get(i).getStart(), senten.spans.get(i).getEnd()));
+		}
+		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
+		return results_;
+	}
 	public  List<Span> extractParenthesis(Sequence senten) {
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		for(int i = 0; i < senten.size(); i++) {
@@ -520,7 +534,7 @@ public class PatternMatcher {
 	
 	
 	public  void test() {
-		utility util = new utility();
+//		utility util = new utility();
 //		String para = util.readFromFile("test/PMC1513515/Methods_section.txt");
 //		String para = "The specificity of CRISPR/Cas9 is largely dictated by PAM and the 17–20 nt sequence at the 5' end of gRNAs (Cong et al., 2013; Hsu et al., 2013; Mali et al., 2013a; Mali et al., 2013c; Pattanayak et al., 2013; Wu et al., 2014a). ";
 //		String para = "Additional significant SNPs were identified in GABRA4 as well, rs17599165 (p=0.0015) and rs1759 9416 (p=0.0040)";

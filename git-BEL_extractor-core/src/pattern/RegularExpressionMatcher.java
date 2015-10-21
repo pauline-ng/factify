@@ -20,7 +20,7 @@ public class RegularExpressionMatcher implements Match{
 	/**
 	 * 
 	 * @param postags
-	 * @param args: type; inputFileVersion; inputFilePath
+	 * @param args: type; inputFileVersion; inputFilePath; inputFileVersionFromRoot
 	 */
 	public RegularExpressionMatcher(HashSet<String> regExps, String...args) {
 		// TODO Auto-generated constructor stub

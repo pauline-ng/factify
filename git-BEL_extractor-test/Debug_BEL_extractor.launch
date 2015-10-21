@@ -10,7 +10,7 @@
 <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="test.Debug_BEL_extractor"/>
-<!-- stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="D:\\GitHub\\new-projects-ws-repo\\test-multiple-projects\\git-BEL_extractor-core\\Rule_INPUT\\RuleMatcher.jason" -->
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="&quot;D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\test\\cbdgmlu_\\cbdgmlu_.pdf&quot; &quot;D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output_BEL_extractor\\&quot; &quot;D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\debugOutput_BEL_extractor\\&quot; &quot;D:\\GitHub\\new-projects-ws-repo\\test-multiple-projects\\git-BEL_extractor-core\\Rule_INPUT\\RuleMatcher.jason&quot;" />
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="D:\\GitHub\\new-projects-ws-repo\\test-multiple-projects\\git-BEL_extractor-core\\Rule_INPUT\\RuleMatcher.json" />
+<!--stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="&quot;D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\test\\cbdgmlu_\\cbdgmlu_.pdf&quot; &quot;D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output_BEL_extractor\\&quot; &quot;D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\debugOutput_BEL_extractor\\&quot; &quot;D:\\GitHub\\new-projects-ws-repo\\test-multiple-projects\\git-BEL_extractor-core\\Rule_INPUT\\RuleMatcher.jason&quot;" -->
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="git-BEL_extractor-test"/>
 </launchConfiguration>

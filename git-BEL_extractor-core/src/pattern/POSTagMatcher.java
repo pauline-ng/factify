@@ -20,7 +20,7 @@ public class POSTagMatcher implements Match{
 	/**
 	 * 
 	 * @param postags
-	 * @param args: type; inputFileVersion; inputFilePath
+	 * @param args: type; inputFileVersion; inputFilePath; inputFileVersionFromRoot
 	 */
 	public POSTagMatcher(HashSet<String> postags, String...args) {
 		// TODO Auto-generated constructor stub

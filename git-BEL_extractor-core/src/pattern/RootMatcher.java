@@ -21,7 +21,6 @@ import org.json.simple.parser.ParseException;
 
 import utility.Debug;
 import utility.Span;
-import utility.utility;
 import utility.Debug.DEBUG_CONFIG;
 
 public class RootMatcher {
@@ -40,6 +39,7 @@ public class RootMatcher {
 				String type = (String) rule.get("type");
 				String inputFileVersionFromRoot = (String) rule.get("inputFileVersion");
 				String inputFilePath = (String) rule.get("inputFilePath");
+				String match = (String) rule.get("match");//"contain" or null
 				Debug.println(rule.toString(), DEBUG_CONFIG.debug_temp);
 				Debug.println(inputFileVersionFromRoot, DEBUG_CONFIG.debug_temp);
 				Debug.println(inputFilePath, DEBUG_CONFIG.debug_temp);
@@ -56,28 +56,52 @@ public class RootMatcher {
 				switch(type) {
 				case "postag":
 				{
-					HashSet<String> posTags = readList(inputFilePath, inputFileVersionFromRoot);
+					StringBuilder fileVersion = new StringBuilder();
+					HashSet<String> posTags = readList(inputFilePath, inputFileVersionFromRoot, fileVersion);
+					String fileVersion_ = fileVersion.toString().trim();
+					if(!fileVersion_.equals(inputFileVersionFromRoot)) {
+						Debug.println("Warning: inputFile has a version: " + fileVersion_ + " while the root file says " + inputFileVersionFromRoot, DEBUG_CONFIG.debug_warning);
+					}
 					POSTagMatcher postTagMatcher = null;
 					if(posTags != null)
-						postTagMatcher = new POSTagMatcher(posTags, type, inputFileVersionFromRoot, inputFilePath);
+						postTagMatcher = new POSTagMatcher(posTags, type, fileVersion_, inputFilePath, inputFileVersionFromRoot);
 					if(postTagMatcher != null) matchers.add(postTagMatcher);
 					break;
 				}
 				case "regExp": 
 				{
-					HashSet<String> regExps = readList(inputFilePath, inputFileVersionFromRoot);
+					StringBuilder fileVersion = new StringBuilder();
+					HashSet<String> regExps = readList(inputFilePath, inputFileVersionFromRoot, fileVersion);
+					String fileVersion_ = fileVersion.toString().trim();
+					if(!fileVersion_.equals(inputFileVersionFromRoot)) {
+						Debug.println("Warning: inputFile has a version: " + fileVersion_ + " while the root file says " + inputFileVersionFromRoot, DEBUG_CONFIG.debug_warning);
+					}
 					RegularExpressionMatcher regExpMatcher = null;
 					if(regExps != null)
-						regExpMatcher = new RegularExpressionMatcher(regExps, type, inputFileVersionFromRoot, inputFilePath);
+						regExpMatcher = new RegularExpressionMatcher(regExps, type, fileVersion_, inputFilePath, inputFileVersionFromRoot);
 					if(regExpMatcher != null) matchers.add(regExpMatcher);
 					break;
 				}
 				case "preBuiltWordList":
 				{
-					HashSet<String> wordList = readList(inputFilePath, inputFileVersionFromRoot);
+					StringBuilder fileVersion = new StringBuilder();
+					HashSet<String> wordList = readList(inputFilePath, inputFileVersionFromRoot, fileVersion);
+					String fileVersion_ = fileVersion.toString().trim();
+					if(!fileVersion_.equals(inputFileVersionFromRoot)) {
+						Debug.println("Warning: inputFile has a version: " + fileVersion_ + " while the root file says " + inputFileVersionFromRoot, DEBUG_CONFIG.debug_warning);
+					}
 					PreBuiltWordListMatcher preBuiltWordMatcher = null;
+					if(match != null) {
+						for(String s : wordList) {
+							if(s.trim().contains("\\s")) {
+								match = null;
+								Debug.print("WARNING:" + inputFilePath + " is a containing match while it has a word with space \"" + s + "\"", DEBUG_CONFIG.debug_warning);
+								break;
+							}
+						}
+					}
 					if(wordList != null)
-						preBuiltWordMatcher = new PreBuiltWordListMatcher(wordList, type, inputFileVersionFromRoot, inputFilePath);
+						preBuiltWordMatcher = new PreBuiltWordListMatcher(wordList, type, fileVersion_, inputFileVersionFromRoot, inputFilePath,match);
 					if(preBuiltWordMatcher != null) matchers.add(preBuiltWordMatcher);
 					break;
 				}
@@ -103,7 +127,7 @@ public class RootMatcher {
 		return true;
 	}
 	
-	private HashSet<String> readList(String inputPath, String inputFileVersionFromRoot) {
+	private HashSet<String> readList(String inputPath, String inputFileVersionFromRoot, StringBuilder sb) {
 		File inputFile = new File(inputPath);
 		if(!inputFile.exists() || !inputFile.isFile()) {
 			Debug.print("Input rule file does not exist or is not a file! Path: " + inputFile.getAbsolutePath(), DEBUG_CONFIG.debug_warning);
@@ -118,9 +142,8 @@ public class RootMatcher {
 				if(line.startsWith("--")) {
 					if(line.startsWith("--version:")) {
 						String version = line.substring("--version:".length());
-						if(!version.equals(inputFileVersionFromRoot)) {
-							Debug.println("Warning: inputFile has a version: " + version + " while the root file says " + inputFileVersionFromRoot, DEBUG_CONFIG.debug_warning);
-						}
+						sb.append(version);
+						
 					}
 				}else
 					if(!line.trim().isEmpty()) postags.add(line);
@@ -139,13 +162,11 @@ public class RootMatcher {
 			Debug.print("No matcher is found!", DEBUG_CONFIG.debug_error);
 			return null;
 		}
-		utility util = new utility();
 		List<List<Span>> allFacts = new ArrayList<List<Span>>();
 		List<String> matchingDetail_description = new ArrayList<String>();
 		boolean printDetail = true;
 		PatternMatcher pm = new PatternMatcher();
 		for(Sequence s : sentences) {
-//			Debug.println(s.sourceString);
 			Debug.println(s.POSTags, DEBUG_CONFIG.debug_pattern);
 			List<List<Span>> matchingDetail = new ArrayList<List<Span>>();
 			String detail = "";
