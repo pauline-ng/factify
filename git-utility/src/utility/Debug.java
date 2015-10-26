@@ -3,6 +3,7 @@ package utility;
 import java.util.HashMap;
 
 public class Debug {
+	public static String debugFile;
 	public  enum  DEBUG_CONFIG { 
 		debug_textpieces,
 		debug_getDocInfo,
@@ -67,23 +68,59 @@ public class Debug {
 	public static void println(Object s, DEBUG_CONFIG debug) {
 		if(!set) init();
 		if(debug == DEBUG_CONFIG.debug_highlight) {
-			if(configs.get(debug)) System.err.println(s);
+			if(configs.get(debug)) {
+				if(debugFile == null) System.err.println(s);
+				else {
+					utility util = new utility();
+					util.writeFile(debugFile, "HIGHLIGHT: " + s + "\r\n", true);
+				}
+			}
 		}else
-			if(configs.get(debug)) System.out.println(s);
+			if(configs.get(debug)) {
+				if(debugFile == null) System.out.println(s);
+				else {
+					utility util = new utility();
+					util.writeFile(debugFile, s + "\r\n", true);
+				}
+			}
 	}
 	public static void println(DEBUG_CONFIG debug) {
 		if(!set) init();
 		if(debug == DEBUG_CONFIG.debug_highlight) {
-			if(configs.get(debug)) System.err.println();
+			if(configs.get(debug)) {
+				if(debugFile == null) System.err.println();
+				else {
+					utility util = new utility();
+					util.writeFile(debugFile, "HIGHLIGHT: \r\n", true);
+				}
+			}
 		}else
-			if(configs.get(debug)) System.out.println();
+			if(configs.get(debug)) {
+				if(debugFile == null) System.out.println();
+				else {
+					utility util = new utility();
+					util.writeFile(debugFile, "\r\n", true);
+				}
+			}
 	}
 	public static void print(String s, DEBUG_CONFIG debug) {
 		if(!set) init();
 		if(debug == DEBUG_CONFIG.debug_highlight) {
-			if(configs.get(debug)) System.err.print(s);
+			if(configs.get(debug)) {
+				if(debugFile == null) System.err.print(s);
+				else {
+					utility util = new utility();
+					util.writeFile(debugFile, "HIGHLIGHT: " + s, true);
+				}
+			}
 		}else
-			if(configs.get(debug)) System.out.print(s);
+			if(configs.get(debug)) {
+				if(debugFile == null) System.out.print(s);
+				else {
+					utility util = new utility();
+					util.writeFile(debugFile, s, true);
+				}
+			}
 	}
 	public static boolean get(DEBUG_CONFIG con) {
 		if(!set) init();

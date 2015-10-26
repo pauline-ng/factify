@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -20,22 +23,32 @@ public class testBatch {
 //		testFromFolder("D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\");
 //		clean();
 //		System.out.println("test");
-		if(args.length != 4) {
-			Debug.print("Please specify 3 parameters: filePath, output_dir, debug_dir, and matcher file!", DEBUG_CONFIG.debug_error);
-			return;
+		{
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+			Calendar cal = Calendar.getInstance();
+//			System.out.println(dateFormat.format(cal.getTime())); //2014/08/06 16:00:22
+			Debug.debugFile = "D:\\debug-" + dateFormat.format(cal.getTime()) + ".txt";
 		}
-		if(!new File(args[0]).exists()) {
-			Debug.print("Please specify a valid input file or folder!", DEBUG_CONFIG.debug_error);
-			return;
-		}
+//		if(args.length != 4) {
+//			Debug.print("Please specify 3 parameters: filePath, output_dir, debug_dir, and matcher file!", DEBUG_CONFIG.debug_error);
+//			return;
+//		}
+//		if(!new File(args[0]).exists()) {
+//			Debug.print("Please specify a valid input file or folder!", DEBUG_CONFIG.debug_error);
+//			return;
+//		}
 		Boolean fileOrFolder = null;//true if it is a file
 		if(new File(args[0]).isFile()) {
 			fileOrFolder = true;
 		}else if (new File(args[0]).isDirectory()) {
 			fileOrFolder = false;
 		}
+		if(fileOrFolder == null) {
+			Debug.println("Error: the input is undetermined! input is " + args[0], DEBUG_CONFIG.debug_error);
+			return;
+		}
 		if(fileOrFolder == true) {
-			testOneFile(args[0], args[1], args[2], args[3]);
+			testOneFile(args);
 		}else if(fileOrFolder == false) {
 			testFromFolder(args[0], args[1], args[2], args[3]);
 		}
@@ -56,7 +69,7 @@ public class testBatch {
 		String output_stat = output_dir + "stat.txt";
 //		util.writeFile(output_stat, "", false);
 		HashSet<String> finished = getFinishedSet(output_stat);
-		System.out.println("finshed " + finished.size());
+//		System.out.println("finshed " + finished.size());
 		for(File file : listOfFiles) {
 //			if(!file.getName().equals("1hgs79.pdf")) {
 //				continue;
@@ -77,18 +90,22 @@ public class testBatch {
 //		util.writeFile(output_stat, "in total\t" + total_pdf, true);
 		
 	}
-	public static void testOneFile(String path, String output_dir, String debug_dir, String matcherFile) {
+	
+	/**
+	 * 
+	 * @param args: String path, String output_dir, String debug_dir, String matcherFile, String debug_log
+	 */
+	public static void testOneFile(String ...args) {
 //		String path = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers";
-		File file = new File(path);
-		if(!file.exists() || !file.isFile()) {
-			Debug.print(path + " is not a valid file!", DEBUG_CONFIG.debug_error);
-			return;
-		}
-		if(file.getName().endsWith(".pdf")) {
-			System.out.println("process " + file.getName());
-			int error = ExtractorBELExtractor.examplePDFExtractor_JSON(file.getAbsolutePath(), output_dir, debug_dir, matcherFile);
+//		File file = new File(path);
+//		if(!file.exists() || !file.isFile()) {
+//			Debug.print(path + " is not a valid file!", DEBUG_CONFIG.debug_error);
+//			return;
+//		}
+//		if(file.getName().endsWith(".pdf")) {
+			int error = ExtractorBELExtractor.examplePDFExtractor_JSON(args);
 			Debug.print("Finished with errorcode " + error, DEBUG_CONFIG.debug_error);
-		}
+//		}
 	}
 	public static HashSet<String> getFinishedSet(String path) {
 		File file = new File(path);

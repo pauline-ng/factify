@@ -5,7 +5,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -565,6 +568,7 @@ public class ExtractorBELExtractor {
 	 * 1: output_dir
 	 * 2: debug_dir
 	 * 3: matcher file (by default: RuleMatcher.jason)
+	 * 4: output_log
 	 * @param output
 	 * @return ErrorCode:
 	 * -1: input parameter error 
@@ -574,16 +578,26 @@ public class ExtractorBELExtractor {
 	 * 3: PDF Converter succeeded, but no body text (or section heading)
 	 */
 	public static int examplePDFExtractor_JSON(String...args) {
-		if(args.length < 4) {
-			Debug.print("Please input PDF path, output directory, debug directory, and matcher file path!", DEBUG_CONFIG.debug_error);
+		if(args.length < 5) {
+			Debug.println("Please input PDF path, output directory, debug directory, matcher file path, and debug_log file!", DEBUG_CONFIG.debug_error);
+			Debug.println("Parameters are :" , DEBUG_CONFIG.debug_error);
+			for(String s : args) Debug.println("s" , DEBUG_CONFIG.debug_error);
 			return -1;
 		}
+		{
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+				Calendar cal = Calendar.getInstance();
+//				System.out.println(dateFormat.format(cal.getTime())); //2014/08/06 16:00:22
+				Debug.debugFile = args[4];
+				utility util = new utility();
+				util.writeFile(Debug.debugFile, "========" + dateFormat.format(cal.getTime()) + "==========\r\n", true);
+		}
 		String path = args[0];
-			File file = new File(path);
-			if (!file.exists()) {
-				Debug.print("Input File " + path + " does not exist!", DEBUG_CONFIG.debug_error);
-				return 0;
-			}
+		File file = new File(path);
+		if (!file.exists()) {
+			Debug.print("Input File " + path + " does not exist!", DEBUG_CONFIG.debug_error);
+			return 0;
+		}
 		String output_dir = args[1];
 		{
 			File file_temp = new File(output_dir);

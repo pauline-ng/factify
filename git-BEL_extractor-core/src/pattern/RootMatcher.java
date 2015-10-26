@@ -29,7 +29,7 @@ public class RootMatcher {
 		JSONParser parser = new JSONParser();
 		try {     
 			Object obj = parser.parse(new FileReader(path));
-
+			String parentFolder = new File(path).getParent();
 			JSONObject jsonObject =  (JSONObject) obj;
 			// loop array
 			JSONArray rules = (JSONArray) jsonObject.get("Rules");
@@ -39,6 +39,7 @@ public class RootMatcher {
 				String type = (String) rule.get("type");
 				String inputFileVersionFromRoot = (String) rule.get("inputFileVersion");
 				String inputFilePath = (String) rule.get("inputFilePath");
+				inputFilePath = parentFolder == null ? inputFilePath : parentFolder + "\\" + inputFilePath;
 				String match = (String) rule.get("match");//"contain" or null
 				Debug.println(rule.toString(), DEBUG_CONFIG.debug_temp);
 				Debug.println(inputFileVersionFromRoot, DEBUG_CONFIG.debug_temp);
