@@ -681,10 +681,30 @@ public class ExtractorBELExtractor {
 			 obj.put("type", "paper");
 			 obj.put("path", path);
 //			 obj.put("sectionTitle", sec.getTitle(pdf));
-			 obj.put("freq ngrams", freSeq.toString());
-			 obj.put("acronyms", acronyms.toString());
+//			 obj.put("freq ngrams", freSeq.toString());
+//			 obj.put("acronyms", acronyms.toString()); 
+			 
 //			 Debug.println("frequent ngrams are:\r\n" + freSeq.toString(), DEBUG_CONFIG.debug_error);
 			 factsToOutput.add(obj);
+			 {
+				 HashMap<String, String> acronyms_string = new HashMap<String,String>();
+				 for(String s : acronyms.keySet()) {
+					 acronyms_string.put(s, acronyms.get(s).sourceString);
+				 }
+				 JSONObject acro_json = new JSONObject(acronyms_string);
+				 acro_json.put("type", "acronyms");
+				 factsToOutput.add(acro_json);
+			 }
+			 {
+				 JSONArray freqNgrams = new JSONArray();
+				 for(Sequence seq : freSeq) {
+					 freqNgrams.add(seq.sourceString);
+				 }
+				 JSONObject acro_freqngram = new JSONObject();
+				 acro_freqngram.put("type", "freq ngrams");
+				 acro_freqngram.put("values", freqNgrams);
+				 factsToOutput.add(acro_freqngram);
+			 }
 			}
 		utility util = new utility();
 		int counter_facts = 1;

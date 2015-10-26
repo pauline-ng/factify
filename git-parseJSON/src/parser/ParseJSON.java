@@ -3,6 +3,9 @@ package parser;
 import java.io.File;
 //import java.util.List;
 
+
+import java.util.HashMap;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -17,7 +20,34 @@ public class ParseJSON {
 		// TODO Auto-generated method stub
 		ParseJSON parser = new ParseJSON();
 //		parser.parseFromAFolderToMediaWiki();
-		parser.parseFromAFolderToTxt();
+		parser.parseToMediaWiki(
+"D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output_BEL_extractor\\cbdgmlu_.pdf_facts.json",
+"D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output_BEL_extractor\\cbdgmlu_.pdf_facts.jsonToMediaWikiTxt"
+);
+//		parser.parseFromAFolderToTxt();
+//		if(false){
+//			try {
+//				utility util = new utility();
+//				JSONParser parser = new JSONParser();
+//				String str = util.readFromFile("D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output_BEL_extractor\\cbdgmlu_.pdf_facts_test.json");
+//				JSONArray array = (JSONArray) parser.parse(str);
+//				for(int i = 0; i < array.size(); i++) {
+//					JSONObject obj = (JSONObject) array.get(i);
+//					if(obj.get("type").equals("acronyms")) {
+//					HashMap<String, String> acronyms = (HashMap<String, String>) obj;
+//					for(String s : acronyms.keySet()) {
+//						Debug.set(DEBUG_CONFIG.debug_acronym, true);
+//						Debug.println(s + "\t" + acronyms.get(s), DEBUG_CONFIG.debug_acronym);
+//					}
+//					}
+//				}
+//			} catch (ParseException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
+//		}
+	
 	}
 	
 	public boolean parseToTxt(String inputJson, String outputPath) {
@@ -73,8 +103,26 @@ public class ParseJSON {
 //				content += "Acronyms:\r\n" + fact.get("acronyms") + "\r\n";
 //				content += "Frequent NGrams: \r\n" + fact.get("freq ngrams") + "\r\n";
 			}
-		}
-		content += "|Methods=\r\n";
+			if(fact.get("type").equals("acronyms")) {
+				HashMap<String, String> acronyms = (HashMap<String, String>) fact;
+				if(acronyms.keySet().size() > 0) {
+					content += "\r\n == Acronyms: ==  \r\n";
+				}
+				for(String s : acronyms.keySet()) {
+					content += "* " + s + " => " + acronyms.get(s) + "  \r\n";
+				}
+			}
+			if(fact.get("type").equals("freq ngrams")) {
+				JSONArray values = (JSONArray) fact.get("values");
+				if(values.size() > 0) {
+					content += "\r\n == freqent ngrams: ==  \r\n";
+				}
+				for(int j = 0; j < values.size(); j++) {
+					content += values.get(j).toString() + "  \r\n";
+				}
+			}
+ 		}
+		content += "|Methods=  \r\n";
 		for(int i = 0; i < array.size(); i++) {
 			JSONObject fact = (JSONObject) array.get(i);
 			
