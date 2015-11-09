@@ -20,11 +20,13 @@ public class ParseJSON {
 		// TODO Auto-generated method stub
 		ParseJSON parser = new ParseJSON();
 //		parser.parseFromAFolderToMediaWiki();
-		parser.parseToMediaWiki(
-"D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output_BEL_extractor\\cbdgmlu_.pdf_facts.json",
-"D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output_BEL_extractor\\cbdgmlu_.pdf_facts.jsonToMediaWikiTxt"
-);
+//		parser.parseToMediaWiki(
+//"D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output\\ieSurvey.pdf_facts.json",
+//"D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output\\ieSurvey.pdf_facts.jsonToMediaWikiTxt"
+//);
 //		parser.parseFromAFolderToTxt();
+//		parser.parseFromAFolderToMediaWiki();
+		parser.analyze();
 //		if(false){
 //			try {
 //				utility util = new utility();
@@ -89,7 +91,7 @@ public class ParseJSON {
 		Object obj=JSONValue.parse(str);
 		JSONArray array=(JSONArray)obj;
 		util.writeFile(output,"",false);
-		String content = "{{Publication Content\r\n";
+		String content = "== Meta Info == \r\n";
 		for(int i = 0; i < array.size(); i++) {
 			JSONObject fact = (JSONObject) array.get(i);
 			if(fact.get("type").equals("paper")){
@@ -97,32 +99,34 @@ public class ParseJSON {
 				int index1 = paperPath.lastIndexOf("\\");
 				if(index1 >= 0) paperPath = paperPath.substring(index1 + "\\".length());
 				else if( paperPath.lastIndexOf("/") >= 0) 
-					paperPath = paperPath.substring(index1 + "/".length());;
-				content += "|Background Concepts= " + "\r\n id: " + paperPath + "\r\n";
+					paperPath = paperPath.substring(index1 + "/".length());
+				String doi = (String) fact.get("doi");
 //				content += "{{Publication Content";
 //				content += "Acronyms:\r\n" + fact.get("acronyms") + "\r\n";
 //				content += "Frequent NGrams: \r\n" + fact.get("freq ngrams") + "\r\n";
+				content += "\r\nDOI: " + doi + "\r\n";
+				content += "\r\nPath: " + paperPath + "\r\n";
 			}
-			if(fact.get("type").equals("acronyms")) {
-				HashMap<String, String> acronyms = (HashMap<String, String>) fact;
-				if(acronyms.keySet().size() > 0) {
-					content += "\r\n == Acronyms: ==  \r\n";
-				}
-				for(String s : acronyms.keySet()) {
-					content += "* " + s + " => " + acronyms.get(s) + "  \r\n";
-				}
-			}
-			if(fact.get("type").equals("freq ngrams")) {
-				JSONArray values = (JSONArray) fact.get("values");
-				if(values.size() > 0) {
-					content += "\r\n == freqent ngrams: ==  \r\n";
-				}
-				for(int j = 0; j < values.size(); j++) {
-					content += values.get(j).toString() + "  \r\n";
-				}
-			}
+//			if(fact.get("type").equals("acronyms")) {
+//				HashMap<String, String> acronyms = (HashMap<String, String>) fact;
+//				if(acronyms.keySet().size() > 0) {
+//					content += "\r\nAcronyms:\r\n";
+//				}
+//				for(String s : acronyms.keySet()) {
+//					content += "* " + s + " => " + acronyms.get(s) + "\r\n";
+//				}
+//			}
+//			if(fact.get("type").equals("freq ngrams")) {
+//				JSONArray values = (JSONArray) fact.get("values");
+//				if(values.size() > 0) {
+//					content += "\r\n == freqent ngrams: ==  \r\n";
+//				}
+//				for(int j = 0; j < values.size(); j++) {
+//					content += values.get(j).toString() + "  \r\n";
+//				}
+//			}
  		}
-		content += "|Methods=  \r\n";
+//		content += "== Methods ==   \r\n";
 		for(int i = 0; i < array.size(); i++) {
 			JSONObject fact = (JSONObject) array.get(i);
 			
@@ -131,38 +135,74 @@ public class ParseJSON {
 				content += fact.get("fact") + "\r\n";
 			}
 			if(fact.get("type").equals("SectionTitle")) {
-				content += "== " + fact.get("sectionTitle") + " == \r\n";
+				content += "== " + fact.get("sectionTitle") + " ==  \r\n";
 			}
 			if(fact.get("type").equals("Paragraph Break")) {
 				content += "---------------------------------------------------------------------\r\n";
 			}
 		}
-		content += "}}";
 		util.writeFile(output,content,true);
 
 		//		  JSONObject obj2=(JSONObject)array.get(1);
 		//		  System.out.println("======field \"1\"==========");
 		//		  System.out.println(obj2.get("1"));    
 	}
-
+	public boolean analyze_onefile(String inputJson) {
+		utility util = new utility();
+		String filePath = inputJson;
+		String str = util.readFromFile(filePath);
+		Object obj=JSONValue.parse(str);
+		JSONArray array=(JSONArray)obj;
+		for(int i = 0; i < array.size(); i++) {
+			JSONObject fact = (JSONObject) array.get(i);
+			if(fact.get("type").equals("paper")){
+				String doi = (String) fact.get("doi");
+				if(doi.equals("NULL")) return false;
+				return true;
+			}
+				
+ 		}
+		return false;
+	}
 	public void parseFromAFolderToMediaWiki() {
-		String input = "D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output\\resultOfTestingPDFs3\\";
-		String output = "D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output\\resultOfTestingPDFs3\\mediawiki\\";
+		String input = "D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output\\resultOfTestingPDFs5\\";
+		String output = "D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output\\resultOfTestingPDFs5\\mediawiki\\";
 		File[] files = (new File(input)).listFiles();
 		for(File file : files) {
-			if(file.getName().endsWith(".jason")) {
+			if(file.getName().endsWith(".json")) {
 				parseToMediaWiki(file.getAbsolutePath(), output + file.getName() + ".txt");
 			}
 		}
 	}
 	public void parseFromAFolderToTxt() {
-		String input = "D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output\\resultOfTestingPDFs3\\";
-		String output = "D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output\\resultOfTestingPDFs3\\txt\\";
+		String input = "D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output\\resultOfTestingPDFs5\\";
+		String output = "D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output\\resultOfTestingPDFs5\\txt\\";
 		File[] files = (new File(input)).listFiles();
 		for(File file : files) {
-			if(file.getName().endsWith(".jason")) {
+			if(file.getName().endsWith(".json")) {
 				parseToTxt(file.getAbsolutePath(), output + file.getName() + ".txt");
 			}
 		}
+	}
+	public void analyze() {
+		String input = "D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output\\resultOfTestingPDFs5\\";
+		File[] files = (new File(input)).listFiles();
+		int total = 0;
+		int withDOI = 0;
+		utility util = new utility();
+		for(File file : files) {
+			if(file.getName().endsWith(".json")) {
+				total++;
+				if(analyze_onefile(file.getAbsolutePath())) {
+					withDOI++;
+				}else {
+					String prefix = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\";
+					String fileName = file.getName();
+					fileName = fileName.substring(0, fileName.length() - "_facts.json".length());
+					util.copyFile(prefix + fileName, input + "//withoutdoi//" + fileName);
+				}
+			}
+		}
+		System.out.println("total: " + total + "; withDOI: " + withDOI);
 	}
 }

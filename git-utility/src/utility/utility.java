@@ -28,6 +28,8 @@ import javax.xml.transform.stream.StreamResult;
 
 
 
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -305,6 +307,26 @@ public class utility {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
+		}
+	}
+	public boolean copyDirectory(String src, String dest) {
+		try{
+			FileUtils.copyDirectory(new File(src), new File(dest));
+			return true;
+		}
+		catch(Exception e) {
+			Debug.print(e.getMessage(), DEBUG_CONFIG.debug_error);
+			return false;
+		}
+	}
+	public boolean copyFile(String src, String dest) {
+		try{
+			FileUtils.copyFile(new File(src), new File(dest));
+			return true;
+		}
+		catch(Exception e) {
+			Debug.print(e.getMessage(), DEBUG_CONFIG.debug_error);
+			return false;
 		}
 	}
 }

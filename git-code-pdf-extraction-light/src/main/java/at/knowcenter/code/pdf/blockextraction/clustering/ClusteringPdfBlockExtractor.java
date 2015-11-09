@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import at.knowcenter.code.api.pdf.Block;
 import at.knowcenter.code.api.pdf.Document;
@@ -46,6 +48,8 @@ public class ClusteringPdfBlockExtractor implements PdfPageBlockExtractor {
     private static final Logger logger = Logger.getLogger(ClusteringPdfBlockExtractor.class.getName());
     
     public static boolean debug;
+    
+    public String doi = null;
     
     /**
      * Creates a new instance of this class.
@@ -69,6 +73,17 @@ public class ClusteringPdfBlockExtractor implements PdfPageBlockExtractor {
             Block blocksFragments = new BlockMerger(pdfPage, cleanedLines2, lineSpacing, idToFont).merge();
             Block splitedBlocks =  new BlockSplitter(pdfPage, blocksFragments).split();
             
+            for(int i = 0; i < splitedBlocks.getLineBlocks().size() && doi == null; i++) {
+            	String line2 = splitedBlocks.getLineBlocks().toString();
+            	String regEx = "10\\.[0-9]{4,}/[^\\s]*[^\\s\\.,]";// /10\.[0-9]{4,}\/[^\s]*[^\s\.,]/
+            	Pattern pattern = Pattern.compile(regEx);
+            	Matcher matcher = pattern.matcher(line2);
+            	while (matcher.find()) {
+            		doi = matcher.group();
+            		System.out.println("doi is " + doi);
+            		break;
+            	}
+            }
             
             pageBlocks.add(new BlocksEntry(pdfPage, splitedBlocks));
             

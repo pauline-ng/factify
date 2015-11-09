@@ -50,13 +50,15 @@ public class testBatch {
 		if(fileOrFolder == true) {
 			testOneFile(args);
 		}else if(fileOrFolder == false) {
-			testFromFolder(args[0], args[1], args[2], args[3]);
+			testFromFolder(args);
 		}
 		
 	}
 	
-	public static void testFromFolder(String path, String output_dir, String debug_dir, String matcherFile) {
+	public static void testFromFolder(String ...args ) {
 //		String path = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers";
+		String path = args[0];
+		String output_dir = args[1];
 		File folder = new File(path);
 		if(!folder.exists() || !folder.isDirectory()) {
 			Debug.print(path + " is not a valid directory!", DEBUG_CONFIG.debug_error);
@@ -82,7 +84,9 @@ public class testBatch {
 			if(file.getName().endsWith(".pdf")) {
 				total_pdf++;
 				System.out.println("process " + file.getName());
-				int error = ExtractorBELExtractor.examplePDFExtractor_JSON(file.getAbsolutePath(), output_dir, debug_dir, matcherFile);
+				String[] parameters = args.clone();
+				parameters[0] = file.getAbsolutePath();
+				int error = ExtractorBELExtractor.examplePDFExtractor_JSON(parameters);
 				util.writeFile(output_stat, total_pdf + "\t" + file.getName() + "\t" + error + "\r\n", true);
 			}
 			

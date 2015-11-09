@@ -17,4 +17,5 @@ public class PDF {
 	public Collection<String> getTables() {
 		return htmlTables.values();
 	}
+	public String doi;
 }

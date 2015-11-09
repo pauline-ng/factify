@@ -97,6 +97,8 @@ public class PdfExtractionPipeline {
 	private String id = null;
 	private PDF pdf;
 	
+	private String doi;
+	
 	public enum PdfExtractionBackend {
 	    PDFBox 
 //	    ,
@@ -325,8 +327,11 @@ public class PdfExtractionPipeline {
 	 * @return a list of blocks corresponding to pages
 	 * @throws PdfParserException
 	 */
-	private List<Block> extractBlocks(Document document, String id) throws PdfParserException {		
-		return new ClusteringPdfBlockExtractor().extractBlocks(document, id);
+	private List<Block> extractBlocks(Document document, String id) throws PdfParserException {
+		ClusteringPdfBlockExtractor clusteringPdfBlockExtractor = new ClusteringPdfBlockExtractor();
+		List<Block> blocks = clusteringPdfBlockExtractor.extractBlocks(document, id);
+		this.doi = clusteringPdfBlockExtractor.doi;
+		return blocks;
 	}	
 
 	/**
@@ -673,23 +678,24 @@ public class PdfExtractionPipeline {
 		String rawText = extractDocumentText(pageBlocks, labeling, postprocessedReadingOrder, false);		
 		{
 			writeFile(debug_dir + id + "_body_standard.txt", text, false);
-			writeFile(debug_dir + id + "_body_standard_rawtext.txt", rawText, false);
+			//writeFile(debug_dir + id + "_body_standard_rawtext.txt", rawText, false);
 		}
 		{
 			String path = debug_dir + id + "_new_paragraphs_3.txt";
 			List<Block> blocks_body_and_heading = extractDocumentBody(pageBlocks, labeling, postprocessedReadingOrder, true);
 			PDFtoStructure pdftoStructure = new PDFtoStructure();
 			List<Paragraph> body_and_heading = pdftoStructure.convert(blocks_body_and_heading, labeling, this);
-			writeFile(path, "", false);
-			for(Paragraph para : body_and_heading) {
-				writeFile(path, "----" + para.label+ "--Page " + para.pages + "--" + para.remark + "----------------\r\n", true);
-				writeFile(path, para.text + "---------------------------\r\n", true);
-			}
+			//writeFile(path, "", false);
+			//for(Paragraph para : body_and_heading) {
+				//writeFile(path, "----" + para.label+ "--Page " + para.pages + "--" + para.remark + "----------------\r\n", true);
+				//writeFile(path, para.text + "---------------------------\r\n", true);
+			//}
 			
 		
 		this.pdf = new PDF();
 		pdf.body_and_heading = body_and_heading;
 		pdf.htmlTables = articleMetadata.getHtmlTables();
+		pdf.doi = this.doi;
 //		return pdf;
 		}
 		return new PdfExtractionResult(document, pageBlocks, labeling, readingOrder, 

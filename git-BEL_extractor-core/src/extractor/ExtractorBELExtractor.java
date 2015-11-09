@@ -581,7 +581,7 @@ public class ExtractorBELExtractor {
 		if(args.length < 5) {
 			Debug.println("Please input PDF path, output directory, debug directory, matcher file path, and debug_log file!", DEBUG_CONFIG.debug_error);
 			Debug.println("Parameters are :" , DEBUG_CONFIG.debug_error);
-			for(String s : args) Debug.println("s" , DEBUG_CONFIG.debug_error);
+			for(String s : args) Debug.println(s, DEBUG_CONFIG.debug_error);
 			return -1;
 		}
 		{
@@ -680,6 +680,7 @@ public class ExtractorBELExtractor {
 			 JSONObject obj=new JSONObject();
 			 obj.put("type", "paper");
 			 obj.put("path", path);
+			 obj.put("doi", (pdf.doi == null ? "NULL" : pdf.doi));
 //			 obj.put("sectionTitle", sec.getTitle(pdf));
 //			 obj.put("freq ngrams", freSeq.toString());
 //			 obj.put("acronyms", acronyms.toString()); 
