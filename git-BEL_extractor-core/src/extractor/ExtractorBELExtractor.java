@@ -41,6 +41,7 @@ public class ExtractorBELExtractor {
 	public static void main(String[]  args) {
 		int error = examplePDFExtractor_JSON(args);
 		Debug.println("Finished with errorcode " + error, DEBUG_CONFIG.debug_error);
+		//System.exit(error);//The system has to exit with code 0, otherwise zotero would see it as failed.
 	}
 
 //	private static String reg_Number = "\\d+";
