@@ -227,7 +227,7 @@ public class S_Facts {
 			obj.put("type", "Sentence");
 			obj.put("senID", startingIndex);
 			obj.put("paragraphPageRange", cfacts.pageRange.toString());
-			obj.put("sentence", cfacts.sentences.get(i));
+//			obj.put("sentence", cfacts.sentences.get(i));
 			obj.put("fact", s.replace("-LRB-", "(").replace("-RRB-", ")").replace("-RSB-", "]").replace("-LSB-", "["));
 			obj.put("details", cfacts.matchingDetial_description.get(i));
 			startingIndex++;

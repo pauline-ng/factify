@@ -39,7 +39,8 @@ import PDFconverter.PDFConverter;
 public class ExtractorBELExtractor {
 	
 	public static void main(String[]  args) {
-		examplePDFExtractor_JSON(args);
+		int error = examplePDFExtractor_JSON(args);
+		Debug.println("Finished with errorcode " + error, DEBUG_CONFIG.debug_error);
 	}
 
 //	private static String reg_Number = "\\d+";
@@ -567,8 +568,9 @@ public class ExtractorBELExtractor {
 	 * 0: path
 	 * 1: output_dir
 	 * 2: debug_dir
-	 * 3: matcher file (by default: RuleMatcher.jason)
+	 * 3: matcher file (by default: RuleMatcher.json)
 	 * 4: output_log
+	 * 5: output_facts file path
 	 * @param output
 	 * @return ErrorCode:
 	 * -1: input parameter error 
@@ -576,10 +578,15 @@ public class ExtractorBELExtractor {
 	 * 1: succeeded
 	 * 2: PDF Converter Failed
 	 * 3: PDF Converter succeeded, but no body text (or section heading)
+	 * 4: Facts Exists.
 	 */
 	public static int examplePDFExtractor_JSON(String...args) {
+		utility util = new utility();
 		if(args.length < 5) {
 			Debug.println("Please input PDF path, output directory, debug directory, matcher file path, and debug_log file!", DEBUG_CONFIG.debug_error);
+			Debug.println("*If debug_log=\"\", then debug info will print to the screen.", DEBUG_CONFIG.debug_error);
+			Debug.println("*Please add slash to folder path.", DEBUG_CONFIG.debug_error);
+			
 			Debug.println("Parameters are :" , DEBUG_CONFIG.debug_error);
 			for(String s : args) Debug.println(s, DEBUG_CONFIG.debug_error);
 			return -1;
@@ -589,8 +596,13 @@ public class ExtractorBELExtractor {
 				Calendar cal = Calendar.getInstance();
 //				System.out.println(dateFormat.format(cal.getTime())); //2014/08/06 16:00:22
 				Debug.debugFile = args[4];
-				utility util = new utility();
-				util.writeFile(Debug.debugFile, "========" + dateFormat.format(cal.getTime()) + "==========\r\n", true);
+				if(Debug.debugFile.trim().equals("")) {
+					Debug.debugFile = null;
+					Debug.init();
+				}else {
+					Debug.init();
+				}
+				Debug.print("========" + dateFormat.format(cal.getTime()) + "==========\r\n", DEBUG_CONFIG.debug_timeline);
 		}
 		String path = args[0];
 		File file = new File(path);
@@ -599,24 +611,10 @@ public class ExtractorBELExtractor {
 			return 0;
 		}
 		String output_dir = args[1];
-		{
-			File file_temp = new File(output_dir);
-			if(file_temp.exists() && file_temp.isFile()) {
-				output_dir = file_temp.getParent() + "\\output\\";
-			}
-		}
-		String debug_dir = output_dir;
-		if(args.length > 2) {
-			debug_dir = args[2];
-			File file_temp = new File(debug_dir);
-			if(file_temp.exists() && file_temp.isFile()) {
-				debug_dir = file_temp.getParent() + "\\debug_output\\";
-			}
-		}
-		String matcherFile = "RuleMatcher.json";
-		if(args.length > 3) {
-			matcherFile = args[3];
-		}
+		
+		String debug_dir = args[2];
+		
+		String matcherFile = args[3];
 		{
 			File file_temp = new File(matcherFile);
 			if(!file_temp.exists() || !file_temp.isFile()) {
@@ -626,6 +624,10 @@ public class ExtractorBELExtractor {
 					Debug.println(s , DEBUG_CONFIG.debug_error);
 				return -1;
 			}
+		}
+		String fact_file = output_dir + file.getName() + "_facts.json";
+		if(args.length > 5) {
+			fact_file = args[5];
 		}
 		JSONArray factsToOutput = new JSONArray();
 		PDFConverter converter = new PDFConverter();
@@ -699,7 +701,10 @@ public class ExtractorBELExtractor {
 			 {
 				 JSONArray freqNgrams = new JSONArray();
 				 for(Sequence seq : freSeq) {
-					 freqNgrams.add(seq.sourceString);
+					 JSONObject oneFreq = new JSONObject();
+					 oneFreq.put("value", seq.sourceString);
+					 oneFreq.put("freq", seq.getAbsoluteFreq());
+					 freqNgrams.add(oneFreq);
 				 }
 				 JSONObject acro_freqngram = new JSONObject();
 				 acro_freqngram.put("type", "freq ngrams");
@@ -707,7 +712,6 @@ public class ExtractorBELExtractor {
 				 factsToOutput.add(acro_freqngram);
 			 }
 			}
-		utility util = new utility();
 		int counter_facts = 1;
 		int counter_para = 1;
 		int counter_sec =1;
@@ -759,7 +763,18 @@ public class ExtractorBELExtractor {
 			}
 			
 		}
-		util.writeFile(output_dir + file.getName() + "_facts.json", factsToOutput.toJSONString(), false);
+		{//write decorations:
+			JSONObject decoration = new JSONObject();
+			
+			JSONArray decorations = new JSONArray();
+			for(int i = 0; i < pdf.noneBodynorHeading.size(); i++) {
+				decorations.add(pdf.noneBodynorHeading.get(i).text);
+			}
+			decoration.put("type", "decorations");
+			decoration.put("value", decorations);
+			factsToOutput.add(decoration);
+		}
+		util.writeFile(fact_file, factsToOutput.toJSONString(), false);
 //		if(nlp == null) nlp = new StanfordNLP("tokenize, ssplit, pos");
 //		{
 //			for(String s : pdf.acronyms_.keySet()) {

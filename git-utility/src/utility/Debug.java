@@ -6,26 +6,14 @@ public class Debug {
 	public static String debugFile;
 	public  enum  DEBUG_CONFIG { 
 		debug_textpieces,
-		debug_getDocInfo,
-		debug_merge_textPiece,
-		debug_clustering,
-		debug_header,
-		debug_footer,
-		debug_fig_caption,
-		debug_title,
-		debug_bodytext,
-		debug_section_title,
 		debug_temp,
 		debug_highlight,
 		////
 		debug_detectorpipeline,
 		////
-		debug_nlp,
-		////
 		debug_C_Facts,
 		debug_S_Facts,
 		debug_pattern,
-		debug_acronym,
 		///
 		debug_error,//for alerting errors 
 		debug_warning,
@@ -33,22 +21,12 @@ public class Debug {
 	};
 	public static void init() {
 		configs.put(DEBUG_CONFIG.debug_textpieces, false);
-		configs.put(DEBUG_CONFIG.debug_getDocInfo, false);
-		configs.put(DEBUG_CONFIG.debug_merge_textPiece, false);
-		configs.put(DEBUG_CONFIG.debug_clustering, false);
-		configs.put(DEBUG_CONFIG.debug_header, false);
-		configs.put(DEBUG_CONFIG.debug_footer, false);
-		configs.put(DEBUG_CONFIG.debug_fig_caption, false);
-		configs.put(DEBUG_CONFIG.debug_title, false);
-		configs.put(DEBUG_CONFIG.debug_bodytext, false);
-		configs.put(DEBUG_CONFIG.debug_section_title, false);
 		configs.put(DEBUG_CONFIG.debug_temp, false);
 		configs.put(DEBUG_CONFIG.debug_highlight, false);
 		
 		configs.put(DEBUG_CONFIG.debug_C_Facts, false);
 		configs.put(DEBUG_CONFIG.debug_S_Facts, false);
 		configs.put(DEBUG_CONFIG.debug_pattern, false);
-		configs.put(DEBUG_CONFIG.debug_acronym, false);
 		configs.put(DEBUG_CONFIG.debug_detectorpipeline, false);
 		
 		
@@ -129,15 +107,6 @@ public class Debug {
 
 	public static void reset() {
 		configs.put(DEBUG_CONFIG.debug_textpieces, false);
-		configs.put(DEBUG_CONFIG.debug_getDocInfo, false);
-		configs.put(DEBUG_CONFIG.debug_merge_textPiece, false);
-		configs.put(DEBUG_CONFIG.debug_clustering, false);
-		configs.put(DEBUG_CONFIG.debug_header, false);
-		configs.put(DEBUG_CONFIG.debug_footer, false);
-		configs.put(DEBUG_CONFIG.debug_fig_caption, false);
-		configs.put(DEBUG_CONFIG.debug_title, false);
-		configs.put(DEBUG_CONFIG.debug_bodytext, false);
-		configs.put(DEBUG_CONFIG.debug_section_title, false);
 		configs.put(DEBUG_CONFIG.debug_temp, false);
 		configs.put(DEBUG_CONFIG.debug_highlight, false);
 		
@@ -146,7 +115,6 @@ public class Debug {
 		configs.put(DEBUG_CONFIG.debug_C_Facts, false);
 		configs.put(DEBUG_CONFIG.debug_S_Facts, false);
 		configs.put(DEBUG_CONFIG.debug_pattern, false);
-		configs.put(DEBUG_CONFIG.debug_acronym, false);
 
 		
 		configs.put(DEBUG_CONFIG.debug_error, false);

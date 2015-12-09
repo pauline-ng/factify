@@ -503,6 +503,31 @@ public class PdfExtractionPipeline {
 		}
 		return paragrahs_and_heading;
 	}
+	
+	/**
+	 * by huangxc
+	 * @param pageBlocks
+	 * @param labeling
+	 * @param readingOrder
+	 * @param clearHyphenations
+	 * @return
+	 */
+	private List<Block> extractDocumentNoneBody(List<Block> pageBlocks, BlockLabeling labeling, ReadingOrder readingOrder,
+			boolean clearHyphenations) {
+		
+		List<Block> none_paragrahs_or_heading = new ArrayList<Block>();
+		for (int i = 0; i < pageBlocks.size(); i++) {
+			Block[] blocksOnPage = pageBlocks.get(i).getSubBlocks().toArray(new Block[0]);
+			for (Block currentBlock : blocksOnPage) {
+				BlockLabel label = labeling.getLabel(currentBlock);
+				//by huangxc
+				if(!(label == BlockLabel.Main || label == BlockLabel.Heading)) {
+					none_paragrahs_or_heading.add(currentBlock);
+				}
+			}
+		}
+		return none_paragrahs_or_heading;
+	}
 
 	public String clearHyphenations(List<Block> mainTextLines) {
 		Dehyphenator dehyphenator = getDehyphenator();
@@ -659,16 +684,15 @@ public class PdfExtractionPipeline {
 //			}
 		}
 		
-		{
-//			String path = global_path + "_new_paragraphs_0.txt";
-//			path = global_path + "_news_paragraphs.txt";
+//		{
+//			String path = debug_dir + id + "_new_paragraphs_0.txt";
 //			writeFile(path, "", false);
 //			for(Paragraph ad : paragraphs) {
 //				writeFile(path, "----" + ad.label+ "--------------------\r\n", true);
 //				writeFile(path, ad.text + "---------------------------\r\n", true);
 //			}
-
-		}
+//
+//		}
 		
 //		extractCitations(annotatedDocument, articleMetadata);
 		
@@ -677,14 +701,15 @@ public class PdfExtractionPipeline {
 		String text = extractDocumentText(pageBlocks, labeling, postprocessedReadingOrder, true);		
 		String rawText = extractDocumentText(pageBlocks, labeling, postprocessedReadingOrder, false);		
 		{
-			writeFile(debug_dir + id + "_body_standard.txt", text, false);
-			//writeFile(debug_dir + id + "_body_standard_rawtext.txt", rawText, false);
+//			writeFile(debug_dir + id + "_body_standard.txt", text, false);
 		}
 		{
-			String path = debug_dir + id + "_new_paragraphs_3.txt";
+	//		String path = debug_dir + id + "_new_paragraphs_3.txt";
 			List<Block> blocks_body_and_heading = extractDocumentBody(pageBlocks, labeling, postprocessedReadingOrder, true);
+			List<Block> blocks_none_body_or_heading = extractDocumentNoneBody(pageBlocks, labeling, postprocessedReadingOrder, true);
 			PDFtoStructure pdftoStructure = new PDFtoStructure();
 			List<Paragraph> body_and_heading = pdftoStructure.convert(blocks_body_and_heading, labeling, this);
+			List<Paragraph> none_body_or_heading = pdftoStructure.convert(blocks_none_body_or_heading, labeling, this);
 			//writeFile(path, "", false);
 			//for(Paragraph para : body_and_heading) {
 				//writeFile(path, "----" + para.label+ "--Page " + para.pages + "--" + para.remark + "----------------\r\n", true);
@@ -694,6 +719,7 @@ public class PdfExtractionPipeline {
 		
 		this.pdf = new PDF();
 		pdf.body_and_heading = body_and_heading;
+		pdf.noneBodynorHeading = none_body_or_heading;
 		pdf.htmlTables = articleMetadata.getHtmlTables();
 		pdf.doi = this.doi;
 //		return pdf;
@@ -852,21 +878,21 @@ catch(PdfParserException e) {
 			return false;
 		}
 		{
-			File file = new File(this.debug_dir);
-			if(!file.exists()) {
-				Path pathToFile = Paths.get(file.getAbsolutePath());
-				try {
-					if(Files.createDirectories(pathToFile) == null ){
-						Debug.print("Failed to create folder " + file.getAbsolutePath(), DEBUG_CONFIG.debug_error);
-						return false;
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					Debug.print("Failed to create folder " + file.getAbsolutePath(), DEBUG_CONFIG.debug_error);
-					return false;
-				}	
-			}
+//			File file = new File(this.debug_dir);
+//			if(!file.exists()) {
+//				Path pathToFile = Paths.get(file.getAbsolutePath());
+//				try {
+//					if(Files.createDirectories(pathToFile) == null ){
+//						Debug.print("Failed to create folder " + file.getAbsolutePath(), DEBUG_CONFIG.debug_error);
+//						return false;
+//					}
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//					Debug.print("Failed to create folder " + file.getAbsolutePath(), DEBUG_CONFIG.debug_error);
+//					return false;
+//				}	
+//			}
 		}
 		{
 			File file = new File(this.output_dir);

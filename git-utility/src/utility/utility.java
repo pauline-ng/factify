@@ -47,17 +47,25 @@ public class utility {
 
 			if(!log_f.exists()) {
 				Path pathToFile = Paths.get(path);
+				if(pathToFile.getParent().toFile().canWrite()) {
 				if(Files.createDirectories(pathToFile.getParent()) == null || Files.createFile(pathToFile) == null) {
 					Debug.print("Failed to create file " + path, DEBUG_CONFIG.debug_error);
 					return;
 				}
+				}else {
+					Debug.println("No Write Access to File: " + pathToFile.getParent(), DEBUG_CONFIG.debug_error);
+				}
 			}
-			out = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream(new File(path), append), "UTF-8"));
-			//				out = new BufferedWriter(new FileWriter(new File(path), append));
-			out.append(s);
-			out.flush();
-			out.close();
+			if(new File(path).canWrite()) {
+				out = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(new File(path), append), "UTF-8"));
+				//				out = new BufferedWriter(new FileWriter(new File(path), append));
+				out.append(s);
+				out.flush();
+				out.close();
+			}else {
+				Debug.println("No Write Access to File: " + path, DEBUG_CONFIG.debug_error);
+			}
 
 		}
 		catch(Exception e) {

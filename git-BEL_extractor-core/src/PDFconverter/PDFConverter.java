@@ -34,12 +34,12 @@ public class PDFConverter {
 		return pipeline.getPDF();
 	}
 	public PDF run(File file, String...args) {
-		Debug.print("****Start Parsing PDF****", DEBUG_CONFIG.debug_timeline);
+		Debug.println("****Start Parsing PDF****", DEBUG_CONFIG.debug_timeline);
 		if(!file.exists()) {
-			Debug.print("File " + file.getAbsolutePath() + " does not exist!", DEBUG_CONFIG.debug_error);
+			Debug.println("File " + file.getAbsolutePath() + " does not exist!", DEBUG_CONFIG.debug_error);
 			return null;
 		}else if(!file.isFile()) {
-			Debug.print("File " + file.getAbsolutePath() + " is not a file!", DEBUG_CONFIG.debug_error);
+			Debug.println("File " + file.getAbsolutePath() + " is not a file!", DEBUG_CONFIG.debug_error);
 			return null;
 		}
 //		System.out.println("File "+file.getAbsolutePath());
