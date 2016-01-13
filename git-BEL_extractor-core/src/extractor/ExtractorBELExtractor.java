@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import nlp.Sequence;
 import nlp.StanfordNLPLight;
@@ -769,7 +770,17 @@ public class ExtractorBELExtractor {
 			
 			JSONArray decorations = new JSONArray();
 			for(int i = 0; i < pdf.noneBodynorHeading.size(); i++) {
-				decorations.add(pdf.noneBodynorHeading.get(i).text);
+				String decor = pdf.noneBodynorHeading.get(i).text;
+				if(decor.trim().length() > 0) {
+					StringTokenizer st = new StringTokenizer(decor, " ");
+					int count_words = 10;
+					String decor_truncated = "";
+					while (st.hasMoreTokens() && count_words > 0) {
+						decor_truncated += st.nextToken() + " ";
+						count_words--;
+					}
+					decorations.add(decor_truncated);
+				}
 			}
 			decoration.put("type", "decorations");
 			decoration.put("value", decorations);
