@@ -583,6 +583,16 @@ public class ExtractorBELExtractor {
 	 * 4: Facts Exists.
 	 */
 	public static int examplePDFExtractor_JSON(String...args) {
+		{
+			String[] javaVersionElements = System.getProperty("java.runtime.version").split("\\.");//1.8.0_45-b14
+			try {
+				int major = Integer.parseInt(javaVersionElements[1]);
+				if (major < 8) System.exit(-33);
+			}
+			catch (Exception e ){
+				
+			}
+		}
 		utility util = new utility();
 		if(args.length < 5) {
 			Debug.println("Please input PDF path, output directory, debug directory, matcher file path, and debug_log file!", DEBUG_CONFIG.debug_error);
