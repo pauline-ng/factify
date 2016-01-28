@@ -766,11 +766,16 @@ public class ExtractorBELExtractor {
 			
 		}
 		{//write tables
-			for(String s : pdf.getTables()) {
+			 List<String> htmlTables_string = pdf.htmlTables_string;
+			 List<String> htmlTables_caption = pdf.htmlTables_caption;
+			for(int order = 0; order < htmlTables_string.size(); order++) {
 				 JSONObject obj=new JSONObject();
 				 obj.put("type", "Table");
 //				 obj.put("secID", i + 1);
-				 obj.put("htmlTable", s);
+				 obj.put("htmlTable", htmlTables_string.get(order));
+				 obj.put("caption", htmlTables_caption.get(order));
+				 obj.put("order", order);
+				 
 				 factsToOutput.add(obj);
 			}
 			

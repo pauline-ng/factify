@@ -720,7 +720,9 @@ public class PdfExtractionPipeline {
 		this.pdf = new PDF();
 		pdf.body_and_heading = body_and_heading;
 		pdf.noneBodynorHeading = none_body_or_heading;
-		pdf.htmlTables = articleMetadata.getHtmlTables();
+//		pdf.htmlTables = articleMetadata.getHtmlTables();
+		pdf.htmlTables_caption = articleMetadata.getHtmlTables_caption();
+		pdf.htmlTables_string = articleMetadata.getHtmlTables_string();
 		pdf.doi = this.doi;
 //		return pdf;
 		}
@@ -760,7 +762,7 @@ catch(PdfParserException e) {
 			try {
 				TableCell[][] cells = parser.parseTable(table);
 				String htmlTable = TableUtils.createHtmlTable(cells);
-				articleMetadata.addHtmlTable(table, htmlTable);
+				articleMetadata.addHtmlTable(htmlTable, table.captionBlock.getText());
 			} catch (TableException e) {
 				throw new RuntimeException("Error parsing table "+table.captionBlock.getText(), e);
 			}

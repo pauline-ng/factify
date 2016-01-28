@@ -23,14 +23,16 @@
  */
 package at.knowcenter.code.pdf.blockclassification.detection.metadata;
 
-//import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.HashMap;
 //import java.util.HashSet;
-//import java.util.List;
+import java.util.List;
 import java.util.Map;
 //import java.util.Map.Entry;
 //import java.util.Set;
 //import java.util.regex.Pattern;
+
+
 
 import at.knowcenter.code.api.pdf.TableRegion;
 //import at.knowcenter.code.pdf.blockclassification.detection.metadata.opennlp.references.ReferenceToken;
@@ -39,7 +41,9 @@ import at.knowcenter.code.api.pdf.TableRegion;
 
 public class ArticleMetadataCollector {
 //	final List<DetectedReference> references = new ArrayList<DetectedReference>();
-	final Map<TableRegion, String> htmlTables = new HashMap<TableRegion, String>();
+//	final Map<TableRegion, String> htmlTables = new HashMap<TableRegion, String>();
+	List<String> htmlTables_string =  new ArrayList<String>();
+	List<String> htmlTables_caption = new ArrayList<String>();
 //	final ReferenceMarkerUsage referenceMarkerUsage = new ReferenceMarkerUsage();
 	
 	public void beginArticle() {
@@ -52,8 +56,14 @@ public class ArticleMetadataCollector {
 //		return references;
 //	}
 
-	public Map<TableRegion, String> getHtmlTables() {
-		return htmlTables;
+//	public Map<TableRegion, String> getHtmlTables() {
+//		return htmlTables;
+//	}
+	public List<String> getHtmlTables_string() {
+		return this.htmlTables_string;
+	}
+	public List<String> getHtmlTables_caption() {
+		return this.htmlTables_caption;
 	}
 
 	/**
@@ -72,8 +82,12 @@ public class ArticleMetadataCollector {
 //		references.add(detectedReference);
 //	}
 	
-	public void addHtmlTable(TableRegion tableRegion, String htmlTable) {
-		htmlTables.put(tableRegion, htmlTable);
+//	public void addHtmlTable(TableRegion tableRegion, String htmlTable) {
+//		htmlTables.put(tableRegion, htmlTable);
+//	}
+	public void addHtmlTable(String htmlTable, String caption) {
+		this.htmlTables_string.add(htmlTable);
+		this.htmlTables_caption.add(caption);
 	}
 
     /**
