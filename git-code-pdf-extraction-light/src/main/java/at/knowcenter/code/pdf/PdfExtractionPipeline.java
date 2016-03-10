@@ -715,11 +715,35 @@ public class PdfExtractionPipeline {
 				//writeFile(path, "----" + para.label+ "--Page " + para.pages + "--" + para.remark + "----------------\r\n", true);
 				//writeFile(path, para.text + "---------------------------\r\n", true);
 			//}
-			
+			//looking for candidate titles from none_body_or_heading
+			List<Paragraph> candidateTitles = new ArrayList<Paragraph>();
+			if(none_body_or_heading.size() > 0) {
+				double meanFontSize = 0.0;
+				int k  = 0;
+				int total = 0;
+				while(k < none_body_or_heading.size() ){
+					if(none_body_or_heading.get(k).pages.getStart() < 3) {
+						meanFontSize += none_body_or_heading.get(k).getBodyBlockMeanFontSize();
+						total++;
+					}
+					k++;
+				}
+				meanFontSize = meanFontSize/(double)total;
+				k = 0;
+				while(k < none_body_or_heading.size()) {
+					if(none_body_or_heading.get(k).pages.getStart() < 3 && none_body_or_heading.get(k).getBodyBlockMeanFontSize() > meanFontSize) {
+						candidateTitles.add(none_body_or_heading.get(k));
+					}
+					k++;
+				}
+				
+			}
+			for(Paragraph p : candidateTitles) none_body_or_heading.remove(p);
 		
 		this.pdf = new PDF();
 		pdf.body_and_heading = body_and_heading;
 		pdf.noneBodynorHeading = none_body_or_heading;
+		pdf.candidateTitle = candidateTitles;
 //		pdf.htmlTables = articleMetadata.getHtmlTables();
 		pdf.htmlTables_caption = articleMetadata.getHtmlTables_caption();
 		pdf.htmlTables_string = articleMetadata.getHtmlTables_string();

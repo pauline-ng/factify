@@ -55,4 +55,14 @@ public class Paragraph {
 	public String getHeadingText() {
 		return isHeading() ? headingBlock.getText() : "";
 	}
+	
+	public double getBodyBlockMeanFontSize() {
+		if(this.bodySubBlocks.size() == 0) return -1.0;
+		double mean = 0.0;
+		int i = 0;
+		while(i < this.bodySubBlocks.size()) {
+			mean += this.bodySubBlocks.get(i++).getMeanFontSize();
+		}
+		return mean/(double) this.bodySubBlocks.size();
+	}
 }

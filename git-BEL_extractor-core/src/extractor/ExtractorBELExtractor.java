@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import nlp.Sequence;
 import nlp.StanfordNLPLight;
@@ -724,6 +726,27 @@ public class ExtractorBELExtractor {
 				 factsToOutput.add(acro_freqngram);
 			 }
 			}
+		{//write candidate titles:
+			JSONObject candidateTitles = new JSONObject();
+			
+			JSONArray candidateTitle = new JSONArray();
+			for(int i = 0; i < pdf.candidateTitle.size(); i++) {
+				String decor = pdf.candidateTitle.get(i).text;
+				if(decor.trim().length() > 0) {
+					StringTokenizer st = new StringTokenizer(decor, " ");
+					int count_words = 10;
+					String decor_truncated = "";
+					while (st.hasMoreTokens() && count_words > 0) {
+						decor_truncated += st.nextToken() + " ";
+						count_words--;
+					}
+					candidateTitle.add(decor_truncated);
+				}
+			}
+			candidateTitles.put("type", "Titles");
+			candidateTitles.put("value", candidateTitle);
+			factsToOutput.add(candidateTitles);
+		}
 		int counter_facts = 1;
 		int counter_para = 1;
 		int counter_sec =1;
@@ -773,7 +796,7 @@ public class ExtractorBELExtractor {
 				 obj.put("type", "Table");
 //				 obj.put("secID", i + 1);
 				 obj.put("htmlTable", htmlTables_string.get(order));
-				 obj.put("caption", htmlTables_caption.get(order));
+				 obj.put("caption", getTableCaptionPrefix(htmlTables_caption.get(order)));
 				 obj.put("order", order);
 				 
 				 factsToOutput.add(obj);
@@ -801,6 +824,7 @@ public class ExtractorBELExtractor {
 			decoration.put("value", decorations);
 			factsToOutput.add(decoration);
 		}
+		
 		util.writeFile(fact_file, factsToOutput.toJSONString(), false);
 //		if(nlp == null) nlp = new StanfordNLP("tokenize, ssplit, pos");
 //		{
@@ -814,4 +838,30 @@ public class ExtractorBELExtractor {
 		return 1;
 	}
 	
+	private static String getTableCaptionPrefix(String caption) {
+		//test cases: 
+		/*
+		 * 
+		getTableCaptionPrefix("table 1");// "table 1"
+		getTableCaptionPrefix("table");// "table"
+		getTableCaptionPrefix("table 1.1.1.1");//"table 1.1.1.1"
+		getTableCaptionPrefix("table 1.1");//"table 1.1"
+		getTableCaptionPrefix("Table 1.1.1.");//"Table 1.1.1."
+		getTableCaptionPrefix("table 1.1 2.1");//"table 1.1 2.1"
+		 */
+		String result = caption.trim();
+		String prefix = caption.toLowerCase().trim();
+		String pattern = "table((\\s|\\.)\\d+)*";
+		
+		Pattern p = Pattern.compile(pattern);
+		Matcher m = p.matcher(prefix);
+		if(m.find()) {
+			int start = m.start(); int end = m.end();
+			if(start == 0) {
+				result = result.substring(start, end);
+			}else result = "";
+		}else result = "";
+		System.out.println(result + "--------");
+		return result;
+	}
 }

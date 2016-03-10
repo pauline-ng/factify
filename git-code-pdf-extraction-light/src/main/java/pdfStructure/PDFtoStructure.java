@@ -189,7 +189,7 @@ public class PDFtoStructure {
 				paragraphs.add(para);
 				continue;
 			}
-			//now labeling.getLabel(old) == BlockLabel.Main
+			//now labeling.getLabel(old) == BlockLabel.Main || else
 			List<Block> old_lines = new ArrayList<Block>();
 			old_lines.addAll(old.getSubBlocks());//old.getLineBlocks(); 
 			ArrayList<Block> new_para = new ArrayList<Block>();

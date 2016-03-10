@@ -14,9 +14,11 @@ public class PDF {
 	public List<String> htmlTables_string;
 	public List<String> htmlTables_caption;
 	public List<Paragraph> noneBodynorHeading;
+	public List<Paragraph> candidateTitle;
 	public PDF() {
 		body_and_heading = new ArrayList<Paragraph>();
 		noneBodynorHeading = new ArrayList<Paragraph>();
+		candidateTitle = new ArrayList<Paragraph>();
 		this.htmlTables_caption = new ArrayList<String>();
 		this.htmlTables_string = new ArrayList<String>();
 		
