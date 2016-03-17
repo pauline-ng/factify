@@ -125,17 +125,12 @@ public class StanfordNLPLight {
 		HashSet<String> knowNouns = new HashSet<String>();
 		if(this.stopwords == null) importStopWords();
 		for(CoreMap sentence : sentences) {
-			//				    	 System.out.println(sentence.toShorterString());
 			List<String> words = new ArrayList<String>();
 			List<String> stems = new ArrayList<String>();
 			List<String> POSTag = new ArrayList<String>();
 			List<Span> spans = new ArrayList<Span>();
 			for(CoreMap token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
-				//	    		 String token_s = token.get(CoreAnnotations.LemmaAnnotation.class);
-				//				String stem = wn.StemWordWithWordNet(token.get(CoreAnnotations.TextAnnotation.class));
 				String stem = token.get(CoreAnnotations.LemmaAnnotation.class);
-				//				if(stem == null) stem = token.get(CoreAnnotations.OriginalTextAnnotation.class);
-				//	    		 if(!nlp.stopwords.contains(token_s)) {
 				words.add(token.get(CoreAnnotations.OriginalTextAnnotation.class));
 				stems.add(stem);
 				POSTag.add(token.get(CoreAnnotations.PartOfSpeechAnnotation.class));
@@ -143,8 +138,6 @@ public class StanfordNLPLight {
 						token.get(CoreAnnotations.CharacterOffsetEndAnnotation.class)- sentence.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class)));
 				if(isNoun(POSTag.get(POSTag.size() - 1)) && stem != null) knowNouns.add(stem);
 			}
-			//			System.out.println(words);
-			//			System.out.println(stems);
 			sentences_.add(new Sequence(words, stems, POSTag, spans, para.substring(sentence.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class), sentence.get(CoreAnnotations.CharacterOffsetEndAnnotation.class))));
 		}
 		//refine pos tag: because current taggger may not work for scientific content
@@ -153,9 +146,7 @@ public class StanfordNLPLight {
 				for(int i = 0; i < s.stems.size(); i++) {
 					String token = s.stems.get(i);
 					if(knowNouns.contains(token)) s.POSTags.set(i, "NN");
-					//				   System.out.println(s.words.get(i));
 				}
-				//	    	 System.out.println(s.details());
 			}
 		}
 		return sentences_;
@@ -196,7 +187,6 @@ public class StanfordNLPLight {
 					String token = s.stems.get(i);
 					if(knowNouns.contains(token)) s.POSTags.set(i, "NN");
 				}
-				//	    	 System.out.println(s.details());
 			}
 		}
 		return sentences_;

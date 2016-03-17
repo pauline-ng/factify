@@ -32,14 +32,13 @@ import utility.Span;
 import utility.Debug.DEBUG_CONFIG;
 /**
  * Facts at the server level
- * @author huangxc
  *
  */
 public class S_Facts {
 	C_Facts cfacts;
 	
 	//facts///
-		ArrayList<ArrayList<String>> merge_facts = null;//each element corresponds to a sentence
+	ArrayList<ArrayList<String>> merge_facts = null;//each element corresponds to a sentence
 
 	public S_Facts(C_Facts cfacts) {
 		this.cfacts = cfacts;
@@ -64,7 +63,6 @@ public class S_Facts {
 			
 			int curIndex = -1;//endIndex
 			int curPhysicalIndex = - 1;//physicalIndex
-//			Iterator itr = index.entrySet().iterator();
 			String curFact = "";
 			if(index.size() != fact.size()) {
 				Debug.println("--" + index.size() + "\t" + fact.size() + "\t" + t,DEBUG_CONFIG.debug_S_Facts);
@@ -74,7 +72,6 @@ public class S_Facts {
 			}
 			Iterator<Integer> itr = physicalIndex.keySet().iterator();
 			for(int i = 0; i < fact.size(); i++) {//merge facts
-//				Map.Entry me = (Map.Entry)itr.next();
 				int start_index = (int) index.get(i).getStart();
 				int end_index = (int) index.get(i).getEnd();
 				int start_physical_index = itr.next();
@@ -125,34 +122,14 @@ public class S_Facts {
 				this.merge_facts.get(t).set(m, merge_facts.get(t).get(m).replace("eq-", "eq.").replace("Eq-", "Eq."));
 			}
 		}
-		cleanFacts();
 	}
-	public void cleanFacts() {
-		//1. empty parenthesis
-		//2. empty between two punctuations: hard to decide. e.g. a , , , b. can we delete ,?
-		
-		//delete it if the first fact is , e.g. Yet, we could not identify it.
-//		for(ArrayList<String> senten : merge_facts) {
-//			int i = 0;//index of the first meaningful fact
-//			while(i < senten.size()) {
-//				if(senten.get(i).startsWith(",") 
-//				|| senten.get(i).startsWith(".") ) i++;
-//				else break;
-//			}
-//			merge_facts.set(merge_facts.indexOf(senten),new ArrayList<String>( senten.subList(i, senten.size())));
-//			
-//		}
-		
-		
-	}
+	
 	public void printFacts() {
 		Debug.println("--------------------",DEBUG_CONFIG.debug_S_Facts);
 		for(int i = 0; i < merge_facts.size(); i++) {
-//			Debug.print("[ Page " + (cfacts.pageNum + 1) + ";" + cfacts.paraNum + "th paragraph of section " +  cfacts.secNum + ";" +  i + "th sentence: ");
 			for(int j = 0; j < merge_facts.get(i).size(); j++) {
 				Debug.print(merge_facts.get(i).get(j) + "\t",DEBUG_CONFIG.debug_S_Facts);
 			}
-//			Debug.println(merge_facts.get(i));
 			Debug.println(DEBUG_CONFIG.debug_S_Facts);
 		}
 	}
@@ -163,20 +140,11 @@ public class S_Facts {
 		utility util = new utility();
 		for(int i = 0; i < merge_facts.size(); i++) {
 			String s = "* ";
-//			if(merge_facts.get(i).size() < 2) {
-//				util.writeFile(path, 
-////						"[ Page " + (cfacts.pageNum + 1) + ";" + cfacts.paraNum + "th paragraph of section " +  cfacts.secNum + ";" +  i + "th sentence: " +
-//			"* " + "\r\n",
-//						true);
-//			}
 			for(int j = 0; j < merge_facts.get(i).size(); j++) {
 				s += merge_facts.get(i).get(j);
 				if(j != merge_facts.get(i).size() - 1) s += ", ";
-//				Debug.print();
 			}
 			util.writeFile(path, 
-//					"[ Page " + (cfacts.pageNum + 1) + ";" + cfacts.paraNum + "th paragraph of section " +  cfacts.secNum + ";" +  i + "th sentence: " +
-//		"* " +	merge_facts.get(i).toString().replace("[", "").replace("]", "") + "\r\n",
 					s + "\r\n\r\n",
 					true);
 			util.writeFile(path, "\r\n",true);
@@ -187,22 +155,10 @@ public class S_Facts {
 		String output = "";
 		for(int i = 0; i < merge_facts.size(); i++) {
 			String s = "* ";
-//			if(merge_facts.get(i).size() < 2) {
-//				util.writeFile(path, 
-////						"[ Page " + (cfacts.pageNum + 1) + ";" + cfacts.paraNum + "th paragraph of section " +  cfacts.secNum + ";" +  i + "th sentence: " +
-//			"* " + "\r\n",
-//						true);
-//			}
 			for(int j = 0; j < merge_facts.get(i).size(); j++) {
 				s += merge_facts.get(i).get(j);
 				if(j != merge_facts.get(i).size() - 1) s += "    ";
-//				Debug.print();
 			}
-//			util.writeFile(path, 
-//					"[ Page " + (cfacts.pageNum + 1) + ";" + cfacts.paraNum + "th paragraph of section " +  cfacts.secNum + ";" +  i + "th sentence: " +
-//		"* " +	merge_facts.get(i).toString().replace("[", "").replace("]", "") + "\r\n",
-//					s + "\r\n\r\n",
-//					true);
 			if(startingIndex != -1 && withOriginalText) 
 				output += "sent" + startingIndex + "\t";
 			
@@ -213,8 +169,6 @@ public class S_Facts {
 			if(withDetails) output += cfacts.matchingDetial_description.get(i) + "\r\n";
 			if(!xml) output += "\r\n";
 			if(startingIndex != -1) startingIndex++;
-			
-//			util.writeFile(path, "\r\n",true);
 		}
 		output = output.replace("-LRB-", "(").replace("-RRB-", ")").replace("-RSB-", "]").replace("-LSB-", "[");
 		if(xml) output += "----------------------------------------------------------------\r\n";
@@ -226,16 +180,9 @@ public class S_Facts {
 		JSONArray objs = new JSONArray();
 		for(int i = 0; i < merge_facts.size(); i++) {
 			String s = "* ";
-//			if(merge_facts.get(i).size() < 2) {
-//				util.writeFile(path, 
-////						"[ Page " + (cfacts.pageNum + 1) + ";" + cfacts.paraNum + "th paragraph of section " +  cfacts.secNum + ";" +  i + "th sentence: " +
-//			"* " + "\r\n",
-//						true);
-//			}
 			for(int j = 0; j < merge_facts.get(i).size(); j++) {
 				s += merge_facts.get(i).get(j);
 				if(j != merge_facts.get(i).size() - 1) s += "    ";
-//				Debug.print();
 			}
 			if(startingIndex < 0) 
 				Debug.println("ERROR in toJASON! startingIndex==" + startingIndex,DEBUG_CONFIG.debug_error);
@@ -243,12 +190,10 @@ public class S_Facts {
 			obj.put("type", "Sentence");
 			obj.put("senID", startingIndex);
 			obj.put("paragraphPageRange", cfacts.pageRange.toString());
-//			obj.put("sentence", cfacts.sentences.get(i));
 			obj.put("fact", s.replace("-LRB-", "(").replace("-RRB-", ")").replace("-RSB-", "]").replace("-LSB-", "["));
 			obj.put("details", cfacts.matchingDetial_description.get(i));
 			startingIndex++;
 			objs.add(obj);
-//			util.writeFile(path, "\r\n",true);
 		}
 		output = output.replace("-LRB-", "(").replace("-RRB-", ")").replace("-RSB-", "]").replace("-LSB-", "[");
 		return objs;

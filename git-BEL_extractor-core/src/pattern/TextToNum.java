@@ -27,7 +27,6 @@ import utility.Debug.DEBUG_CONFIG;
  * Convert text to non-negative integers (long): cannot deal with decimal or negatives
  * --cannot deal with "half an hour" or "a hundred"
  * 
- * @author huangxc
  *
  */
 public class TextToNum {
@@ -36,46 +35,6 @@ public class TextToNum {
 	  public static void main(String[] args) throws SpellException {
 		  TextToNum textToNum = new TextToNum();
 		  Debug.println(textToNum.parse("test"),DEBUG_CONFIG.debug_temp);
-//		  
-//          long value = 0L;
-//
-//          for (long i = 0; i <= 10L; i++) {
-//                  value = value * 10 + i;
-//                  readOutAgain(value);
-//          }
-//
-//          readOut(100001);
-//
-//          value = 0L;
-//
-//          for (long i = 10; i >= 0L; i--) {
-//                  value = value * 10 + i;
-//                  readOutAgain(value);
-//          }
-//
-//          Scanner in = new Scanner(System.in);
-//          Debug.println("Value : "
-//                  + WithSeparator(parse("fifty five")));
-//          System.exit(0);
-//          for (;;) {
-//                  try {
-//                          Debug.print("Number in words : ");
-//                          String numberWordsText = in.nextLine();
-//
-//                          if (numberWordsText.equals("."))
-//                                  break;
-//                          else if (numberWordsText.equals(""))
-//                                  continue;
-//
-//                          Debug.println("Value : "
-//                                          + WithSeparator(parse(numberWordsText)));
-//
-//                  } catch (Exception e) {
-//                          System.err.println(e.getMessage());
-//
-//                  }
-//          }
-//
   }
 
   private  void readOut(long value) {
@@ -319,8 +278,6 @@ public class TextToNum {
 		
 	}
 }
-
-//}
 
 class SpellException extends Exception {
 

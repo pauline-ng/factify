@@ -20,7 +20,6 @@ import de.lodde.jnumwu.formula.Expression;
 
 /**
  * Library from http://sourceforge.net/p/jnumwu/wiki/markdown_syntax/
- * @author huangxc
  *
  */
 public class UnitsRecognizer {
@@ -66,11 +65,9 @@ public class UnitsRecognizer {
 				String class_str = parseExpression.getClass().toString();
 				if(parseExpression.hasUnits() && 
 						(class_str.equals("class de.lodde.jnumwu.formula.Constant") || class_str.equals("de.lodde.jnumwu.formula.Div"))) {
-//					System.out.println(parseExpression.toString());
 					if(followingNumber) return true;
 				}
 			}catch(StackOverflowError | NumberFormatException e) {
-//				System.out.println("ERROR");
 				return false;
 			}
 		return false;

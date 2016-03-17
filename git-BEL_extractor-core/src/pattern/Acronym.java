@@ -29,8 +29,9 @@ import nlp.StanfordNLPLight;
 
 
 /**
- * this class is from a paper
- * @author huangxc
+ * this class is from the following paper
+ * 
+ * Hearst, MAAS Schwartz. "A simple algorithm for identifying abbreviation definitions in biomedical text." (2003): 451-62.
  *
  */
 public class Acronym {
@@ -76,70 +77,7 @@ public class Acronym {
 		return longForm.substring(lIndex); 
 
 	}
-//	public static Map<String, Sequence> findAcronyms(String text, StanfordNLPLight nlp) {
-//		Acronym acronym = new Acronym();
-////		Properties props = new Properties();
-////		props.put("annotators", "tokenize, ssplit, pos");
-////		StanfordNLP nlp = new StanfordNLP(props);
-////		if(nlp.stopwords == null) nlp.importStopWords();
-//
-//		Map<String, Sequence> acronyms_all = new HashMap<String, Sequence>();
-//		String s = text;
-//		Annotation annotation = new Annotation(s);
-//		nlp.pipeline.annotate(annotation);
-//		List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
-//		for(CoreMap sen_ : sentences) {
-//			String sen = sen_.get(CoreAnnotations.TextAnnotation.class);
-//			Stack<Integer> st = new Stack<Integer>();//stack for parenthesis
-//			ArrayList<Integer> start_index_parenthesis = new ArrayList<Integer>();
-//			ArrayList<Integer> end_index_parenthesis = new ArrayList<Integer>();
-//			for(int i = 0; i < sen.length(); i++) {
-//				char c = sen.charAt(i);
-//				switch(c) {
-//				case '(' :
-//					st.push(i);
-//					break;
-//				case ')':
-//					if(st.empty()) {//too many ')'
-//						Debug.println("WARNING: there are unpaired parenthesis: " + sen,DEBUG_CONFIG.debug_warning);
-//						break;
-//					}
-//					start_index_parenthesis.add((int)st.pop());
-//					end_index_parenthesis.add(i);
-//					//							Debug.println(sen);
-//					break;
-//				default:
-//				}
-//
-//			}
-//			if(!st.empty()) {//too many '('
-//				Debug.println("WARNING: there are unpaired parenthesis: " + sen,DEBUG_CONFIG.debug_warning);
-//			}
-//			for(int i = 0; i < start_index_parenthesis.size(); i++) {
-//				String acronyms = sen.substring(start_index_parenthesis.get(i) + 1, end_index_parenthesis.get(i));
-//				String candidate = sen.substring(0, start_index_parenthesis.get(i));
-//				candidate.trim();
-//				candidate = acronym.findBestLongForm(acronyms, candidate);
-//				//							Debug.println(acronyms + "\t" + candidate);
-//				if(candidate != null && candidate.length() > 0) {
-//					if(acronyms_all.containsKey(acronyms)) {
-//						if(!candidate.equals(acronyms_all.get(acronyms))) {
-//							Debug.println("WARNING: acronym \"" + acronyms + "\" has more than one long forms: \"" + candidate + "\" and " + acronyms_all.get(acronyms),DEBUG_CONFIG.debug_warning  );
-//						}
-//						continue;
-//					}
-//					if(candidate.length() > 20 * acronyms.length()) {//invalid
-//						Debug.println("WARNING: INVALID acronym \"" + acronyms + "\" : \"" + candidate + "\" ",DEBUG_CONFIG.debug_warning );
-//						continue;
-//					}
-//					acronyms_all.put(acronyms, nlp.textToSequence(candidate,false).get(0));
-//				}
-//			}
-//
-//		}
-//		return acronyms_all;
-//		
-//	}
+
 	public static Map<String, Sequence> findAcronyms(List<Sequence> sentences, StanfordNLPLight nlp) {
 		Acronym acronym = new Acronym();
 		Map<String, Sequence> acronyms_all = new HashMap<String, Sequence>();
@@ -197,12 +135,6 @@ public class Acronym {
 	}
 	public static Map<String, String> findAcronyms(String text) {
 		Acronym acronym = new Acronym();
-//		Properties props = new Properties();
-//		props.put("annotators", "tokenize, ssplit, pos");
-//		StanfordNLP nlp = new StanfordNLP(props);
-//		if(nlp.stopwords == null) nlp.importStopWords();
-
-//		Map<String, Sequence> acronyms_all = new HashMap<String, Sequence>();
 		Map<String, String> acronyms_all = new HashMap<String, String>();
 		String s = text;
 			Stack<Integer> st = new Stack<Integer>();//stack for parenthesis
@@ -221,7 +153,6 @@ public class Acronym {
 					}
 					start_index_parenthesis.add((int)st.pop());
 					end_index_parenthesis.add(i);
-					//							Debug.println(sen);
 					break;
 				default:
 				}
@@ -236,7 +167,6 @@ public class Acronym {
 				String candidate = s.substring(0, start_index_parenthesis.get(i));
 				candidate.trim();
 				candidate = acronym.findBestLongForm(acronyms, candidate);
-				//							Debug.println(acronyms + "\t" + candidate);
 				if(candidate != null && candidate.length() > 1) {
 					if(acronyms_all.containsKey(acronyms)) {
 						if(!candidate.equals(acronyms_all.get(acronyms))) {

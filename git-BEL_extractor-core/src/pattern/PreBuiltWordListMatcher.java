@@ -49,10 +49,6 @@ public class PreBuiltWordListMatcher implements Match{
  				Debug.println("Warning: " + s + " in " + fileName + " has " + seqs.size() + " sentences!", DEBUG_CONFIG.debug_warning);
  			}
  			wordList.addAll(seqs);
-//			StringTokenizer st = new StringTokenizer(s, " ");
-//			List<String> ele = new ArrayList<String>();
-//			while(st.hasMoreTokens()) ele.add(st.nextToken());
-//			wordList.add(new Sequence(null, ele, null, null, s));//sequence equality is based on stems
 		}
 		int length = args.length;
 		if(length > 0) {

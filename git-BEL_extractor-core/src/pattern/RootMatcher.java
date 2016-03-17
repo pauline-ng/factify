@@ -174,7 +174,6 @@ public class RootMatcher {
 	}
 	
 	public  C_Facts parsePara(List<Sequence> sentences, HashSet<Sequence> freSeq_, Map<String, Sequence> acronyms, Span pageRange) {
-//		String para = "This bag costs 100. It is a million dollars. It's improved by 10 % with p <= 0.001.Mine is better than his.";
 		if(this.matchers.size() == 0) {
 			Debug.print("No matcher is found!", DEBUG_CONFIG.debug_error);
 			return null;
@@ -271,7 +270,6 @@ public class RootMatcher {
 				detail += "}\r\n";
 			}
 			if(acronyms!= null){
-				//					acronyms.add("subunit");
 				List<Span> acros = pm.extractAcronyms(s, acronyms);
 				matchingDetail.add(acros);
 				detail += "Acronyms: \r\n";
@@ -298,15 +296,5 @@ public class RootMatcher {
 		}
 		C_Facts cFact = pm.formFacts(allFacts, sentences, matchingDetail_description, pageRange);
 		return cFact;
-		
-//		for(int i = 0; i < sentences.size(); i++) {
-//			Debug.println(sentences.get(i).sourceString);
-//			Debug.print("**\t");
-//			for(Span span : allFacts.get(i)) Debug.print(span.getCoveredText(sentences.get(i).sourceString) + "\t");
-//			Debug.println("**");
-//		}
-		
-		
-		
 	}
 }

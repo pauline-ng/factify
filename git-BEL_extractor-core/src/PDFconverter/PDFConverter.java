@@ -41,7 +41,6 @@ public class PDFConverter {
 			Debug.print("File " + file.getAbsolutePath() + " is not a file!", DEBUG_CONFIG.debug_error);
 			return null;
 		}
-//		System.out.println("File "+file.getAbsolutePath());
 		PdfExtractionPipeline pipeline = new PdfExtractionPipeline();
 		String fileName = file.getName();
 		if(!pipeline.setParameter(fileName.endsWith(".pdf") ? fileName.substring(0, fileName.length() - 4) : fileName,
@@ -61,7 +60,6 @@ public class PDFConverter {
 			Debug.println("File " + file.getAbsolutePath() + " is not a file!", DEBUG_CONFIG.debug_error);
 			return null;
 		}
-//		System.out.println("File "+file.getAbsolutePath());
 		PdfExtractionPipeline pipeline = new PdfExtractionPipeline();
 		if(!pipeline.setParameter(args))
 			return null;
