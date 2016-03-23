@@ -24,8 +24,6 @@
 package at.knowcenter.code.pdf.blockclassification.detection;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -254,32 +252,32 @@ public class FigureDetector implements Detector {
 	 * @param labeling
 	 * @param neighborhood
 	 */
-	private void findImageRegion(List<ImageRegion> images, Page page, Block pageBlock, Block captionBlock, BlockLabeling labeling, BlockNeighborhood neighborhood) {
-		Image closest = null;
-		double closestDistance = Double.POSITIVE_INFINITY;
-		for(Image image: page.getImages()) {
-			boolean found = false;
-			for(ImageRegion imageRegion: images) {
-				if(imageRegion.images.contains(image)) {
-					found = true;
-					break;
-				}
-			}
-			if(found) continue;
-			
-			double distance = BoundingBox.distance(image.getBoundingBox(), captionBlock.getBoundingBox());
-			if(distance < closestDistance) {				
-				if(!found) {
-					closestDistance = distance;
-					closest = image;
-				}
-			}
-		}
-		if(closest != null) {
-			ImageRegion imageRegion = new ImageRegion(captionBlock, Arrays.asList(closest), new ArrayList<Line>(), new ArrayList<Block>());
-			images.add(imageRegion);
-		}
-	}
+//	private void findImageRegion(List<ImageRegion> images, Page page, Block pageBlock, Block captionBlock, BlockLabeling labeling, BlockNeighborhood neighborhood) {
+//		Image closest = null;
+//		double closestDistance = Double.POSITIVE_INFINITY;
+//		for(Image image: page.getImages()) {
+//			boolean found = false;
+//			for(ImageRegion imageRegion: images) {
+//				if(imageRegion.images.contains(image)) {
+//					found = true;
+//					break;
+//				}
+//			}
+//			if(found) continue;
+//			
+//			double distance = BoundingBox.distance(image.getBoundingBox(), captionBlock.getBoundingBox());
+//			if(distance < closestDistance) {				
+//				if(!found) {
+//					closestDistance = distance;
+//					closest = image;
+//				}
+//			}
+//		}
+//		if(closest != null) {
+//			ImageRegion imageRegion = new ImageRegion(captionBlock, Arrays.asList(closest), new ArrayList<Line>(), new ArrayList<Block>());
+//			images.add(imageRegion);
+//		}
+//	}
 	
 	private boolean isImageCaptionBlock(Block block, BlockLabeling labeling) {
 		if (labeling.hasLabel(block, BlockLabel.Caption)) {

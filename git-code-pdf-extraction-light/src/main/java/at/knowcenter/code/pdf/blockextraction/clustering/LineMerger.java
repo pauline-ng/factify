@@ -121,17 +121,17 @@ public class LineMerger extends HorizontalFragmentMerger {
      * @param fragments
      * @return
      */
-    private boolean isInitialCandidate(List<TextFragment> fragments) {
-        TextFragment textFragment = fragments.get(fragments.size()-1);
-        boolean isCandidate = StringUtils.contains("0123456789IVXabcivx.", textFragment.getText());
-        if (isCandidate) {
-            StringBuilder builder = new StringBuilder();
-            for (TextFragment fragment : fragments) {
-                builder.append(fragment.getText());
-            }
-            return DocumentStructureExtractor.headingPattern.matcher(builder).matches();
-        }
-        return isCandidate;
-    }
+//    private boolean isInitialCandidate(List<TextFragment> fragments) {
+//        TextFragment textFragment = fragments.get(fragments.size()-1);
+//        boolean isCandidate = StringUtils.contains("0123456789IVXabcivx.", textFragment.getText());
+//        if (isCandidate) {
+//            StringBuilder builder = new StringBuilder();
+//            for (TextFragment fragment : fragments) {
+//                builder.append(fragment.getText());
+//            }
+//            return DocumentStructureExtractor.headingPattern.matcher(builder).matches();
+//        }
+//        return isCandidate;
+//    }
 
 }

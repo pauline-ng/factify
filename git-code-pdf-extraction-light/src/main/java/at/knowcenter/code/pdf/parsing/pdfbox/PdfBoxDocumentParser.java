@@ -28,36 +28,22 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.pdfbox.io.IOUtils;
-import org.apache.pdfbox.pdfviewer.PageDrawer;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.common.PDStream;
-import org.apache.pdfbox.pdmodel.font.PDFont;
 
-import utility.Debug;
-import utility.Debug.DEBUG_CONFIG;
-import utility.utility;
 import at.knowcenter.code.api.pdf.Document;
 import at.knowcenter.code.api.pdf.Font;
-import at.knowcenter.code.api.pdf.ImageRegion;
 import at.knowcenter.code.api.pdf.Page;
-import at.knowcenter.code.api.pdf.Page.Image;
-import at.knowcenter.code.api.pdf.Page.Line;
 import at.knowcenter.code.api.pdf.PdfParser;
-import at.knowcenter.code.pdf.PdfExtractionPipeline;
 
 /**
  * Implementation of the PDF document parser based on the PDFBox library.
@@ -237,17 +223,17 @@ public class PdfBoxDocumentParser implements PdfParser {
 
     
     public static void main(String[] args) throws PdfParserException, IOException {
-    	long start = System.nanoTime();
-		Document document = new PdfBoxDocumentParser().parse(new File("C:/Users/mzechner/Desktop/code/DOW CODE (296150) 2012-01-30.pdf"));
-		int i = 1;
-		for(Page page: document.getPages()) {
-			System.out.println("page " + i++);
-			int j = 0;
+//    	long start = System.nanoTime();
+//		Document document = new PdfBoxDocumentParser().parse(new File("C:/Users/mzechner/Desktop/code/DOW CODE (296150) 2012-01-30.pdf"));
+//		int i = 1;
+//		for(Page page: document.getPages()) {
+//			System.out.println("page " + i++);
+//			int j = 0;
 //			for(Image image: page.getImages()) {
 //				System.out.println("writting image file");
 //				FileUtils.writeByteArrayToFile(new File("d:/temp/image" + i + "-" + j + ".png"), image.getByteArray());
 //			}
-		}
-		System.out.println("took: " + (System.nanoTime()-start)/1000000000.0f + " secs");
+//		}
+//		System.out.println("took: " + (System.nanoTime()-start)/1000000000.0f + " secs");
 	}
 }

@@ -132,17 +132,17 @@ public class WordMerger extends HorizontalFragmentMerger {
         return Double.NaN;
     }
 
-    private boolean endsWithLetter(TextFragment frag) {
-        int length = frag.getText().length();
-        if (length == 0) { return false; }
-        
-        boolean result = false;
-        char c = frag.getText().charAt(length-1);
-        if (Character.isLetter(c)) {
-            result = true;
-        }
-        return result;
-    }
+//    private boolean endsWithLetter(TextFragment frag) {
+//        int length = frag.getText().length();
+//        if (length == 0) { return false; }
+//        
+//        boolean result = false;
+//        char c = frag.getText().charAt(length-1);
+//        if (Character.isLetter(c)) {
+//            result = true;
+//        }
+//        return result;
+//    }
     
     private boolean startsWithDigit(TextFragment frag) {
         boolean isDigit = false;
@@ -153,17 +153,17 @@ public class WordMerger extends HorizontalFragmentMerger {
         return isDigit;
     }
     
-    private boolean endsWithDigit(TextFragment frag) {
-        int length = frag.getText().length();
-        if (length == 0) { return false; }
-        
-        boolean result = false;
-        char c = frag.getText().charAt(length-1);
-        if (Character.isDigit(c)) {
-            result = true;
-        }
-        return result;
-    }
+//    private boolean endsWithDigit(TextFragment frag) {
+//        int length = frag.getText().length();
+//        if (length == 0) { return false; }
+//        
+//        boolean result = false;
+//        char c = frag.getText().charAt(length-1);
+//        if (Character.isDigit(c)) {
+//            result = true;
+//        }
+//        return result;
+//    }
     
     private boolean startsWithLetter(TextFragment frag) {
         boolean isDigit = false;
@@ -174,24 +174,24 @@ public class WordMerger extends HorizontalFragmentMerger {
         return isDigit;
     }
     
-    private int getType(TextFragment frag) {
-        int result = 0;
-        String text = frag.getText();
-        for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
-            if (Character.isLetter(c)) {
-                if (result == 0 || result == 1) { result = 1; }
-                else { result = -1; }
-            } else if (Character.isDigit(c)) {
-                if (result == 0 || result == 2) { result = 2; }
-                else { result = -1; }
-            } else {
-                if (result == 0 || result == 3) { result = 3; }
-                else { result = -1; }
-            }
-        }
-        return result;
-    }
+//    private int getType(TextFragment frag) {
+//        int result = 0;
+//        String text = frag.getText();
+//        for (int i = 0; i < text.length(); i++) {
+//            char c = text.charAt(i);
+//            if (Character.isLetter(c)) {
+//                if (result == 0 || result == 1) { result = 1; }
+//                else { result = -1; }
+//            } else if (Character.isDigit(c)) {
+//                if (result == 0 || result == 2) { result = 2; }
+//                else { result = -1; }
+//            } else {
+//                if (result == 0 || result == 3) { result = 3; }
+//                else { result = -1; }
+//            }
+//        }
+//        return result;
+//    }
     
     private boolean isSeparatorChar(TextFragment frag) {
         boolean isSeparatorChar = false;

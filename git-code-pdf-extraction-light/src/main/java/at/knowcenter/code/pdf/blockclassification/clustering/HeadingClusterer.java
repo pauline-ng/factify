@@ -24,8 +24,6 @@
 package at.knowcenter.code.pdf.blockclassification.clustering;
 
 import gnu.trove.TIntHashSet;
-import gnu.trove.iterator.TCharIntIterator;
-import gnu.trove.map.hash.TCharIntHashMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -394,18 +392,18 @@ public class HeadingClusterer extends DocumentStructureExtractor {
         return lastChar;
 	}
 	
-	private char getMajorityChar(TCharIntHashMap charCount) {
-        int maxFreq = 0;
-        char majorityChar = ' ';
-        for (TCharIntIterator it = charCount.iterator(); it.hasNext(); ) {
-        	it.advance();
-        	if (it.value() > maxFreq) {
-        		maxFreq = it.value();
-        		majorityChar = it.key();
-        	}
-        }
-        return majorityChar;
-	}
+//	private char getMajorityChar(TCharIntHashMap charCount) {
+//        int maxFreq = 0;
+//        char majorityChar = ' ';
+//        for (TCharIntIterator it = charCount.iterator(); it.hasNext(); ) {
+//        	it.advance();
+//        	if (it.value() > maxFreq) {
+//        		maxFreq = it.value();
+//        		majorityChar = it.key();
+//        	}
+//        }
+//        return majorityChar;
+//	}
 
 
 }

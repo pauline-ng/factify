@@ -23,9 +23,7 @@
  */
 package at.knowcenter.code.pdf.blockclassification.detection.metadata;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
 
 import at.knowcenter.code.api.pdf.Block;
 import at.knowcenter.code.api.pdf.Page;

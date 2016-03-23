@@ -62,9 +62,9 @@ public class DualClusteringTableParser implements TableParser {
 			this.word2 = word2;
 		}
 		
-		public float getSize() { 
-			return max - min; 
-		}
+//		public float getSize() { 
+//			return max - min; 
+//		}
 		
 		@Override
 		public String toString() {

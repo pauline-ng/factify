@@ -24,8 +24,6 @@
 package at.knowcenter.code.pdf.blockclassification.detection.metadata;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,7 +35,6 @@ import at.knowcenter.code.api.pdf.Page;
 import at.knowcenter.code.api.pdf.ReadingOrder;
 import at.knowcenter.code.api.pdf.TextFragment;
 import at.knowcenter.code.pdf.blockclassification.BlockLabeling;
-import at.knowcenter.code.pdf.blockrelation.geometric.BlockNeighborhood;
 import at.knowcenter.code.pdf.blockrelation.geometric.DefaultBlockNeighborhood;
 
 public class PdfArticle {

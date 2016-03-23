@@ -24,15 +24,14 @@
 
 package at.knowcenter.code.pdf.blockextraction.clustering;
 
-import gnu.trove.map.hash.TObjectDoubleHashMap;
-import gnu.trove.procedure.TObjectDoubleProcedure;
-import gnu.trove.set.hash.TIntHashSet;
+//import gnu.trove.map.hash.TObjectDoubleHashMap;
+//import gnu.trove.procedure.TObjectDoubleProcedure;
+//import gnu.trove.set.hash.TIntHashSet;
 
 import java.util.Comparator;
-import java.util.HashMap;
+//import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import at.knowcenter.code.api.pdf.Block;
 import at.knowcenter.code.api.pdf.BoundingBox;

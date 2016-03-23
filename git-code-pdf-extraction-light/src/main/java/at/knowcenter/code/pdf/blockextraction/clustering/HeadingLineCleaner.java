@@ -24,14 +24,12 @@
 
 package at.knowcenter.code.pdf.blockextraction.clustering;
 
-import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import at.knowcenter.code.api.pdf.Block;
 import at.knowcenter.code.api.pdf.BoundingBox;
 import at.knowcenter.code.api.pdf.Page;
-import at.knowcenter.code.api.pdf.TextFragment;
 import at.knowcenter.code.pdf.toc.DocumentStructureExtractor;
 
 /**

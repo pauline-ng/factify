@@ -29,8 +29,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import at.knowcenter.code.api.pdf.BoundingBox;
-import at.knowcenter.code.pdf.utils.GeometricUtils;
 
 class Histogram {
 	private final int[] histogram;

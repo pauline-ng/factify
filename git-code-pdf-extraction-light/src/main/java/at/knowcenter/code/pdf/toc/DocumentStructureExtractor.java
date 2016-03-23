@@ -26,14 +26,12 @@ import gnu.trove.TIntHashSet;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +50,6 @@ import at.knowcenter.code.api.pdf.Font;
 import at.knowcenter.code.api.pdf.ReadingOrder;
 import at.knowcenter.code.api.pdf.TextFragment;
 import at.knowcenter.code.pdf.blockclassification.BlockLabeling;
-import at.knowcenter.code.pdf.toc.DocumentStructureExtractor.Cluster;
 import at.knowcenter.util.io.CompressionUtils;
 
 /**

@@ -33,7 +33,6 @@ import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.cos.COSNumber;
 import org.apache.pdfbox.cos.COSStream;
-import org.apache.pdfbox.pdfviewer.PageDrawer;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.graphics.PDGraphicsState;
@@ -113,7 +112,7 @@ public class LineAndImageCollector {
 	    @Override
 	    public void process(PDFOperator operator, List<COSBase> arguments) {
             PdfTextFragmentCollector collector = (PdfTextFragmentCollector)context;
-            Page page = collector.getPdfPage();
+//            Page page = collector.getPdfPage();
 	        collector.finishLine();
 	    }
 	}
@@ -186,8 +185,8 @@ public class LineAndImageCollector {
 	     * @throws IOException If there is an error displaying the inline image.
 	     */
 	    public void process(PDFOperator operator, List<COSBase> arguments)  throws IOException {
-	        PdfTextFragmentCollector collector = (PdfTextFragmentCollector)context;
-	        Page page = collector.getPdfPage();
+//	        PdfTextFragmentCollector collector = (PdfTextFragmentCollector)context;
+//	        Page page = collector.getPdfPage();
 //	        PDInlinedImage image = new PDInlinedImage();
 //	        image.setImageParameters( operator.getImageParameters() );
 //	        image.setImageData( operator.getImageData() );

@@ -26,7 +26,6 @@ import gnu.trove.TFloatArrayList;
 import gnu.trove.list.array.TIntArrayList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -115,7 +114,7 @@ public class ParagraphExtractor {
                         isFirstLineLeftOutlier = false;
                     }
                     boolean isLastLineOutlier;
-                    OutlierInformation rightOutliers = null;
+//                    OutlierInformation rightOutliers = null;
                     if (isRightAligned) {
                         TIntArrayList rightOutlierIndices = new TIntArrayList();
                         for (int k = 0; k < ends.size(); k++) {

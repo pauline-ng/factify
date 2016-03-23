@@ -170,7 +170,7 @@ public class MainTextDetector implements Detector {
 		int totalLines = clusterer.getTotalLines();
 		SortedSet<BlockCluster> sortedClusters = new TreeSet<BlockCluster>(clusters);
 		
-		float pageWidth = document.getPages().get(0).getWidth();
+//		float pageWidth = document.getPages().get(0).getWidth();
 		
 		float totalSizeFraction = 0.0f;
 		float lastSizeFraction = 0.0f;

@@ -24,17 +24,16 @@
 package at.knowcenter.code.pdf.utils.text;
 
 import java.io.BufferedReader;
-import java.io.File;
+//import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Properties;
+//import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.fontbox.util.ResourceLoader;
 import org.apache.lucene.analysis.compound.hyphenation.Hyphenation;
 import org.apache.lucene.analysis.compound.hyphenation.HyphenationException;
 import org.xml.sax.InputSource;

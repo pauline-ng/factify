@@ -119,14 +119,14 @@ public class NGrams {
 	 * @param end
 	 * @return
 	 */
-	private String concatenate (ArrayList<String> tokens, int begin, int end) {
+	/*private String concatenate (ArrayList<String> tokens, int begin, int end) {
 		String result = "";
 		for(int i = begin; i < tokens.size() && i < end; i++) {
 			result = result + " " + tokens.get(i);
 		}
 		
 		return result.trim();
-	}
+	}*/
 	
 	public boolean isStopWords(Sequence s) {
 		for(int i = 0; i < s.stems.size(); i++) {

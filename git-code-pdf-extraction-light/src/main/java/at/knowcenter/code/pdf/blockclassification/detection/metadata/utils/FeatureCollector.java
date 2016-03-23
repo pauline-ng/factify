@@ -24,25 +24,8 @@
 package at.knowcenter.code.pdf.blockclassification.detection.metadata.utils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-
-import weka.core.Attribute;
-import weka.core.FastVector;
-import weka.core.Instances;
-import weka.core.SparseInstance;
-import weka.core.converters.ArffLoader;
-import weka.core.converters.ArffSaver;
 
 /**
  * 

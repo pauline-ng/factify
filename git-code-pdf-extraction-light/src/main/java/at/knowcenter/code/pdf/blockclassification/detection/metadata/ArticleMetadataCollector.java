@@ -24,20 +24,7 @@
 package at.knowcenter.code.pdf.blockclassification.detection.metadata;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-//import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-//import java.util.Map.Entry;
-//import java.util.Set;
-//import java.util.regex.Pattern;
-
-
-
-import at.knowcenter.code.api.pdf.TableRegion;
-//import at.knowcenter.code.pdf.blockclassification.detection.metadata.opennlp.references.ReferenceToken;
-//import at.knowcenter.code.pdf.blockclassification.detection.references.DetectedReference;
-//import at.knowcenter.code.pdf.blockclassification.detection.references.ReferenceMarkerUsage;
 
 public class ArticleMetadataCollector {
 //	final List<DetectedReference> references = new ArrayList<DetectedReference>();

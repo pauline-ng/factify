@@ -24,7 +24,6 @@ package at.knowcenter.code.pdf.parsing.pdfbox;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +31,6 @@ import org.apache.pdfbox.pdfviewer.PageDrawer;
 import org.apache.pdfbox.pdmodel.common.PDMatrix;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDFontDescriptor;
-import org.apache.pdfbox.util.Matrix;
 import org.apache.pdfbox.util.TextPosition;
 
 import at.knowcenter.code.api.annotations.PdfPosition;

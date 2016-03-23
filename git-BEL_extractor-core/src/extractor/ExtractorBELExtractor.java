@@ -16,11 +16,7 @@
  */
 package extractor;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,9 +34,6 @@ import nlp.StanfordNLPLight;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import pattern.Acronym;
 import pattern.NGrams;
@@ -48,7 +41,6 @@ import pattern.RootMatcher;
 import pdfStructure.PDF;
 import pdfStructure.Paragraph;
 import utility.Debug;
-import utility.Span;
 import utility.utility;
 import utility.Debug.DEBUG_CONFIG;
 import knowledge_model.C_Facts;
@@ -233,8 +225,6 @@ public class ExtractorBELExtractor {
 			factsToOutput.add(candidateTitles);
 		}
 		int counter_facts = 1;
-		int counter_para = 1;
-		int counter_sec =1;
 		for(int i = 0; i < pdf.body_and_heading.size(); i++) {
 			Paragraph para = pdf.body_and_heading.get(i);
 			if(para.isHeading()){
