@@ -18,6 +18,7 @@ package utility;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,6 +32,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +44,9 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
+
+
 
 
 
@@ -352,6 +358,33 @@ public class utility {
 			Debug.print(e.getMessage(), DEBUG_CONFIG.debug_error);
 			return false;
 		}
+	}
+	
+	public String MD5(String path) {
+		    try {
+		    	MessageDigest md;
+				md = MessageDigest.getInstance("MD5");
+			
+			    FileInputStream fis = new FileInputStream(path);
+			 
+			    byte[] dataBytes = new byte[1024];
+			 
+			    int nread = 0;
+			    while ((nread = fis.read(dataBytes)) != -1) {
+			        md.update(dataBytes, 0, nread);
+			    };
+			    byte[] mdbytes = md.digest();
+			    StringBuffer sb = new StringBuffer();
+			    for (int i = 0; i < mdbytes.length; i++) {
+			        sb.append(Integer.toString((mdbytes[i] & 0xff) + 0x100, 16).substring(1));
+			    }
+	//		    System.out.println("Digest(in hex format):: " + sb.toString());
+				return sb.toString();
+		    } catch (NoSuchAlgorithmException | IOException e) {
+				// TODO Auto-generated catch block
+//				e.printStackTrace();
+		    	return null;
+			}
 	}
 }
 

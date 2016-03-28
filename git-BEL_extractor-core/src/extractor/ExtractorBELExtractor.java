@@ -63,7 +63,7 @@ public class ExtractorBELExtractor {
 	 * 2: debug_dir
 	 * 3: matcher file (by default: RuleMatcher.json)
 	 * 4: output_log
-	 * 5: output_facts file path
+	 * 5: output_facts file path: or "MD5"
 	 * @param output
 	 * @return ErrorCode:
 	 * -1: input parameter error 
@@ -129,7 +129,12 @@ public class ExtractorBELExtractor {
 		}
 		String fact_file = output_dir + file.getName() + "_facts.json";
 		if(args.length > 5) {
-			fact_file = args[5];
+			if(args[5].trim().equals("MD5")) {
+				String facts_name = "";
+				facts_name = util.MD5(path);
+				if(facts_name != null) fact_file = output_dir + facts_name + "_facts.json";
+			}
+			else fact_file = args[5];
 		}
 		JSONArray factsToOutput = new JSONArray();
 		PDFConverter converter = new PDFConverter();
