@@ -58,12 +58,12 @@ public class PreBuiltWordListMatcher implements Match{
 			inputFileVersion = args[1];
 		}
 		if(length > 2) {
-			inputFilePath = args[2];
-			File file = new File(inputFilePath);
-			if(file.exists()) fileName = file.getName();
+			setInputFileVersionFromRoot(args[2]);
 		}
 		if(length > 3) {
-			setInputFileVersionFromRoot(args[3]);
+			inputFilePath = args[3];
+			File file = new File(inputFilePath);
+			if(file.exists()) fileName = file.getName();
 		}
 		if(length > 4) {
 			this.match = args[4];
