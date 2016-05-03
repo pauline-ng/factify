@@ -21,7 +21,7 @@ import java.util.List;
 import nlp.Sequence;
 import utility.Span;
 
-public interface Match {
+public interface Matcher {
 	
 	List<Span> Match(Sequence senten);
 }

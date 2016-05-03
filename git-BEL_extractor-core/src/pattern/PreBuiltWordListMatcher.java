@@ -26,7 +26,7 @@ import utility.Debug;
 import utility.Span;
 import utility.Debug.DEBUG_CONFIG;
 
-public class PreBuiltWordListMatcher implements Match{
+public class PreBuiltWordListMatcher implements Matcher{
 	private HashSet<Sequence> wordList;
 	private String type;
 	private String inputFilePath;

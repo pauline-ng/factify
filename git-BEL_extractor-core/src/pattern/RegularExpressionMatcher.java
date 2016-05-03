@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 import nlp.Sequence;
 import utility.Span;
 
-public class RegularExpressionMatcher implements Match{
+public class RegularExpressionMatcher implements pattern.Matcher{
 	private HashSet<String> regExpressions;
 	private String type;
 	private String inputFilePath;

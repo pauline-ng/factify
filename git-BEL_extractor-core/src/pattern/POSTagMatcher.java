@@ -24,7 +24,7 @@ import java.util.List;
 import nlp.Sequence;
 import utility.Span;
 
-public class POSTagMatcher implements Match{
+public class POSTagMatcher implements Matcher{
 
 	private HashSet<String> postags;
 	private String type;
