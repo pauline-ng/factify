@@ -35,16 +35,17 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
 public class StanfordNLPLight {
-	public static StanfordNLPLight nlp;
+	private static final StanfordNLPLight INSTANCE = new StanfordNLPLight("tokenize, ssplit, pos, lemma");;
 	public StanfordCoreNLP pipeline;
 	public HashSet<String> stopwords;
 	public String sourceFolder;
-	public StanfordNLPLight( String props_str) {
+	private StanfordNLPLight( String props_str) {
 		Properties prop = new Properties();
 		prop.put("annotators",props_str);
 		pipeline = new StanfordCoreNLP(prop);
 
 	}
+	public static StanfordNLPLight getInstance() {return INSTANCE;}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//		StanfordNLPLight nlp = new StanfordNLPLight()

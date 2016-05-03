@@ -42,9 +42,8 @@ public class PreBuiltWordListMatcher implements Match{
 	public PreBuiltWordListMatcher(HashSet<String> words, String...args) {
 		// TODO Auto-generated constructor stub
 		this.wordList = new HashSet<Sequence>();
-		if(StanfordNLPLight.nlp == null) StanfordNLPLight.nlp = new StanfordNLPLight("tokenize, ssplit, pos, lemma");
  		for(String s : words) {
- 			List<Sequence> seqs = StanfordNLPLight.nlp.textToSequence(s, false);
+ 			List<Sequence> seqs = StanfordNLPLight.getInstance().textToSequence(s, false);
  			if(seqs.size() > 1) {
  				Debug.println("Warning: " + s + " in " + fileName + " has " + seqs.size() + " sentences!", DEBUG_CONFIG.debug_warning);
  			}

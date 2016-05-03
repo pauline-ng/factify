@@ -144,8 +144,6 @@ public class ExtractorBELExtractor {
 			Debug.println("File Path: " + path,DEBUG_CONFIG.debug_error);
 			return 2;
 		}
-		if(StanfordNLPLight.nlp == null) 
-			StanfordNLPLight.nlp = new StanfordNLPLight( "tokenize, ssplit, pos, lemma");
 		HashMap<Paragraph, S_Facts> paraToFacts = new HashMap<Paragraph, S_Facts>();
 		HashMap<Paragraph, List<Sequence>> paraToSequence = new HashMap<Paragraph, List<Sequence>>();
 		List<Sequence> allSequences = new ArrayList<Sequence>();
@@ -153,14 +151,14 @@ public class ExtractorBELExtractor {
 			for(Paragraph para : pdf.body_and_heading) {
 				//					Debug.println("**Section " + i);
 				if(para.isHeading()) continue;
-				List<Sequence> para_seq = StanfordNLPLight.nlp.textToSequence(para.text, -1, -1, -1, true);
+				List<Sequence> para_seq = StanfordNLPLight.getInstance().textToSequence(para.text, -1, -1, -1, true);
 				paraToSequence.put(para, para_seq);
 				allSequences.addAll(para_seq);
 			}
 			
 		}
 		NGrams ngram = new NGrams();
-		Map<String, Sequence> acronyms = Acronym.findAcronyms(allSequences, StanfordNLPLight.nlp);
+		Map<String, Sequence> acronyms = Acronym.findAcronyms(allSequences, StanfordNLPLight.getInstance());
 		List<Sequence> freSeq = ngram.getFreqSequences(allSequences);
 		HashSet<Sequence> freSeq_ = new HashSet<Sequence>(); freSeq_.addAll(freSeq);
 		RootMatcher pat = new RootMatcher();
