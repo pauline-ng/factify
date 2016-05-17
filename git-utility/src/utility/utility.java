@@ -18,7 +18,6 @@ package utility;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -378,6 +377,7 @@ public class utility {
 			    for (int i = 0; i < mdbytes.length; i++) {
 			        sb.append(Integer.toString((mdbytes[i] & 0xff) + 0x100, 16).substring(1));
 			    }
+			    fis.close();
 	//		    System.out.println("Digest(in hex format):: " + sb.toString());
 				return sb.toString();
 		    } catch (NoSuchAlgorithmException | IOException e) {
