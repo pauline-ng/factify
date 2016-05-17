@@ -180,6 +180,7 @@ public class S_Facts {
 		return output;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public JSONArray toJSON(int startingIndex) {
 		String output = "";
 		JSONArray objs = new JSONArray();

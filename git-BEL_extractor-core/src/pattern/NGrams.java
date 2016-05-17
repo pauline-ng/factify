@@ -20,9 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -85,7 +83,7 @@ public class NGrams {
 				}
 			}
 		}
-		Map<Sequence, Integer> sorted_ngramsToFreq = sortByValue(ngramsToFreq);
+		Map<Sequence, Integer> sorted_ngramsToFreq = (Map<Sequence, Integer>) sortByValue(ngramsToFreq);
 		ArrayList<Sequence> keys = new ArrayList<Sequence>();
 		keys.addAll(sorted_ngramsToFreq.keySet());
 		for(Sequence ngram : keys) {
@@ -94,22 +92,19 @@ public class NGrams {
 		return keys;
 	}
 	
-	private Map sortByValue(Map map) {
-	     List list = new LinkedList(map.entrySet());
-	     Collections.sort(list, new Comparator() {
-	          public int compare(Object o1, Object o2) {
-	               return ((Comparable) ((Map.Entry) (o1)).getValue())
-	              .compareTo(((Map.Entry) (o2)).getValue());
-	          }
-	     });
-
-	    Map result = new LinkedHashMap();
-	    for (Iterator it = list.iterator(); it.hasNext();) {
-	        Map.Entry entry = (Map.Entry)it.next();
-	        result.put(entry.getKey(), entry.getValue());
-	    }
-	    return result;
-	} 
+	private Map<Sequence, Integer> sortByValue(Map<Sequence, Integer> map) {
+		LinkedHashMap<Sequence, Integer> result = new LinkedHashMap<Sequence, Integer>(map);
+		List<Map.Entry<Sequence, Integer>> entries = new ArrayList<Map.Entry<Sequence, Integer>>(map.entrySet());
+		Collections.sort(entries, new Comparator<Map.Entry<Sequence, Integer>>() {
+				  public int compare(Map.Entry<Sequence, Integer> a, Map.Entry<Sequence, Integer> b){
+				    return a.getValue().compareTo(b.getValue());
+				  }});
+		Map<Sequence, Integer> sortedMap = new LinkedHashMap<Sequence, Integer>();
+		for (Map.Entry<Sequence, Integer> entry : entries) {
+		  sortedMap.put(entry.getKey(), entry.getValue());
+		}
+		return result;
+	}
 	
 	
 	/**

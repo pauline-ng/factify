@@ -79,7 +79,6 @@ public class Acronym {
 	}
 
 	public static Map<String, Sequence> findAcronyms(List<Sequence> sentences, StanfordNLPLight nlp) {
-		Acronym acronym = new Acronym();
 		Map<String, Sequence> acronyms_all = new HashMap<String, Sequence>();
 		for(Sequence sen_ : sentences) {
 			String sen = sen_.sourceString;
@@ -112,7 +111,7 @@ public class Acronym {
 				String acronyms = sen.substring(start_index_parenthesis.get(i) + 1, end_index_parenthesis.get(i));
 				String candidate = sen.substring(0, start_index_parenthesis.get(i));
 				candidate.trim();
-				candidate = acronym.findBestLongForm(acronyms, candidate);
+				candidate = Acronym.findBestLongForm(acronyms, candidate);
 				//							Debug.println(acronyms + "\t" + candidate);
 				if(candidate != null && candidate.length() > 0) {
 					if(acronyms_all.containsKey(acronyms)) {
@@ -134,7 +133,6 @@ public class Acronym {
 		
 	}
 	public static Map<String, String> findAcronyms(String text) {
-		Acronym acronym = new Acronym();
 		Map<String, String> acronyms_all = new HashMap<String, String>();
 		String s = text;
 			Stack<Integer> st = new Stack<Integer>();//stack for parenthesis
@@ -166,7 +164,7 @@ public class Acronym {
 				if(acronyms.length() < 2) continue;
 				String candidate = s.substring(0, start_index_parenthesis.get(i));
 				candidate.trim();
-				candidate = acronym.findBestLongForm(acronyms, candidate);
+				candidate = Acronym.findBestLongForm(acronyms, candidate);
 				if(candidate != null && candidate.length() > 1) {
 					if(acronyms_all.containsKey(acronyms)) {
 						if(!candidate.equals(acronyms_all.get(acronyms))) {

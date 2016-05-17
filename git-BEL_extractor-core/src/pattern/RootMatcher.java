@@ -49,6 +49,7 @@ public class RootMatcher {
 			JSONObject jsonObject =  (JSONObject) obj;
 			// loop array
 			JSONArray rules = (JSONArray) jsonObject.get("Rules");
+			@SuppressWarnings("unchecked")
 			Iterator<JSONObject> iterator = rules.iterator();
 			while (iterator.hasNext()) {
 				JSONObject rule = iterator.next();
@@ -165,6 +166,7 @@ public class RootMatcher {
 				}else
 					if(!line.trim().isEmpty()) postags.add(line);
 			}
+			br.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
