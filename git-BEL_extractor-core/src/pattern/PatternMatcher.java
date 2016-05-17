@@ -431,7 +431,7 @@ String para = "In contrast, behavioral economic theory suggests that incentives 
 	 */
 	public  C_Facts formFacts(List<List<Span>> all_facts, List<Sequence> sentens, List<String> details, Span pageRange) {
 		if(sentens.size() == 0) return null; 
-		C_Facts cfacts = new C_Facts(sentens.get(0).pageNum, sentens.get(0).secNum, sentens.get(0).paraNum);
+		C_Facts cfacts = new C_Facts(pageRange.getStart(), pageRange.getEnd());
 		utility util = new utility();
 		for(int senIndex = 0; senIndex < sentens.size(); senIndex++) {
 			List<Span> facts_per_sen = all_facts.get(senIndex);
@@ -459,9 +459,8 @@ String para = "In contrast, behavioral economic theory suggests that incentives 
 				spans.put(senten.spans.get(relativeOrder).getStart(), senten.spans.get(relativeOrder).getEnd() - 1);
 			}
 			cfacts.addFact(facts, senIndex, relativeOrders, spans, details.get(senIndex));
-			cfacts.sentences.add(sentens.get(senIndex).sourceString);
+			cfacts.addSentence(sentens.get(senIndex).sourceString);
 		}
-		cfacts.pageRange = new Span(pageRange.getStart(), pageRange.getEnd());
 		return cfacts;
 	}
 	

@@ -47,6 +47,10 @@ import knowledge_model.C_Facts;
 import knowledge_model.S_Facts;
 import PDFconverter.PDFConverter;
 
+/**
+ * This is the main class for fact extractor
+ * Use ExtractorBELExtractor.examplePDFExtractor_JSON(args);
+ */
 public class ExtractorBELExtractor {
 	
 	public static void main(String[]  args) {

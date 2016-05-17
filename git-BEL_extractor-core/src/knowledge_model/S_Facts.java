@@ -31,35 +31,40 @@ import utility.utility;
 import utility.Span;
 import utility.Debug.DEBUG_CONFIG;
 /**
- * Facts at the server level
- *
+ * Facts at the server side, i.e. fulltext-free
+ * (Post-process of client side facts).
+ * 
+ * An object of S_Facts corresponds to a paragraph in the fulltext
+ * 
+ * 
  */
 public class S_Facts {
-	C_Facts cfacts;
+	final private C_Facts cfacts;
 	
-	//facts///
-	ArrayList<ArrayList<String>> merge_facts = null;//each element corresponds to a sentence
+	/**
+	 * final facts: each element corresponds to a sentence
+	 */
+	final private ArrayList<ArrayList<String>> merge_facts;
 
 	public S_Facts(C_Facts cfacts) {
 		this.cfacts = cfacts;
-		this.merge_facts = new ArrayList<>();
+		this.merge_facts = new ArrayList<ArrayList<String>>();
 	}
 
 	public void mergeFacts() {
-		if(this.merge_facts == null) this.merge_facts = new ArrayList<ArrayList<String>>();
 		boolean toPrint = false;
 		if(toPrint) {
-			Iterator<Integer> itr = this.cfacts.spans.get(0).keySet().iterator();
-			for(int t = 0; t < cfacts.facts.get(0).size(); t++) {//for each sentence
+			Iterator<Integer> itr = this.cfacts.spanOnChar.get(0).keySet().iterator();
+			for(int t = 0; t < cfacts.getFactOfOneSentence(0).size(); t++) {//for each sentence
 				int q = itr.next();
-				Debug.println(cfacts.facts.get(0).get(t) + "\t" + cfacts.relativeOrder.get(0).get(t) + "\t" + q + ".." + this.cfacts.spans.get(0).get(q) ,DEBUG_CONFIG.debug_S_Facts);
+				Debug.println(cfacts.getFactOfOneSentence(0).get(t) + "\t" + cfacts.getSpanOnToken(0).get(t) + "\t" + q + ".." + this.cfacts.spanOnChar.get(0).get(q) ,DEBUG_CONFIG.debug_S_Facts);
 			}
 		}
-		for(int t = 0; t < cfacts.facts.size(); t++) {//for each sentence
+		for(int t = 0; t < cfacts.getSize(); t++) {//for each sentence
 			ArrayList<String> final_fact = new ArrayList<String>();
-			ArrayList<Span> index = cfacts.relativeOrder.get(t);
-			LinkedHashMap<Integer, Integer> physicalIndex = cfacts.spans.get(t);
-			ArrayList<String> fact = cfacts.facts.get(t);
+			ArrayList<Span> index = cfacts.getSpanOnToken(t);
+			LinkedHashMap<Integer, Integer> physicalIndex = cfacts.spanOnChar.get(t);
+			ArrayList<String> fact = cfacts.getFactOfOneSentence(t);
 			
 			int curIndex = -1;//endIndex
 			int curPhysicalIndex = - 1;//physicalIndex
@@ -162,8 +167,8 @@ public class S_Facts {
 			if(startingIndex != -1 && withOriginalText) 
 				output += "sent" + startingIndex + "\t";
 			
-			if(withOriginalText && !xml) output += cfacts.sentences.get(i) + "\r\n";
-			if(withOriginalText && xml) output += cfacts.sentences.get(i);
+			if(withOriginalText && !xml) output += cfacts.getSentence(i) + "\r\n";
+			if(withOriginalText && xml) output += cfacts.getSentence(i);
 			if(startingIndex != -1) output += "fact" + startingIndex + "\t";
 			output += s + "\r\n";
 			if(withDetails) output += cfacts.matchingDetial_description.get(i) + "\r\n";
@@ -189,7 +194,7 @@ public class S_Facts {
 			JSONObject obj = new JSONObject();
 			obj.put("type", "Sentence");
 			obj.put("senID", startingIndex);
-			obj.put("paragraphPageRange", cfacts.pageRange.toString());
+			obj.put("paragraphPageRange", cfacts.getPageRange().toString());
 			obj.put("fact", s.replace("-LRB-", "(").replace("-RRB-", ")").replace("-RSB-", "]").replace("-LSB-", "["));
 			obj.put("details", cfacts.matchingDetial_description.get(i));
 			startingIndex++;
@@ -199,12 +204,6 @@ public class S_Facts {
 		return objs;
 	}
 	
-	public int getSecNum() {
-		return cfacts.secNum;
-	}
-	public int getParaNum() {
-		return cfacts.paraNum;
-	}
 	public int getSize() {
 		return this.merge_facts.size();
 	}

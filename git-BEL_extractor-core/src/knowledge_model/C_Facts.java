@@ -29,40 +29,48 @@ import utility.Debug.DEBUG_CONFIG;
 /**
  * Facts at the client side.
  * 
- * designed for Experiments: nouns and numbers
+ * An object of C_Facts corresponds to a paragraph in the fulltext
  * 
- * An object of Facts corresponds to a paragraph in the fulltext
- * 
- * 
- *
  */
-
+//designed for Experiments: nouns and numbers
 public class C_Facts {
 	
-	//location info// the following 3 are not in use
-	public int pageNum;
-	public int secNum;
-	public int paraNum;
-	
-	//
-	public Span pageRange;
+	/**
+	 * the pages the paragraph covers.
+	 * [) ; start with 1.
+	 * In correspondence with Paragraph.pages
+	 */
+	final private Span pageRange;
 
 	///////////////////////////////////
 	
-	//facts///
-	ArrayList<ArrayList<String>> facts;//each element corresponds to a sentence
+	/**
+	 * Each element corresponds to the facts of a sentence
+	 */
+	final private ArrayList<ArrayList<String>> facts;
 	
-	//Note: don't mess up with the formal definition of Span
-	ArrayList<ArrayList<Span>> relativeOrder;// each element is the start-end index of facts of a sentence e.g. <1,1> corresponds to the first TOKEN/WORD of the sentence.
+	/**
+	 * Each element is the start-end index of facts of a sentence e.g. [1,1] corresponds to the first TOKEN/WORD of the sentence.
+	 * Note: don't mess up with the formal definition of Span, which is [,).
+	 * 
+	 */
+	final private ArrayList<ArrayList<Span>> spanOnToken;
 	
-	ArrayList<LinkedHashMap<Integer, Integer>> spans;// each element is the start-end index of facts of a sentence e.g. <1,1> corresponds to the first CHAR of the sentence.
+	/**
+	 * Each element is the start-end index of facts of a sentence e.g. [1,1] corresponds to the first CHAR of the sentence.
+	 * 
+	 * spanOnToken is for token matches, such as postag or prebuilt word list, which treats the sentence as a list of tokens.
+	 * spanOnChar is for regular expressions, which treats the sentence as a string.
+	 */
+	final ArrayList<LinkedHashMap<Integer, Integer>> spanOnChar;
 	
 	/////////////////////////////
 	
 	//intermediate data//////////////////////////
-	public ArrayList<String> sentences;
-	public ArrayList<Span[]> sentences_spans;
-	////////////////////////////
+	/**
+	 * List of sentences in the paragraph
+	 */
+	final private ArrayList<String> sentences;
 	
 	
 	//for the flexibility of removing some rule////////////
@@ -70,19 +78,14 @@ public class C_Facts {
 	public List<String> matchingDetial_description;
 	/////////////
 	
-	
-	public C_Facts(int pageNum, int secNum, int paraNum) {
-		this.pageNum = pageNum;
-		this.secNum = secNum;
-		this.paraNum = paraNum;
+	public C_Facts(int startPage, int endPage) {
+		this.pageRange = new Span(startPage, endPage);
 		this.facts = new ArrayList<ArrayList<String>>();
-		this.relativeOrder = new ArrayList<>();
-		this.spans = new ArrayList<>();
+		this.spanOnToken = new ArrayList<>();
+		this.spanOnChar = new ArrayList<>();
 		this.sentences = new ArrayList<String>();
-		this.sentences_spans = new ArrayList<Span[]>();
 		this.matchingDetail = new ArrayList<>();
 		this.matchingDetial_description = new ArrayList<>();
-		
 	}
 	
 	/**
@@ -94,17 +97,17 @@ public class C_Facts {
 	 */
 	public void addFact(ArrayList<String> fact, int senID, ArrayList<Span> relativeOrder,LinkedHashMap<Integer, Integer> span, String detail) {
 		facts.add(fact);
-		this.relativeOrder.add(relativeOrder);
-		this.spans.add(span);
+		this.spanOnToken.add(relativeOrder);
+		this.spanOnChar.add(span);
 		this.matchingDetial_description.add(detail);
 	}
 	
 	public void printFacts(boolean showPos) {
 		for(int i = 0; i < facts.size(); i++) {
-			Iterator<Entry<Integer, Integer>> itr_span = spans.get(i).entrySet().iterator();
+			Iterator<Entry<Integer, Integer>> itr_span = spanOnChar.get(i).entrySet().iterator();
 			for(int j = 0; j < facts.get(i).size(); j++) {//facts of a sentence
 				Debug.print("*" + facts.get(i).get(j) + "*",DEBUG_CONFIG.debug_C_Facts);
-				if(showPos) Debug.print("[span: " + itr_span.next() + "] [order: " + relativeOrder.get(i).get(j).toString().replace(')', ']') + "] \t",DEBUG_CONFIG.debug_C_Facts);
+				if(showPos) Debug.print("[span: " + itr_span.next() + "] [order: " + spanOnToken.get(i).get(j).toString().replace(')', ']') + "] \t",DEBUG_CONFIG.debug_C_Facts);
 			}
 			Debug.println(DEBUG_CONFIG.debug_C_Facts);
 		
@@ -112,10 +115,10 @@ public class C_Facts {
 	}
 	public void printFacts(boolean showPos, int senIndex) {
 		int i = senIndex;
-		Iterator<Entry<Integer, Integer>> itr_span = spans.get(i).entrySet().iterator();
+		Iterator<Entry<Integer, Integer>> itr_span = spanOnChar.get(i).entrySet().iterator();
 		for(int j = 0; j < facts.get(i).size(); j++) {//facts of a sentence
 			Debug.print("*" + facts.get(i).get(j) + "*",DEBUG_CONFIG.debug_C_Facts);
-			if(showPos) Debug.print("[span: " + itr_span.next() + "] [order: " + relativeOrder.get(i).get(j).toString().replace(')', ']') + "] \t",DEBUG_CONFIG.debug_C_Facts);
+			if(showPos) Debug.print("[span: " + itr_span.next() + "] [order: " + spanOnToken.get(i).get(j).toString().replace(')', ']') + "] \t",DEBUG_CONFIG.debug_C_Facts);
 		}
 		Debug.println(DEBUG_CONFIG.debug_C_Facts);
 	}
@@ -127,12 +130,12 @@ public class C_Facts {
 
 	public ArrayList<Span> getRelativeOrder(int senIndex) {
 		if(this.facts.size() -1 < senIndex ) return null;
-		return this.relativeOrder.get(senIndex);
+		return this.spanOnToken.get(senIndex);
 	}
 	public Span getRelativeOrder(int senIndex, int factIndex) {
 		if(this.facts.size() -1 < senIndex ) return null;
 		if(this.facts.get(senIndex).size() -1 < factIndex) return null;
-		return this.relativeOrder.get(senIndex).get(factIndex);
+		return this.spanOnToken.get(senIndex).get(factIndex);
 	}
 	public boolean hasFacts() {
 		return this.facts.size() > 0 ? true : false;
@@ -142,9 +145,9 @@ public class C_Facts {
 		return this.facts.get(senNum).size() > 0 ? true : false;
 	}
 
-	public Span getSpan(int senIndex, int factIndex) {
+	public Span getSpanOnChar(int senIndex, int factIndex) {
 		int i = -1; 
-		Iterator<Entry<Integer, Integer>> itr = this.spans.get(senIndex).entrySet().iterator();
+		Iterator<Entry<Integer, Integer>> itr = this.spanOnChar.get(senIndex).entrySet().iterator();
 		while(itr.hasNext()) {
 			i++;
 			if(i == factIndex) {
@@ -163,6 +166,27 @@ public class C_Facts {
 	public String getFactDetail(int id) {
 		if(this.matchingDetial_description.size() > id) return this.matchingDetial_description.get(id);
 		return null;
+	}
+
+	public Span getPageRange() {
+		return pageRange;
+	}
+
+	public String getSentence(int i) {
+		return sentences.get(i);
+	}
+	public boolean addSentence(String s) {
+		return this.sentences.add(s);
+	}
+	public ArrayList<String> getFactOfOneSentence(int senIndex) {
+		return this.facts.get(senIndex);
+	}
+	
+	public int getSize(){
+		return this.facts.size();
+	}
+	public ArrayList<Span> getSpanOnToken(int senIndex) {
+		return this.spanOnToken.get(senIndex);
 	}
  
 }
