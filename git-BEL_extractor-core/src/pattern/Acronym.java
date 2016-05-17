@@ -78,7 +78,7 @@ public class Acronym {
 
 	}
 
-	public static Map<String, Sequence> findAcronyms(List<Sequence> sentences, StanfordNLPLight nlp) {
+	public static Map<String, Sequence> findAcronyms(List<Sequence> sentences) {
 		Map<String, Sequence> acronyms_all = new HashMap<String, Sequence>();
 		for(Sequence sen_ : sentences) {
 			String sen = sen_.sourceString;
@@ -124,7 +124,7 @@ public class Acronym {
 						Debug.println("WARNING: INVALID acronym \"" + acronyms + "\" : \"" + candidate + "\" ",DEBUG_CONFIG.debug_warning );
 						continue;
 					}
-					acronyms_all.put(acronyms, nlp.textToSequence(candidate,false).get(0));
+					acronyms_all.put(acronyms, StanfordNLPLight.INSTANCE.textToSequence(candidate,false).get(0));
 				}
 			}
 

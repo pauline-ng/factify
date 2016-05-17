@@ -34,18 +34,23 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
-public class StanfordNLPLight {
-	private static final StanfordNLPLight INSTANCE = new StanfordNLPLight("tokenize, ssplit, pos, lemma");;
-	public StanfordCoreNLP pipeline;
-	public HashSet<String> stopwords;
-	public String sourceFolder;
+/**
+ * All functions involves NLP.
+ * 
+ * It is expensive to load StanfordNLP models, so this class is designed to be singleton using Enum. 
+ *
+ */
+public enum StanfordNLPLight {
+	INSTANCE("tokenize, ssplit, pos, lemma");
+	final private StanfordCoreNLP pipeline;
+	final private HashSet<String> stopwords;
 	private StanfordNLPLight( String props_str) {
 		Properties prop = new Properties();
 		prop.put("annotators",props_str);
 		pipeline = new StanfordCoreNLP(prop);
+		stopwords = importStopWords();
 
 	}
-	public static StanfordNLPLight getInstance() {return INSTANCE;}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//		StanfordNLPLight nlp = new StanfordNLPLight()
@@ -68,7 +73,7 @@ public class StanfordNLPLight {
 		String text = "This allows otherwise poorly invasive bacteria to exploit lipid raft-mediated transcytotic pathways to cross the intestinal mucosa.";
 		Properties props = new Properties();
 		props.put("annotators", "tokenize, ssplit, pos, lemma");
-		StanfordNLPLight nlp = new StanfordNLPLight("tokenize, ssplit, pos, lemma");
+		StanfordNLPLight nlp = StanfordNLPLight.INSTANCE;
 		Annotation annotation = new Annotation(text);
 		nlp.pipeline.annotate(annotation);
 		List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
@@ -192,16 +197,18 @@ public class StanfordNLPLight {
 		return sentences_;
 	}
 
-	public void importStopWords() {
+	private HashSet<String> importStopWords() {
 		try{
 			String s = getResourceAsString("stopwords.txt");
 			StringTokenizer st = new StringTokenizer(s, "\r\n");
-			stopwords = new HashSet<String>();
-			while(st.hasMoreTokens()) stopwords.add(st.nextToken().trim());
+			HashSet<String> t = new HashSet<String>();
+			while(st.hasMoreTokens()) t.add(st.nextToken().trim());
+			return t;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 			System.out.println("error");
+			return null;
 		}
 	}
 	public static boolean isNoun(String pos) {
@@ -225,5 +232,8 @@ public class StanfordNLPLight {
 
 	}
 
+	public boolean containsStopWord(String word) {
+		return this.stopwords != null && this.stopwords.contains(word); 
+	}
 
 }

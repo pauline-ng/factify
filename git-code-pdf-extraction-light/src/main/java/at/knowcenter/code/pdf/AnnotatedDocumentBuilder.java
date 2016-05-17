@@ -640,7 +640,7 @@ public class AnnotatedDocumentBuilder {
         
         private void finishSentence(StringBuilder builder, List<Block> sentenceBeginnings, ArrayList<Block> posToWord) {
 //            Span[] sentPosDetect = sentenceDetector.sentPosDetect(builder.toString());
-        	List<Span> sentPosDetect = StanfordNLPLight.getInstance().splitSentences(builder.toString());
+        	List<Span> sentPosDetect = StanfordNLPLight.INSTANCE.splitSentences(builder.toString());
             for (Span span : sentPosDetect) {
             	int start = span.getStart();
             	Block block = posToWord.get(start);

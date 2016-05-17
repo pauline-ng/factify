@@ -155,14 +155,14 @@ public class ExtractorBELExtractor {
 			for(Paragraph para : pdf.body_and_heading) {
 				//					Debug.println("**Section " + i);
 				if(para.isHeading()) continue;
-				List<Sequence> para_seq = StanfordNLPLight.getInstance().textToSequence(para.text, -1, -1, -1, true);
+				List<Sequence> para_seq = StanfordNLPLight.INSTANCE.textToSequence(para.text, -1, -1, -1, true);
 				paraToSequence.put(para, para_seq);
 				allSequences.addAll(para_seq);
 			}
 			
 		}
 		NGrams ngram = new NGrams();
-		Map<String, Sequence> acronyms = Acronym.findAcronyms(allSequences, StanfordNLPLight.getInstance());
+		Map<String, Sequence> acronyms = Acronym.findAcronyms(allSequences);
 		List<Sequence> freSeq = ngram.getFreqSequences(allSequences);
 		HashSet<Sequence> freSeq_ = new HashSet<Sequence>(); freSeq_.addAll(freSeq);
 		RootMatcher pat = new RootMatcher();

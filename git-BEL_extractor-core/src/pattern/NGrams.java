@@ -36,7 +36,6 @@ public class NGrams {
 			//filter1: absoluteFreq >=3 
 			if(s.getAbsoluteFreq() <= 1)	continue;
 			//filter2: is Valid
-			if(StanfordNLPLight.getInstance().stopwords == null) StanfordNLPLight.getInstance().importStopWords();
 			if(!isValid(s)) continue;
 			//filter3: clean the parenthesis --require paired parenthesis
 			if(s.containUnpairedParen()) continue;
@@ -125,7 +124,7 @@ public class NGrams {
 	
 	public boolean isStopWords(Sequence s) {
 		for(int i = 0; i < s.stems.size(); i++) {
-			if(!StanfordNLPLight.getInstance().stopwords.contains(s.stems.get(i))) return false;
+			if(!StanfordNLPLight.INSTANCE.containsStopWord(s.stems.get(i))) return false;
 		}
 		return true;
 	}
