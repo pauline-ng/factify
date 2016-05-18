@@ -142,17 +142,16 @@ public class S_Facts {
 		return merge_facts.get(0).toString();
 	}
 	public void writeFacts(String path) {
-		utility util = new utility();
 		for(int i = 0; i < merge_facts.size(); i++) {
 			String s = "* ";
 			for(int j = 0; j < merge_facts.get(i).size(); j++) {
 				s += merge_facts.get(i).get(j);
 				if(j != merge_facts.get(i).size() - 1) s += ", ";
 			}
-			util.writeFile(path, 
+			utility.writeFile(path, 
 					s + "\r\n\r\n",
 					true);
-			util.writeFile(path, "\r\n",true);
+			utility.writeFile(path, "\r\n",true);
 		}
 	}
 	

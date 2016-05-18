@@ -219,9 +219,8 @@ public enum StanfordNLPLight {
 
 	public String getResourceAsString(String fileName) {
 		try{	 
-			utility util = new utility();
 			BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(fileName )));
-			return util.toString(br);
+			return utility.toString(br);
 		}
 		catch(Exception e) {
 			ClassLoader classLoader = getClass().getClassLoader();

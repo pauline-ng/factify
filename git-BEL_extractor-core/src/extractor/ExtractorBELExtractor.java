@@ -88,7 +88,6 @@ public class ExtractorBELExtractor {
 				
 			}
 		}
-		utility util = new utility();
 		if(args.length < 5) {
 			Debug.println("Please input PDF path, output directory, debug directory, matcher file path, and debug_log file!", DEBUG_CONFIG.debug_error);
 			Debug.println("*If debug_log=\"\", then debug info will print to the screen.", DEBUG_CONFIG.debug_error);
@@ -135,7 +134,7 @@ public class ExtractorBELExtractor {
 		if(args.length > 5) {
 			if(args[5].trim().equals("MD5")) {
 				String facts_name = "";
-				facts_name = util.MD5(path);
+				facts_name = utility.MD5(path);
 				if(facts_name != null) fact_file = output_dir + facts_name + "_facts.json";
 			}
 			else fact_file = args[5];
@@ -288,7 +287,7 @@ public class ExtractorBELExtractor {
 			factsToOutput.add(decoration);
 		}
 		
-		util.writeFile(fact_file, factsToOutput.toJSONString(), false);
+		utility.writeFile(fact_file, factsToOutput.toJSONString(), false);
 		if(pdf.body_and_heading.size() == 0) return 3;
 		return 1;
 	}

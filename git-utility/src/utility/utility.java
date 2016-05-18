@@ -59,8 +59,13 @@ import utility.Debug.DEBUG_CONFIG;
 
 import java.io.BufferedReader;
 
+/**
+ * Utility class, noninstantiable
+ *
+ */
 public class utility {
-	public void writeFile(String path, String s, boolean append) {
+	private utility() {	}
+	public static void writeFile(String path, String s, boolean append) {
 		File log_f;
 		log_f = new File(path);
 		Writer out; 
@@ -96,13 +101,12 @@ public class utility {
 		}
 	}
 
-	String sortMap(Map<String, Integer> freqs) {
+	static String sortMap(Map<String, Integer> freqs) {
 		List<String> words  = null;
 		List<Integer> freq = null;
 		words = new ArrayList<String>(freqs.keySet());
 		freq = new ArrayList<Integer>();
-		utility util = new utility();
-		util.sort(freqs, words, freq);
+		sort(freqs, words, freq);
 		String m = "";
 		for(int i = 0; i < words.size(); i++) {
 			m = m + words.get(i) + "\t" + freq.get(i) + "\r\n";
@@ -111,7 +115,7 @@ public class utility {
 		return m;
 	}
 
-	public void sort(Map<String, Integer> top_word, List<String> words, List<Integer> freq ) {
+	public static void sort(Map<String, Integer> top_word, List<String> words, List<Integer> freq ) {
 		{
 
 			for(int j = 0; j < words.size(); j++) freq.add(top_word.get(words.get(j)));
@@ -130,7 +134,7 @@ public class utility {
 	}
 
 
-	public String readFromFile(String path) {
+	public static String readFromFile(String path) {
 		BufferedReader br;
 		try {
 			br= new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
@@ -154,7 +158,7 @@ public class utility {
 		}
 
 	}
-	public String readFromFile(File file) {
+	public static String readFromFile(File file) {
 		BufferedReader br;
 		try {
 			br= new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
@@ -186,7 +190,7 @@ public class utility {
 	 * @param s
 	 * @return
 	 */
-	public String fixEncoding(String s) {
+	public static String fixEncoding(String s) {
 		byte[] bytes;
 		try {
 			bytes = s.getBytes("UTF-8");
@@ -293,7 +297,7 @@ public class utility {
 		s = s.substring(0, Math.min(indexDot + 3, s.length()));
 		return Double.parseDouble(s);
 	}
-	public void sortByStart(List<Span> input) {
+	public static void sortByStart(List<Span> input) {
 		//			 List<Span> result = new ArrayList<Span>();
 		for(int i = 0; i < input.size(); i++) {
 			for(int j = i + 1; j < input.size(); j++) {
@@ -306,7 +310,7 @@ public class utility {
 		}
 	}
 
-	public String xmlNodeToString(Document doc){
+	public static String xmlNodeToString(Document doc){
 		try {
 			//			 Document doc = builder.parse(st);
 			DOMSource domSource = new DOMSource(doc);
@@ -325,11 +329,11 @@ public class utility {
 		}
 	}
 
-	public String charToUnicode(char a) {
+	public static String charToUnicode(char a) {
 		return "\\u" + Integer.toHexString(a | 0x10000).substring(1);
 	}
 
-	public String toString(BufferedReader br) {
+	public static String toString(BufferedReader br) {
 		try {
 			return IOUtils.toString(br);
 		} catch (IOException e) {
@@ -338,7 +342,7 @@ public class utility {
 			return null;
 		}
 	}
-	public boolean copyDirectory(String src, String dest) {
+	public static boolean copyDirectory(String src, String dest) {
 		try{
 			FileUtils.copyDirectory(new File(src), new File(dest));
 			return true;
@@ -348,7 +352,7 @@ public class utility {
 			return false;
 		}
 	}
-	public boolean copyFile(String src, String dest) {
+	public static boolean copyFile(String src, String dest) {
 		try{
 			FileUtils.copyFile(new File(src), new File(dest));
 			return true;
@@ -359,7 +363,7 @@ public class utility {
 		}
 	}
 	
-	public String MD5(String path) {
+	public static String MD5(String path) {
 		    try {
 		    	MessageDigest md;
 				md = MessageDigest.getInstance("MD5");

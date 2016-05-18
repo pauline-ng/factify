@@ -432,11 +432,10 @@ String para = "In contrast, behavioral economic theory suggests that incentives 
 	public  C_Facts formFacts(List<List<Span>> all_facts, List<Sequence> sentens, List<String> details, Span pageRange) {
 		if(sentens.size() == 0) return null; 
 		C_Facts cfacts = new C_Facts(pageRange.getStart(), pageRange.getEnd());
-		utility util = new utility();
 		for(int senIndex = 0; senIndex < sentens.size(); senIndex++) {
 			List<Span> facts_per_sen = all_facts.get(senIndex);
 			Sequence senten = sentens.get(senIndex);
-			util.sortByStart(facts_per_sen);
+			utility.sortByStart(facts_per_sen);
 
 			// Any token that crosses the span of all would be counted in.
 			HashSet<Integer> crossToken = new HashSet<Integer>();//the relative order of tokens that the span cross

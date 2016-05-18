@@ -631,13 +631,12 @@ public class PdfExtractionPipeline {
             if(Debug.get(DEBUG_CONFIG.debug_textpieces)) {
 //        	String debug_output_location = PdfExtractionPipeline.global_debug_dir + PdfExtractionPipeline.global_id + "_textpieces_location.txt";
         	String debug_output_text = PdfExtractionPipeline.global_debug_dir + PdfExtractionPipeline.global_id + "_textpieces_text.txt";
-        	utility util = new utility();
-        	util.writeFile(debug_output_text, "", false);
+        	utility.writeFile(debug_output_text, "", false);
 //        	util.writeFile(debug_output_location, "", false);
         	int counter = 0;
         	for(int i = 0; i < pageBlocks.size(); i++) {
         		for(int j = 0; j < pageBlocks.get(i).getLineBlocks().size(); j++) {
-        			util.writeFile(debug_output_text, counter + "\t" + pageBlocks.get(i).getLineBlocks().get(j).getText() + "\r\n", true);
+        			utility.writeFile(debug_output_text, counter + "\t" + pageBlocks.get(i).getLineBlocks().get(j).getText() + "\r\n", true);
         			//        		util.writeFile(debug_output_text, counter + "\t" + pdfPage.getFragments().get(i).getText() + "\r\n", true);
         			counter++;
         		}
