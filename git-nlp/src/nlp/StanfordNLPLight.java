@@ -148,9 +148,9 @@ public enum StanfordNLPLight {
 		//refine pos tag: because current taggger may not work for scientific content
 		if(refindNouns) {
 			for(Sequence s : sentences_) {
-				for(int i = 0; i < s.stems.size(); i++) {
-					String token = s.stems.get(i);
-					if(knowNouns.contains(token)) s.POSTags.set(i, "NN");
+				for(int i = 0; i < s.getWordCount(); i++) {
+					String token = s.getStemOfWord(i);
+					if(knowNouns.contains(token)) s.setPOSTagOfWord(i, "NN"); 
 				}
 			}
 		}
@@ -188,9 +188,9 @@ public enum StanfordNLPLight {
 		//refine pos tag: because current taggger may not work for scientific content
 		if(refineNouns) {
 			for(Sequence s : sentences_) {
-				for(int i = 0; i < s.stems.size(); i++) {
-					String token = s.stems.get(i);
-					if(knowNouns.contains(token)) s.POSTags.set(i, "NN");
+				for(int i = 0; i < s.getWordCount(); i++) {
+					String token = s.getStemOfWord(i);
+					if(knowNouns.contains(token)) s.setPOSTagOfWord(i, "NN");
 				}
 			}
 		}

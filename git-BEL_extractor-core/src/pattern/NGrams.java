@@ -56,7 +56,7 @@ public class NGrams {
 		}
 		for(int i = 0; i < result.size(); i++) {//sort by size
 			for(int j = i + 1; j < result.size(); j++) {
-				if(result.get(j).size() > result.get(i).size()) {
+				if(result.get(j).getWordCount() > result.get(i).getWordCount()) {
 					Sequence temp = result.get(i);
 					result.set(i, result.get(j)); result.set(j, temp);
 				}
@@ -69,8 +69,8 @@ public class NGrams {
 	public List<Sequence> extractNGrams(List<Sequence> sentences) {
 		HashMap<Sequence, Integer> ngramsToFreq = new HashMap<Sequence, Integer>();
 		for(Sequence sentence : sentences) {
-			for(int n = 1; n < sentence.size(); n++) {
-				for(int i = 0; i <= sentence.size() - n; i++) {
+			for(int n = 1; n < sentence.getWordCount(); n++) {
+				for(int i = 0; i <= sentence.getWordCount() - n; i++) {
 					Sequence ngram = sentence.getSubsequence(i, i + n);
 					if(ngram.containsIndivStem(",") || ngram.containsIndivStem(".") || ngram.containsIndivStem(";") 
 							|| ngram.containsIndivStem("-lrb-") || ngram.containsIndivStem("-rrb-")) continue;
@@ -123,19 +123,19 @@ public class NGrams {
 	}*/
 	
 	public boolean isStopWords(Sequence s) {
-		for(int i = 0; i < s.stems.size(); i++) {
-			if(!StanfordNLPLight.INSTANCE.containsStopWord(s.stems.get(i))) return false;
+		for(int i = 0; i < s.getWordCount(); i++) {
+			if(!StanfordNLPLight.INSTANCE.containsStopWord(s.getStemOfWord(i))) return false;
 		}
 		return true;
 	}
 	public boolean isValid(Sequence s) {
 		{
-			String beginning = s.stems.get(0);
+			String beginning = s.getStemOfWord(0);
 			beginning = beginning.trim();
 			if(beginning.length() == 1) return false;
 		}
 		{
-			String end = s.stems.get(s.stems.size() - 1);
+			String end = s.getStemOfWord(s.getWordCount() - 1);
 			end = end.trim();
 			if(end.length() == 1) return false;
 		}

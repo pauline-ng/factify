@@ -81,7 +81,7 @@ public class Acronym {
 	public static Map<String, Sequence> findAcronyms(List<Sequence> sentences) {
 		Map<String, Sequence> acronyms_all = new HashMap<String, Sequence>();
 		for(Sequence sen_ : sentences) {
-			String sen = sen_.sourceString;
+			String sen = sen_.getSourceString();
 			Stack<Integer> st = new Stack<Integer>();//stack for parenthesis
 			ArrayList<Integer> start_index_parenthesis = new ArrayList<Integer>();
 			ArrayList<Integer> end_index_parenthesis = new ArrayList<Integer>();

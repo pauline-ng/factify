@@ -51,9 +51,8 @@ public class ParseJSON {
 	}
 	
 	public boolean parseToTxt(String inputJson, String outputPath) {
-		utility util = new utility();
 //		String filePath = "D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output_BEL_extractor\\cbdgmlu_.pdf_facts.jason";
-		String str = util.readFromFile(inputJson);
+		String str = utility.readFromFile(inputJson);
 //		String output = "D:\\crowdsourcingPlatform\\cbdgmlu_.pdf_facts.txt";
 		Object obj=JSONValue.parse(str);
 		JSONArray array=(JSONArray)obj;
@@ -61,34 +60,33 @@ public class ParseJSON {
 			Debug.println("Invalid JSON file!", DEBUG_CONFIG.debug_error);
 			return false;
 		}
-		util.writeFile(outputPath,"",false);
+		utility.writeFile(outputPath,"",false);
 		String content = "";
 		for(int i = 0; i < array.size(); i++) {
 			JSONObject fact = (JSONObject) array.get(i);
 			if(fact.get("type").equals("Sentence")) {
-				util.writeFile(outputPath, "***" + fact.get("sentence") + "\r\n", true);
-				util.writeFile(outputPath, fact.get("fact") + "\r\n\r\n", true);
+				utility.writeFile(outputPath, "***" + fact.get("sentence") + "\r\n", true);
+				utility.writeFile(outputPath, fact.get("fact") + "\r\n\r\n", true);
 			}
 			if(fact.get("type").equals("SectionTitle")) {
-				util.writeFile(outputPath, fact.get("sectionTitle") + "\r\n", true);
+				utility.writeFile(outputPath, fact.get("sectionTitle") + "\r\n", true);
 			}
 			if(fact.get("type").equals("Paragraph Break")) {
-				util.writeFile(outputPath, "---new paragraph--------------------------\r\n", true);
+				utility.writeFile(outputPath, "---new paragraph--------------------------\r\n", true);
 			}
 		}
-		util.writeFile(outputPath,content,true);
+		utility.writeFile(outputPath,content,true);
 		return true;
 	}
 	public void parseToMediaWiki(String inputJson, String outputPath) {
-		utility util = new utility();
 		String filePath = inputJson;
 //		String filePath = "D:\\GitHub\\n-projects-ws-repo-nonegit\\n-projects-ws-repo-nonegit\\nonegit-BEL_extractor-test\\output\\resultOfTestingPDFs3\\1hgs79.pdf_facts.jason";
-		String str = util.readFromFile(filePath);
+		String str = utility.readFromFile(filePath);
 //		String output = "D:\\crowdsourcingPlatform\\test_facts.txt";
 		String output = outputPath;
 		Object obj=JSONValue.parse(str);
 		JSONArray array=(JSONArray)obj;
-		util.writeFile(output,"",false);
+		utility.writeFile(output,"",false);
 		String content = "== Meta Info == \r\n";
 		for(int i = 0; i < array.size(); i++) {
 			JSONObject fact = (JSONObject) array.get(i);
@@ -139,16 +137,15 @@ public class ParseJSON {
 				content += "---------------------------------------------------------------------\r\n";
 			}
 		}
-		util.writeFile(output,content,true);
+		utility.writeFile(output,content,true);
 
 		//		  JSONObject obj2=(JSONObject)array.get(1);
 		//		  System.out.println("======field \"1\"==========");
 		//		  System.out.println(obj2.get("1"));    
 	}
 	public boolean analyze_onefile(String inputJson) {
-		utility util = new utility();
 		String filePath = inputJson;
-		String str = util.readFromFile(filePath);
+		String str = utility.readFromFile(filePath);
 		Object obj=JSONValue.parse(str);
 		JSONArray array=(JSONArray)obj;
 		for(int i = 0; i < array.size(); i++) {
@@ -187,7 +184,6 @@ public class ParseJSON {
 		File[] files = (new File(input)).listFiles();
 		int total = 0;
 		int withDOI = 0;
-		utility util = new utility();
 		for(File file : files) {
 			if(file.getName().endsWith(".json")) {
 				total++;
@@ -197,7 +193,7 @@ public class ParseJSON {
 					String prefix = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\";
 					String fileName = file.getName();
 					fileName = fileName.substring(0, fileName.length() - "_facts.json".length());
-					util.copyFile(prefix + fileName, input + "//withoutdoi//" + fileName);
+					utility.copyFile(prefix + fileName, input + "//withoutdoi//" + fileName);
 				}
 			}
 		}

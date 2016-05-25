@@ -19,7 +19,7 @@ package pattern;
 import de.lodde.jnumwu.formula.Expression;
 
 /**
- * Library from http://sourceforge.net/p/jnumwu/wiki/markdown_syntax/
+ * Library from {@link http://sourceforge.net/p/jnumwu/wiki/markdown_syntax/}
  *
  */
 public class UnitsRecognizer {

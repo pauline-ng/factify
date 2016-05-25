@@ -65,11 +65,11 @@ public class RegularExpressionMatcher implements pattern.Matcher{
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		for(String reg : regExpressions) {
 			Pattern pattern = Pattern.compile(reg);
-			for(int i = 0; i < senten.size(); i++) {
-				String word = senten.words.get(i);
+			for(int i = 0; i < senten.getWordCount(); i++) {
+				String word = senten.getWord(i);
 				Matcher matcher = pattern.matcher(word);//word has been trimmed
 				if (matcher.find()) {
-					results.add(new Span(senten.spans.get(i).getStart(), senten.spans.get(i).getEnd()));
+					results.add(new Span(senten.getSpanOfWord(i).getStart(), senten.getSpanOfWord(i).getEnd()));
 				}
 			}
 		}

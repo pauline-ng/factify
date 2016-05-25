@@ -126,11 +126,11 @@ public class PatternMatcher {
 	private  List<Span> extractReg_Rational(Sequence senten) {
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		Pattern pattern = Pattern.compile(reg_rational);
-		for(int i = 0; i < senten.size(); i++) {
-			String word = senten.words.get(i);
+		for(int i = 0; i < senten.getWordCount(); i++) {
+			String word = senten.getWord(i);
 			Matcher matcher = pattern.matcher(word);//word has been trimmed
 			if (matcher.find()) {
-					results.add(new Span(senten.spans.get(i).getStart(), senten.spans.get(i).getEnd()));
+					results.add(new Span(senten.getSpanOfWord(i).getStart(), senten.getSpanOfWord(i).getEnd()));
 			}
 		}
 		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
@@ -140,7 +140,7 @@ public class PatternMatcher {
 	public  List<Span> extractP_Value(Sequence senten) {
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		Pattern pattern = Pattern.compile(reg_pvalue);
-		Matcher matcher = pattern.matcher(senten.sourceString);
+		Matcher matcher = pattern.matcher(senten.getSourceString());
 		while (matcher.find()) {
 			String matchString = matcher.group();
 			int trimB = 0; int trimE = 0;
@@ -162,9 +162,9 @@ public class PatternMatcher {
 		TextToNum textToNum = new TextToNum();
 		String curInteger = "";
 		int integerRelativeOrder_start = -1;
-		for(int i = 0; i < senten.POSTags.size(); i++) {
-			String word = senten.words.get(i);//stem
-			String tag = senten.POSTags.get(i);
+		for(int i = 0; i < senten.getWordCount(); i++) {
+			String word = senten.getWord(i);//stem
+			String tag = senten.getPOSTagOfWord(i);
 			//check if it is rational
 			Pattern pattern = Pattern.compile(reg_rational);
 			Matcher matcher = pattern.matcher(word);
@@ -199,7 +199,7 @@ public class PatternMatcher {
 				if(curInteger !=null && (!curInteger.trim().equals(""))) {//valid word sequence expressing numbers
 					Long value = textToNum.parse(curInteger);
 					if(value != null) {//if our program is not able to deal with it, leave it.
-						results.add(new Span(senten.spans.get(integerRelativeOrder_start).getStart(), senten.spans.get(i - 1).getEnd()));
+						results.add(new Span(senten.getSpanOfWord(integerRelativeOrder_start).getStart(), senten.getSpanOfWord(i - 1).getEnd()));
 					}else {
 						Debug.println("WARNING: Failed to convert " + curInteger + " to integer",DEBUG_CONFIG.debug_pattern);
 					}
@@ -216,8 +216,8 @@ public class PatternMatcher {
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		HashSet<Sequence> longforms = new HashSet<Sequence>();
 		longforms.addAll(acronyms.values());
-		for(int i = 0; i < senten.size(); i++) {
-			if(acronyms.keySet().contains(senten.words.get(i))) results.add(new Span(senten.spans.get(i).getStart(), senten.spans.get(i).getEnd()));
+		for(int i = 0; i < senten.getWordCount(); i++) {
+			if(acronyms.keySet().contains(senten.getWord(i))) results.add(new Span(senten.getSpanOfWord(i).getStart(), senten.getSpanOfWord(i).getEnd()));
 			results.addAll(findMatches(senten, longforms));
 		}
 		
@@ -228,11 +228,11 @@ public class PatternMatcher {
 	public  List<Span> extractUnits(Sequence senten) {
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		UnitsRecognizer unitsRecognizer = new UnitsRecognizer();
-		for(int i = 1; i < senten.size(); i++) {
+		for(int i = 1; i < senten.getWordCount(); i++) {
 			boolean followingNumber = false;
 			if(extractReg_Rational(senten.getSubsequence(i -1, i)).size() > 0) followingNumber = true;
-			if(unitsRecognizer.isUnit(senten.words.get(i), followingNumber)) {
-				results.add(new Span(senten.spans.get(i).getStart(), senten.spans.get(i).getEnd()));
+			if(unitsRecognizer.isUnit(senten.getWord(i), followingNumber)) {
+				results.add(new Span(senten.getSpanOfWord(i).getStart(), senten.getSpanOfWord(i).getEnd()));
 			}
 		}
 		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
@@ -251,21 +251,21 @@ public class PatternMatcher {
 	public  List<Span> findMatches(Sequence senten, HashSet<Sequence> freNGrams ) {
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		HashSet<Integer> freSeqLen = new HashSet<Integer>();
-		for(Sequence s : freNGrams) freSeqLen.add(s.size());
+		for(Sequence s : freNGrams) freSeqLen.add(s.getWordCount());
 		ArrayList<Integer> enty_indices = new ArrayList<Integer>(); //[)
 		//match from longest to shortest
 		HashSet<Integer> matchedToken = new HashSet<Integer>();
-		int k = senten.size();//length of pattern to be matched
+		int k = senten.getWordCount();//length of pattern to be matched
 		while(k > 0) {
 			if(!freSeqLen.contains(k)) {k--; continue;}
 			boolean coarseMatch = false;
 			for(Sequence s : freNGrams) {
-				if(s.size() == k && s.isSubsequenceOrSelfOf(senten)) coarseMatch = true;
+				if(s.getWordCount() == k && s.isSubsequenceOrSelfOf(senten)) coarseMatch = true;
 				if(coarseMatch) break;
 			}
 			if(!coarseMatch) {k--; continue;}
 			int b = 0; // start/beginning of the substring
-			while(b < senten.size() - k + 1) {
+			while(b < senten.getWordCount() - k + 1) {
 				boolean foundOne = true;
 				for(int m = b; m < b + k; m++) if(matchedToken.contains(m)) {//matched token in the middle, start from next token
 					foundOne = false; break;
@@ -283,7 +283,7 @@ public class PatternMatcher {
 		for(int i = 0; i < enty_indices.size();) {
 			int start = enty_indices.get(i);
 			int end = enty_indices.get(i + 1);
-			results.add(new Span(senten.spans.get(start).getStart(), senten.spans.get(end - 1).getEnd()));
+			results.add(new Span(senten.getSpanOfWord(start).getStart(), senten.getSpanOfWord(end - 1).getEnd()));
 			i = i + 2;
 		}
 		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
@@ -297,25 +297,25 @@ public class PatternMatcher {
 	 */
 	public  List<Span> findContainingMatches(Sequence senten, HashSet<Sequence> freNGrams ) {
 		HashSet<Span>	results = new HashSet<Span>();//[)
-		for(int i = 0; i < senten.words.size(); i++) {
-			String word = senten.words.get(i);
+		for(int i = 0; i < senten.getWordCount(); i++) {
+			String word = senten.getWord(i);
 			boolean contains = false;
 			for(Sequence s : freNGrams) {
-				if(word.contains(s.sourceString)) {
+				if(word.contains(s.getSourceString())) {
 					contains = true; break;
 				}
 			}
-			if(contains) results.add(new Span(senten.spans.get(i).getStart(), senten.spans.get(i).getEnd()));
+			if(contains) results.add(new Span(senten.getSpanOfWord(i).getStart(), senten.getSpanOfWord(i).getEnd()));
 		}
 		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
 		return results_;
 	}
 	public  List<Span> extractParenthesis(Sequence senten) {
 		HashSet<Span>	results = new HashSet<Span>();//[)
-		for(int i = 0; i < senten.size(); i++) {
-			String word = senten.words.get(i).trim();
+		for(int i = 0; i < senten.getWordCount(); i++) {
+			String word = senten.getWord(i).trim();
 			if(word.equals("(")||word.equals(")")||word.equals("[") || word.equals("]")) {
-				results.add(new Span(senten.spans.get(i).getStart(), senten.spans.get(i).getEnd()));
+				results.add(new Span(senten.getSpanOfWord(i).getStart(), senten.getSpanOfWord(i).getEnd()));
 			}
 		}
 		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);
@@ -441,8 +441,8 @@ String para = "In contrast, behavioral economic theory suggests that incentives 
 			HashSet<Integer> crossToken = new HashSet<Integer>();//the relative order of tokens that the span cross
 			for(int i = 0; i < facts_per_sen.size(); i++) {
 				Span cur = facts_per_sen.get(i);
-				for(int j = 0; j < senten.size(); j++) {
-					Span token = senten.spans.get(j);
+				for(int j = 0; j < senten.getWordCount(); j++) {
+					Span token = senten.getSpanOfWord(j);
 					if(token.intersects(cur)) crossToken.add(j);
 				}
 			}
@@ -453,12 +453,12 @@ String para = "In contrast, behavioral economic theory suggests that incentives 
 			LinkedHashMap<Integer, Integer> spans = new LinkedHashMap<>();
 			for(int i = 0; i < crossToken_.size(); i++) {
 				int relativeOrder = crossToken_.get(i);
-				facts.add(senten.words.get(relativeOrder));
+				facts.add(senten.getWord(relativeOrder));
 				relativeOrders.add(new Span(relativeOrder,relativeOrder));
-				spans.put(senten.spans.get(relativeOrder).getStart(), senten.spans.get(relativeOrder).getEnd() - 1);
+				spans.put(senten.getSpanOfWord(relativeOrder).getStart(), senten.getSpanOfWord(relativeOrder).getEnd() - 1);
 			}
 			cfacts.addFact(facts, senIndex, relativeOrders, spans, details.get(senIndex));
-			cfacts.addSentence(sentens.get(senIndex).sourceString);
+			cfacts.addSentence(sentens.get(senIndex).getSourceString());
 		}
 		return cfacts;
 	}

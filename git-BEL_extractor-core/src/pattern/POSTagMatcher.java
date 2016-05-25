@@ -63,10 +63,10 @@ public class POSTagMatcher implements Matcher{
 	public List<Span> Match(Sequence senten) {
 		// TODO Auto-generated method stub
 		HashSet<Span>	results = new HashSet<Span>();//[)
-		for(int i = 0; i < senten.size(); i++) {
-			String tag = senten.POSTags.get(i);
+		for(int i = 0; i < senten.getWordCount(); i++) {
+			String tag = senten.getPOSTagOfWord(i);
 			if (this.postags.contains(tag)) {
-				results.add(new Span(senten.spans.get(i).getStart(), senten.spans.get(i).getEnd()));
+				results.add(new Span(senten.getSpanOfWord(i).getStart(), senten.getSpanOfWord(i).getEnd()));
 			}
 		}
 		List<Span> results_ = new ArrayList<Span>(); results_.addAll(results);

@@ -22,7 +22,7 @@ import java.util.Arrays;
 import utility.Debug;
 import utility.Debug.DEBUG_CONFIG;
 /**
- * This is from https://ph.answers.yahoo.com/question/index?qid=20100820042716AAcemIX (http://pastebin.com/CbaRz14A;http://pastebin.com/cGSFUSBp;http://pastebin.com/fZLypaBn)
+ * This is from {@link https://ph.answers.yahoo.com/question/index?qid=20100820042716AAcemIX} ({@link http://pastebin.com/CbaRz14A;http://pastebin.com/cGSFUSBp;http://pastebin.com/fZLypaBn})
  * 
  * Convert text to non-negative integers (long): cannot deal with decimal or negatives
  * --cannot deal with "half an hour" or "a hundred"

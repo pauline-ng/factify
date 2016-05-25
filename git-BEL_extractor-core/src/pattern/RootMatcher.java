@@ -39,6 +39,26 @@ import utility.Debug;
 import utility.Span;
 import utility.Debug.DEBUG_CONFIG;
 
+/**
+ * <pre>
+ * Main entrance of rule matching.
+ * </pre>
+ * 
+ * <pre>
+ * Three types of Matchers (implementing Matcher interface) are supported:
+ * POSTagMatcher: match pos tags;
+ * RegularExpressionMatcher: match regular expressions;
+ * PreBuiltWordListMatcher: match pre-built word list
+ * The matchers are read from an input file. For more information, please visit {@link https://github.com/happybelly/fact-extractor-multiple-java-projects/wiki/Rule-Specification-Files}.
+ * It is flexible to change matchers by modifying the input file without modifying the source code.
+ * </pre>
+ * 
+ * <pre>
+ * Another four rules are hard coded: Units, TextToNumbers; Acronyms; P-values on PatternMatcher.java
+ * </pre>
+ * 
+ *
+ */
 public class RootMatcher {
 	private List<Object> matchers = new ArrayList<Object>();
 	public boolean readMacher(String path) {
@@ -185,7 +205,7 @@ public class RootMatcher {
 		boolean printDetail = true;
 		PatternMatcher pm = new PatternMatcher();
 		for(Sequence s : sentences) {
-			Debug.println(s.POSTags, DEBUG_CONFIG.debug_pattern);
+//			Debug.println(s.POSTags, DEBUG_CONFIG.debug_pattern);
 			List<List<Span>> matchingDetail = new ArrayList<List<Span>>();
 			StringBuilder detail = new StringBuilder();
 			for(Object matcher : matchers)
@@ -195,7 +215,7 @@ public class RootMatcher {
 					List<Span> result = posTagMatcher.Match(s);
 					if(printDetail)	
 						for(Span span : result) 
-							Debug.println("POSTagMatcher (" + posTagMatcher.getInputFileName() + "): " + span.getCoveredText(s.sourceString), DEBUG_CONFIG.debug_pattern);
+							Debug.println("POSTagMatcher (" + posTagMatcher.getInputFileName() + "): " + span.getCoveredText(s.getSourceString()), DEBUG_CONFIG.debug_pattern);
 					matchingDetail.add(result);
 					detail.append("{POSTagMatcher: ");
 					detail.append(posTagMatcher.getInputFileName());
@@ -203,10 +223,10 @@ public class RootMatcher {
 					detail.append("\r\n");
 					detail.append("Spans: \r\n"); 
 					for(Span span : result) {
-						String postag = s.POSTags.get(s.spans.indexOf(span));
+						String postag = s.getPOSTagOfWord(s.getWordIndexOfSpan(span));
 						detail.append(span.toString());
 						detail.append("\t");
-						detail.append(span.getCoveredText(s.sourceString));
+						detail.append(span.getCoveredText(s.getSourceString()));
 						detail.append("\t");
 						detail.append(postag + "\r\n");
 					}
@@ -217,7 +237,7 @@ public class RootMatcher {
 					List<Span> result = regExpMatcher.Match(s);
 					if(printDetail)	
 						for(Span span : result) 
-							Debug.println("RegularExpressionMatcher (" + regExpMatcher.getInputFileName() + "): " + span.getCoveredText(s.sourceString), DEBUG_CONFIG.debug_pattern);
+							Debug.println("RegularExpressionMatcher (" + regExpMatcher.getInputFileName() + "): " + span.getCoveredText(s.getSourceString()), DEBUG_CONFIG.debug_pattern);
 					matchingDetail.add(result);
 					detail.append("{RegularExpressionMatcher: ");
 					detail.append(regExpMatcher.getInputFileName());
@@ -227,7 +247,7 @@ public class RootMatcher {
 					for(Span span : result) {
 						detail.append(span.toString());
 						detail.append("\t");
-						detail.append(span.getCoveredText(s.sourceString));
+						detail.append(span.getCoveredText(s.getSourceString()));
 						detail.append("\r\n");
 					}
 					detail.append("}\r\n");
@@ -237,7 +257,7 @@ public class RootMatcher {
 					List<Span> result = preBuiltWordMatcher.Match(s);
 					if(printDetail)	
 						for(Span span : result) 
-							Debug.println("PreBuiltWordListMatcher (" + preBuiltWordMatcher.getInputFileName() + "): " + span.getCoveredText(s.sourceString), DEBUG_CONFIG.debug_pattern);
+							Debug.println("PreBuiltWordListMatcher (" + preBuiltWordMatcher.getInputFileName() + "): " + span.getCoveredText(s.getSourceString()), DEBUG_CONFIG.debug_pattern);
 					matchingDetail.add(result);
 					detail.append("{PreBuiltWordListMatcher: ");
 					detail.append(preBuiltWordMatcher.getInputFileName());
@@ -247,7 +267,7 @@ public class RootMatcher {
 					for(Span span : result) {
 						detail.append(span.toString());
 						detail.append("\t");
-						detail.append(span.getCoveredText(s.sourceString));
+						detail.append(span.getCoveredText(s.getSourceString()));
 						detail.append("\r\n");
 					}
 					detail.append("}\r\n");
@@ -256,14 +276,14 @@ public class RootMatcher {
 			{
 				if(freSeq_ != null){
 					List<Span> ngrams_s = pm.extractNGrams(s, freSeq_);
-					if(printDetail)				for(Span span : ngrams_s) Debug.println("ngrams:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+					if(printDetail)				for(Span span : ngrams_s) Debug.println("ngrams:" + span.getCoveredText(s.getSourceString()),DEBUG_CONFIG.debug_pattern);
 					matchingDetail.add(ngrams_s);
 					detail.append("freq ngrams: \r\n");
 					detail.append("Spans: \r\n"); 
 					for(Span span : ngrams_s) {
 						detail.append(span.toString());
 						detail.append("\t");
-						detail.append(span.getCoveredText(s.sourceString));
+						detail.append(span.getCoveredText(s.getSourceString()));
 						detail.append("\r\n");
 					}
 					detail.append("}\r\n");
@@ -272,14 +292,14 @@ public class RootMatcher {
 			{
 
 				List<Span> units = pm.extractUnits(s);
-				if(printDetail) for(Span span : units) Debug.println("units:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+				if(printDetail) for(Span span : units) Debug.println("units:" + span.getCoveredText(s.getSourceString()),DEBUG_CONFIG.debug_pattern);
 				matchingDetail.add(units);
 				detail.append("Units: \r\n");
 				detail.append("Spans: \r\n"); 
 				for(Span span : units) {
 					detail.append(span.toString());
 					detail.append("\t");
-					detail.append(span.getCoveredText(s.sourceString));
+					detail.append(span.getCoveredText(s.getSourceString()));
 					detail.append("\r\n");
 				}
 				detail.append("}\r\n");
@@ -287,14 +307,14 @@ public class RootMatcher {
 			}
 			{
 				List<Span> textToNum = pm.extractTextToNum(s);
-				if(printDetail)				for(Span span : textToNum) Debug.println("textToNum:" + span.getCoveredText(s.sourceString),DEBUG_CONFIG.debug_pattern);
+				if(printDetail)				for(Span span : textToNum) Debug.println("textToNum:" + span.getCoveredText(s.getSourceString()),DEBUG_CONFIG.debug_pattern);
 				matchingDetail.add(textToNum);
 				detail.append("textToNum: \r\n");
 				detail.append("Spans: \r\n"); 
 				for(Span span : textToNum) {
 					detail.append(span.toString());
 					detail.append("\t");
-					detail.append(span.getCoveredText(s.sourceString));
+					detail.append(span.getCoveredText(s.getSourceString()));
 					detail.append("\r\n");
 				}
 				detail.append("}\r\n");
@@ -307,7 +327,7 @@ public class RootMatcher {
 				for(Span span : acros) {
 					detail.append(span.toString());
 					detail.append("\t");
-					detail.append(span.getCoveredText(s.sourceString));
+					detail.append(span.getCoveredText(s.getSourceString()));
 					detail.append("\r\n");
 				}
 				detail.append("}\r\n");
@@ -320,7 +340,7 @@ public class RootMatcher {
 				for(Span span : pvalues) {
 					detail.append(span.toString());
 					detail.append("\t");
-					detail.append(span.getCoveredText(s.sourceString));
+					detail.append(span.getCoveredText(s.getSourceString()));
 					detail.append("\r\n");
 				}
 				detail.append("}\r\n");

@@ -189,7 +189,7 @@ public class ExtractorBELExtractor {
 			 {
 				 HashMap<String, String> acronyms_string = new HashMap<String,String>();
 				 for(String s : acronyms.keySet()) {
-					 acronyms_string.put(s, acronyms.get(s).sourceString);
+					 acronyms_string.put(s, acronyms.get(s).getSourceString());
 				 }
 				 JSONObject acro_json = new JSONObject(acronyms_string);
 				 acro_json.put("type", "acronyms");
@@ -199,7 +199,7 @@ public class ExtractorBELExtractor {
 				 JSONArray freqNgrams = new JSONArray();
 				 for(Sequence seq : freSeq) {
 					 JSONObject oneFreq = new JSONObject();
-					 oneFreq.put("value", seq.sourceString);
+					 oneFreq.put("value", seq.getSourceString());
 					 oneFreq.put("freq", seq.getAbsoluteFreq());
 					 freqNgrams.add(oneFreq);
 				 }
