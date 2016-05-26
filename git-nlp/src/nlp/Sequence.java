@@ -24,18 +24,33 @@ import java.util.Stack;
 
 import utility.Span;
 
-
+/**
+ * <pre>
+ * The structure of a sentence after NLP processing. See StanfordNLPLight.textToSequence().
+ *</pre>
+ *<pre>
+ *Also used as media for rule matching. For example, frequent ngrams.
+ *</pre>
+ */
 public class Sequence {
-	private List<String> stems;//lemmas of string tokens/words
+	/**words/tokens without stemming */
+	private List<String> words;
+	
+	/**lemmas of words/tokens */
+	private List<String> stems;
+	
+	/**POSTag of words/tokens */
 	private List<String> POSTags;
+	
+	/**Physical span of each word in the sentence. [) */
+	private List<Span> spans; 
+	
 	private int senID;
 	
 	
-	private List<String> words;//words/tokens without stemming
-	private List<Span> spans; // [)
-	
 	private int absoluteFreq;
 	
+	/**The full-text of the sentence */
 	private String sourceString;
 	
 	public Sequence(List<String> stems) {

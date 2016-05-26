@@ -357,69 +357,96 @@ String para = "In contrast, behavioral economic theory suggests that incentives 
 //		sfact.writeFacts("test/PMC1513515/Methods_section_ngram.fact");
 	}
 	
-	public  List<Span> resolveSpans(List<List<Span>> all, Sequence seq) {
+	/**
+	 * merge overlapping spans
+	 * Merge sort
+	 * @param all
+	 * @return
+	 */
+	public  List<Span> resolveSpans(List<List<Span>> all) {
 		HashSet<Span> hsAll = new HashSet<Span>(); 
 		for(List<Span> spans : all) for(Span span : spans) 
 			hsAll.add(span);
 		List<Span> all_ = new ArrayList<Span>(); all_.addAll(hsAll);
-		boolean done = false;
-		while(!done) {
-			all_ = removeSubspans(all_);
-			if(!mergeTwoOverlappingSpans(all_)) 	done = true;
-			else {System.err.println("Conflict Spans Detected!");}
-		}
-		return all_;
+		
+		return merge(all_);
 	}
-	
-	/**
-	 * remove spans in @all whose superspan is in @all
-	 * @param all
-	 * @return
-	 */
-	private  List<Span> removeSubspans(List<Span> all) {
-		HashSet<Span> hsAll = new HashSet<Span>(); for(Span span : all) hsAll.add(span);
-		List<Span> all_ = new ArrayList<Span>(); all_.addAll(hsAll);
-		Collections.sort(all_);
-		List<Span> temp = new ArrayList<Span>();
-		for(int i = 0; i < all_.size(); i++) {
-			int j;
-			for(j = 0; j < all_.size(); j++) {
-				if(i == j) continue;
-				if(all_.get(j).contains(all_.get(i))) break;
-				if(all_.get(j).crosses(all_.get(i))) {
-				}
-			}
-			if(j == all_.size()) temp.add(all_.get(i));
-		}
-		return temp;
-	}
-	
-	/**
-	 * Find a pair of overlapping spans in @all and merge the two spans
-	 * @param all
-	 * @return
-	 */
-	private  boolean mergeTwoOverlappingSpans(List<Span> all) {
-		Collections.sort(all);
-		int i;
-		int j = -1;
-		boolean foundOne = false;
-		for(i = 0; i < all.size(); i++) {
-			for(j = 0; j < all.size(); j++) {
-				if(i == j) continue;
-				if(all.get(j).crosses(all.get(i))) {
-					foundOne = true; break;
-				}
-			}
-			if(foundOne) break;
-		}
-		if(!foundOne) return false;
-		Span newSpan = new Span(Math.min(all.get(i).getStart(), all.get(j).getStart()),Math.max(all.get(i).getEnd(), all.get(j).getEnd()));
-		all.set(i, newSpan);
-		all.remove(j);
-		Collections.sort(all);
-		return true;
-	}
+	public List<Span> merge(List<Span> intervals) {
+        if(intervals == null || intervals.size() == 0) return intervals;
+        
+        return merge(intervals, 0, intervals.size());
+    }
+    public List<Span> merge(List<Span> intervals, int i, int j) {//[i,j);
+        if(j - i < 2) {
+            List<Span> tmp = new ArrayList<Span>();
+            tmp.add(intervals.get(i));
+            return tmp;
+        }
+        int mid = i + (j-i)/2;//higher mid
+        List<Span> l = merge(intervals, i, mid);
+        List<Span> r = merge(intervals, mid, j);
+        List<Span> result = new ArrayList<Span>();
+        int k = 0;
+        int p = 0;
+        while(k < l.size() && p < r.size()) {
+        	Span left = l.get(k);
+        	Span right = r.get(p);
+            if(left.getEnd() <= right.getStart()) {
+                result.add(left); k++;
+            }else if(right.getEnd() <= left.getStart()) {
+                result.add(right); p++;
+            }else {
+                if(left.getStart() <= right.getStart()) {
+                	Span newleft = new Span(left.getStart(), left.getEnd());
+                	newleft.setEnd(Math.max(newleft.getEnd(), right.getEnd()));
+                    //make sure l is disjoint
+                    while(k < l.size() -1 && l.get(k+1).getStart()< newleft.getEnd()) newleft.setEnd(Math.max(newleft.getEnd(), l.get(++k).getEnd()));
+                    l.set(k, newleft);
+                    p++;
+                }else {
+                	Span newRight = new Span(right.getStart(), right.getEnd());
+                	newRight.setEnd(Math.max(left.getEnd(), newRight.getEnd()));
+                    while(p < r.size()-1 && r.get(p+1).getStart()< newRight.getEnd()) {
+                    	newRight.setEnd(Math.max(newRight.getEnd(), r.get(++p).getEnd()));
+                    }
+                    r.set(p, newRight);
+                    k++;
+                }
+            }
+        }
+        while(k < l.size()) {
+        	Span cur = l.get(k);
+            if(result.size() == 0) {
+                result.add(cur);
+                k++;
+                continue;
+            }
+            Span pre = result.get(result.size() - 1);
+            if(pre.getEnd() <= cur.getStart()) {
+                result.add(cur);
+            }else {
+                pre.setEnd(Math.max(cur.getEnd(), pre.getEnd()));
+            }
+            k++;
+        }
+        while(p < r.size()) {
+        	Span cur = r.get(p);
+            if(result.size() == 0) {
+                result.add(cur);
+                p++;
+                continue;
+            }
+            Span pre = result.get(result.size() - 1);
+            if(pre.getEnd() <= cur.getStart()) {
+                result.add(cur);
+            }else {
+                pre.setEnd(Math.max(cur.getEnd(), pre.getEnd()));
+            }
+            p++;
+        }
+        
+        return result;
+    }
 	
 	/**
 	 * Any token that crosses the span of all would be counted in.

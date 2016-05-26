@@ -345,7 +345,7 @@ public class RootMatcher {
 				}
 				detail.append("}\r\n");
 			}
-			List<Span> after = pm.resolveSpans(matchingDetail, s);
+			List<Span> after = pm.resolveSpans(matchingDetail);
 			allFacts.add(after);
 			matchingDetail_description.add(detail.toString());
 			Debug.print(detail.toString(), DEBUG_CONFIG.debug_C_Facts);

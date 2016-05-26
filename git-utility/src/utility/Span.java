@@ -42,8 +42,8 @@ package utility;
  **/
 public class Span implements Comparable<Span> {
 
-  private final int start;
-  private final int end;
+  private  int start;
+  private  int end;
   
   private final String type;
 
@@ -295,6 +295,9 @@ public class Span implements Comparable<Span> {
       chunks[si]=cb.substring(0, cb.length()-1);
     }
     return chunks;
+  }
+  public void setEnd(int end) {
+	  this.end = end;
   }
 }
 
