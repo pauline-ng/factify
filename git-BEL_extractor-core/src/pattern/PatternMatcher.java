@@ -18,6 +18,7 @@ package pattern;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -364,12 +365,22 @@ String para = "In contrast, behavioral economic theory suggests that incentives 
 	 * @return
 	 */
 	public  List<Span> resolveSpans(List<List<Span>> all) {
-		HashSet<Span> hsAll = new HashSet<Span>(); 
-		for(List<Span> spans : all) for(Span span : spans) 
-			hsAll.add(span);
-		List<Span> all_ = new ArrayList<Span>(); all_.addAll(hsAll);
-		
-		return merge(all_);
+		List<Span> all_ = new ArrayList<Span>();
+		for(List<Span> spans : all) all_.addAll(spans);
+        Collections.sort(all_, new Comparator<Span>(){public int compare(Span i, Span j){ 
+            if(i.getStart() == j.getStart()) return i.getEnd()-j.getEnd();
+            else return i.getStart()-j.getStart();
+        } });
+        List<Span> ret = new ArrayList<Span>();
+        if(all_.size() < 1) return ret;
+        ret.add(new Span(all_.get(0).getStart(), all_.get(0).getEnd()));
+        for(int i = 1; i < all_.size(); i++) {
+        	Span last = ret.get(ret.size()-1);
+        	Span cur = all_.get(i);
+            if(last.getEnd() > cur.getStart()) last.setEnd(Math.max(last.getEnd(), cur.getEnd()));
+            else ret.add(new Span(cur.getStart(), cur.getEnd()));
+        }
+        return ret;
 	}
 	public List<Span> merge(List<Span> intervals) {
         if(intervals == null || intervals.size() == 0) return intervals;
