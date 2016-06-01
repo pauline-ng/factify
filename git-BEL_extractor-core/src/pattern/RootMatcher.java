@@ -183,8 +183,8 @@ public class RootMatcher {
 						sb.append(version);
 						
 					}
-				}else
-					if(!line.trim().isEmpty()) postags.add(line);
+				}else if(line.startsWith("//")) continue;//skip comments
+				else if(!line.trim().isEmpty()) postags.add(line);
 			}
 			br.close();
 		} catch (IOException e) {
