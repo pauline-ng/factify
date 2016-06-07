@@ -26,7 +26,7 @@ import utility.Span;
 
 /**
  * <pre>
- * The structure of a sentence after NLP processing. See StanfordNLPLight.textToSequence().
+ * The structure of a sentence after NLP processing. See {@link StanfordNLPLight#textToSequence(String, int, int, int, boolean)}} .
  *</pre>
  *<pre>
  *Also used as media for rule matching. For example, frequent ngrams.
@@ -98,7 +98,7 @@ public class Sequence {
 		if(words == null)  this.words = null;
 		else this.words.addAll(words);
 	}
-	public Sequence(List<String> words, List<String> stems, List<String> POSTags, List<Span> spans, String sourceString, int pageNum, int secNum, int paraNum, int senID) {
+	public Sequence(List<String> words, List<String> stems, List<String> POSTags, List<Span> spans, String sourceString, int senID) {
 		this.stems = new ArrayList<String>();
 		if(stems == null) this.stems = null;
 		else this.stems.addAll(stems);

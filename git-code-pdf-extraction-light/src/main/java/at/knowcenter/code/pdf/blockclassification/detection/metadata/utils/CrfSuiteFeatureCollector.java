@@ -75,7 +75,8 @@ public class CrfSuiteFeatureCollector implements FeatureCollector {
         writer.print(label);
         for (String f : features) {
             writer.print('\t');
-            writer.print(f.replace(':', '£'));
+//            writer.print(f.replace(':', '£'));
+            writer.print(f.replace(':', '\u00a3'));
         }
         writer.println();
         lineCounter++;

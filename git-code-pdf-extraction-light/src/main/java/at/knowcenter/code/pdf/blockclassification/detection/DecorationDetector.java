@@ -86,7 +86,7 @@ public class DecorationDetector implements Detector {
 				return (int)Math.signum(diff);
 			}
 		});
-		// 2504315/2504315.pdf did yield a “Comparison method violates its general contract!”
+		// 2504315/2504315.pdf did yield a "Comparison method violates its general contract!"
 		this.comparators.add(new Comparator<Block>() {
 			@Override
 			public int compare(Block o1, Block o2) {

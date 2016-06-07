@@ -154,7 +154,7 @@ public class ExtractorBELExtractor {
 			for(Paragraph para : pdf.body_and_heading) {
 				//					Debug.println("**Section " + i);
 				if(para.isHeading()) continue;
-				List<Sequence> para_seq = StanfordNLPLight.INSTANCE.textToSequence(para.text, -1, -1, -1, true);
+				List<Sequence> para_seq = StanfordNLPLight.INSTANCE.textToSequence(para.text, true);
 				paraToSequence.put(para, para_seq);
 				allSequences.addAll(para_seq);
 			}

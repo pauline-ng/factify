@@ -115,48 +115,11 @@ public enum StanfordNLPLight {
 	}
 
 	/**
-	 * Since postagger is not good at parsing scientific text, we refine the tag of a word to be noun if there exists an occurrence of the word that has beed tagged Noun.
-	 * @param para
-	 * @return
+	 * @param para: input string (typically a paragraph with many sentences)
+	 * @param refindNouns: Since postagger is not good at parsing scientific text, we refine the tag of a word to be noun if there exists an occurrence of the word that has beed tagged Noun.
+	 * @return a list sequences where each sequence represents a sentence
 	 */
-	public List<Sequence> textToSequence(String para, boolean refindNouns) {
-		para = para.replace("fig.", "fig-").replace("Fig.", "Fig-");//to avoid broken sentences 
-		para = para.replace("ref.", "ref-").replace("Ref.", "Ref-");//to avoid broken sentences 
-		para = para.replace("eq.", "eq-").replace("Eq.", "Eq-");//to avoid broken sentences 
-		List<Sequence> sentences_ = new ArrayList<Sequence>();
-		Annotation annotation = new Annotation(para);
-		pipeline.annotate(annotation);
-		List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
-		HashSet<String> knowNouns = new HashSet<String>();
-		if(this.stopwords == null) importStopWords();
-		for(CoreMap sentence : sentences) {
-			List<String> words = new ArrayList<String>();
-			List<String> stems = new ArrayList<String>();
-			List<String> POSTag = new ArrayList<String>();
-			List<Span> spans = new ArrayList<Span>();
-			for(CoreMap token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
-				String stem = token.get(CoreAnnotations.LemmaAnnotation.class);
-				words.add(token.get(CoreAnnotations.OriginalTextAnnotation.class));
-				stems.add(stem);
-				POSTag.add(token.get(CoreAnnotations.PartOfSpeechAnnotation.class));
-				spans.add(new Span(token.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class) - sentence.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class),
-						token.get(CoreAnnotations.CharacterOffsetEndAnnotation.class)- sentence.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class)));
-				if(isNoun(POSTag.get(POSTag.size() - 1)) && stem != null) knowNouns.add(stem);
-			}
-			sentences_.add(new Sequence(words, stems, POSTag, spans, para.substring(sentence.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class), sentence.get(CoreAnnotations.CharacterOffsetEndAnnotation.class))));
-		}
-		//refine pos tag: because current taggger may not work for scientific content
-		if(refindNouns) {
-			for(Sequence s : sentences_) {
-				for(int i = 0; i < s.getWordCount(); i++) {
-					String token = s.getStemOfWord(i);
-					if(knowNouns.contains(token)) s.setPOSTagOfWord(i, "NN"); 
-				}
-			}
-		}
-		return sentences_;
-	}
-	public  List<Sequence> textToSequence(String para, int pageNum, int secNum, int paraNum, boolean refineNouns) {
+	public  List<Sequence> textToSequence(String para, boolean refineNouns) {
 		para = para.replace("fig.", "fig-").replace("Fig.", "Fig-");//to avoid broken sentences 
 		para = para.replace("ref.", "ref-").replace("Ref.", "Ref-");//to avoid broken sentences 
 		para = para.replace("eq.", "eq-").replace("Eq.", "Eq-");//to avoid broken sentences 
@@ -174,15 +137,15 @@ public enum StanfordNLPLight {
 			List<Span> spans = new ArrayList<Span>();
 			for(CoreMap token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
 				String stem = token.get(CoreAnnotations.LemmaAnnotation.class);
-				words.add(token.get(CoreAnnotations.TextAnnotation.class));
+				words.add(token.get(CoreAnnotations.OriginalTextAnnotation.class));//Difference between OriginalTextAnnotation and TextAnnotation?
 				stems.add(stem);
 				POSTag.add(token.get(CoreAnnotations.PartOfSpeechAnnotation.class));
 				spans.add(new Span(token.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class) - sentence.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class),
 						token.get(CoreAnnotations.CharacterOffsetEndAnnotation.class)- sentence.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class)));
-				if(isNoun(POSTag.get(POSTag.size() - 1))) knowNouns.add(stem);
+				if(isNoun(POSTag.get(POSTag.size() - 1)) && stem!= null) knowNouns.add(stem);
 			}
 			sentences_.add(new Sequence(words, stems, POSTag, spans, para.substring(sentence.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class), sentence.get(CoreAnnotations.CharacterOffsetEndAnnotation.class)),
-					pageNum, secNum, pageNum, senIndex));
+					 senIndex));
 			senIndex++;
 		}
 		//refine pos tag: because current taggger may not work for scientific content

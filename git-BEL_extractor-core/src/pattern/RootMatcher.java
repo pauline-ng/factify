@@ -41,7 +41,7 @@ import utility.Debug.DEBUG_CONFIG;
 
 /**
  * <pre>
- * Main entrance of rule matching.
+ * Main entrance of rule matching. All machters implement the same interface @Matcher .
  * </pre>
  * 
  * <pre>
