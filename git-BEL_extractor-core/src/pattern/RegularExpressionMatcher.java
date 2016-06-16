@@ -26,6 +26,10 @@ import java.util.regex.Pattern;
 import nlp.Sequence;
 import utility.Span;
 
+/**
+ * Match regular expressions
+ *
+ */
 public class RegularExpressionMatcher implements pattern.Matcher{
 	private HashSet<String> regExpressions;
 	private String type;
@@ -35,11 +39,10 @@ public class RegularExpressionMatcher implements pattern.Matcher{
 	private String fileName;
 	/**
 	 * 
-	 * @param postags
-	 * @param args: type; inputFileVersion; inputFilePath; inputFileVersionFromRoot
+	 * @param regExps
+	 * @param args type; inputFileVersion; inputFilePath; inputFileVersionFromRoot
 	 */
 	public RegularExpressionMatcher(HashSet<String> regExps, String...args) {
-		// TODO Auto-generated constructor stub
 		this.regExpressions = new HashSet<String>();
 		this.regExpressions.addAll(regExps);
 		int length = args.length;
@@ -61,7 +64,6 @@ public class RegularExpressionMatcher implements pattern.Matcher{
 
 	@Override
 	public List<Span> Match(Sequence senten) {
-		// TODO Auto-generated method stub
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		for(String reg : regExpressions) {
 			Pattern pattern = Pattern.compile(reg);

@@ -49,7 +49,7 @@ import PDFconverter.PDFConverter;
 
 /**
  * This is the main class for fact extractor
- * Use ExtractorBELExtractor.examplePDFExtractor_JSON(args);
+ * Use {@link this#examplePDFExtractor_JSON(String...) examplePDFExtractor_JSON} 
  */
 public class ExtractorBELExtractor {
 	
@@ -61,21 +61,21 @@ public class ExtractorBELExtractor {
 	
 	/**
 	 * 
-	 * @param args
-	 * 0: path
-	 * 1: output_dir
-	 * 2: debug_dir
-	 * 3: matcher file (by default: RuleMatcher.json)
-	 * 4: output_log
-	 * 5: output_facts file path: or "MD5"
+	 * @param args Input parameters <br/>
+	 * 0: Input PDF Path <br/>
+	 * 1: Output directory <br/>
+	 * 2: Debug directory <br/>
+	 * 3: Matcher file path (by default: RuleMatcher.json) <br/>
+	 * 4: Output_log <br/>
+	 * 5: Output_facts file path: or "MD5" <br/>
 	 * @param output
-	 * @return ErrorCode:
-	 * -1: input parameter error 
-	 * 0: input file not exist; 
-	 * 1: succeeded
-	 * 2: PDF Converter Failed
-	 * 3: PDF Converter succeeded, but no body text (or section heading)
-	 * 4: Facts Exists.
+	 * @return ErrorCode<br/>
+	 * -1: input parameter error <br/>
+	 * 0: Input file does not exist<br/>
+	 * 1: Success<br/>
+	 * 2: PDF Converter failed<br/>
+	 * 3: PDF Converter succeeded, but no body text (or section heading)<br/>
+	 * 4: Facts exist<br/>
 	 */
 	public static int examplePDFExtractor_JSON(String...args) {
 		{

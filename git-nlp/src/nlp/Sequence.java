@@ -26,10 +26,10 @@ import utility.Span;
 
 /**
  * <pre>
- * The structure of a sentence after NLP processing. See {@link StanfordNLPLight#textToSequence(String, int, int, int, boolean)}} .
+ * The structure of a sentence after NLP processing. See {@link StanfordNLPLight#textToSequence(String, boolean) textToSequence}.
  *</pre>
  *<pre>
- *Also used as media for rule matching. For example, frequent ngrams.
+ *Also used as media for rule matching. For example, to represent frequent NGrams.
  *</pre>
  */
 public class Sequence {
@@ -47,7 +47,7 @@ public class Sequence {
 	
 	private int senID;
 	
-	
+	/**For NGrams ONLY: the frequency of a NGram*/
 	private int absoluteFreq;
 	
 	/**The full-text of the sentence */

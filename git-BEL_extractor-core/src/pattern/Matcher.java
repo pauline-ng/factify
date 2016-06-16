@@ -21,7 +21,16 @@ import java.util.List;
 import nlp.Sequence;
 import utility.Span;
 
+/**
+ * 
+ * Interface for rule matching.
+ *
+ */
 public interface Matcher {
-	
+	/**
+	 * 
+	 * @param senten A sequence representing a sentence
+	 * @return A list of spans of substrings/subsequence that matches the rule
+	 */
 	List<Span> Match(Sequence senten);
 }

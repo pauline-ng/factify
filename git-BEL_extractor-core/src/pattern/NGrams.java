@@ -27,7 +27,28 @@ import java.util.Map;
 import nlp.Sequence;
 import nlp.StanfordNLPLight;
 
+/**
+ * Compute the (frequent) NGrams of a paper i.e. a list of {@link nlp.Sequence Sequence}
+ * 
+ * <pre>
+ * NGrams are represented as {@link nlp.Sequence Sequence} too.
+ * </pre>
+ *
+ */
 public class NGrams {
+	/**
+	 * 
+	 * @param sentences_tokens A list of sentences represented by {@link nlp.Sequence Sequence}
+	 * @return A list of frequent ngrams represented as {@link nlp.Sequence Sequence}
+	 * 
+	 * <pre>
+	 * A ngram is a frequent ngram if </br>
+	 * 1. Its frequency is > 1 </br>
+	 * 2. It is valid, e.g. it is not empty, not stop words, etc. See {@link #isValid(Sequence)}.</br>
+	 * 3. It does not contain unpaired parenthesis. </br>
+	 * 4. There does not exist another ngram of the same frequency that is a super sequence of it.
+	 * </pre>
+	 */
 	public List<Sequence> getFreqSequences(List<Sequence> sentences_tokens) {
 		List<Sequence> sequences = extractNGrams(sentences_tokens);
 		//check validity individually
@@ -49,29 +70,32 @@ public class NGrams {
 			//filter1: is closed (see Data mining textbook), i.e. there does not exist a super sequence that has the same freq as it
 			boolean isClosed = true;
 			for(Sequence sup : validSeq) {
-				if(sup.isSupersequenceOf(s)  && sup.getAbsoluteFreq() == s.getAbsoluteFreq()) isClosed = false;
+				if(sup.isSupersequenceOf(s)  && sup.getAbsoluteFreq() == s.getAbsoluteFreq()) {
+					isClosed = false;
+					break;
+				}
 			}
 			if(!isClosed) continue; 
 			result.add(s);
 		}
-		for(int i = 0; i < result.size(); i++) {//sort by size
-			for(int j = i + 1; j < result.size(); j++) {
-				if(result.get(j).getWordCount() > result.get(i).getWordCount()) {
-					Sequence temp = result.get(i);
-					result.set(i, result.get(j)); result.set(j, temp);
-				}
-			}
-		
-		}
 		return result;
 			
 	}
+	/**
+	 * 
+	 * @param sentences A list of sentences represented by {@link nlp.Sequence Sequence}
+	 * @return A list of ngrams represented as {@link nlp.Sequence Sequence} with frequency
+	 * 
+	 * <pre>
+	 * A ngram here refers to ngrams that contain at least one noun, and do not contain '.', ',', ';'. Because those delimiters indicate sentence boundary.
+	 * </pre>
+	 */
 	public List<Sequence> extractNGrams(List<Sequence> sentences) {
 		HashMap<Sequence, Integer> ngramsToFreq = new HashMap<Sequence, Integer>();
 		for(Sequence sentence : sentences) {
-			for(int n = 1; n < sentence.getWordCount(); n++) {
-				for(int i = 0; i <= sentence.getWordCount() - n; i++) {
-					Sequence ngram = sentence.getSubsequence(i, i + n);
+			for(int len = 1; len < sentence.getWordCount(); len++) {
+				for(int i = 0; i <= sentence.getWordCount() - len; i++) {
+					Sequence ngram = sentence.getSubsequence(i, i + len);
 					if(ngram.containsIndivStem(",") || ngram.containsIndivStem(".") || ngram.containsIndivStem(";") 
 							|| ngram.containsIndivStem("-lrb-") || ngram.containsIndivStem("-rrb-")) continue;
 					if(!ngram.containsNouns()) continue;
@@ -82,45 +106,14 @@ public class NGrams {
 				}
 			}
 		}
-		Map<Sequence, Integer> sorted_ngramsToFreq = (Map<Sequence, Integer>) sortByValue(ngramsToFreq);
 		ArrayList<Sequence> keys = new ArrayList<Sequence>();
-		keys.addAll(sorted_ngramsToFreq.keySet());
+		keys.addAll(ngramsToFreq.keySet());
 		for(Sequence ngram : keys) {
-			ngram.setAbsoluteFreq(sorted_ngramsToFreq.get(ngram));
+			ngram.setAbsoluteFreq(ngramsToFreq.get(ngram));
 		}
 		return keys;
-	}
+	}	
 	
-	private Map<Sequence, Integer> sortByValue(Map<Sequence, Integer> map) {
-		LinkedHashMap<Sequence, Integer> result = new LinkedHashMap<Sequence, Integer>(map);
-		List<Map.Entry<Sequence, Integer>> entries = new ArrayList<Map.Entry<Sequence, Integer>>(map.entrySet());
-		Collections.sort(entries, new Comparator<Map.Entry<Sequence, Integer>>() {
-				  public int compare(Map.Entry<Sequence, Integer> a, Map.Entry<Sequence, Integer> b){
-				    return a.getValue().compareTo(b.getValue());
-				  }});
-		Map<Sequence, Integer> sortedMap = new LinkedHashMap<Sequence, Integer>();
-		for (Map.Entry<Sequence, Integer> entry : entries) {
-		  sortedMap.put(entry.getKey(), entry.getValue());
-		}
-		return result;
-	}
-	
-	
-	/**
-	 * [begin,end)
-	 * @param tokens
-	 * @param begin
-	 * @param end
-	 * @return
-	 */
-	/*private String concatenate (ArrayList<String> tokens, int begin, int end) {
-		String result = "";
-		for(int i = begin; i < tokens.size() && i < end; i++) {
-			result = result + " " + tokens.get(i);
-		}
-		
-		return result.trim();
-	}*/
 	
 	public boolean isStopWords(Sequence s) {
 		for(int i = 0; i < s.getWordCount(); i++) {

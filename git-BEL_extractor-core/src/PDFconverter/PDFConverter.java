@@ -27,6 +27,10 @@ import utility.Debug.DEBUG_CONFIG;
 import at.knowcenter.code.pdf.PdfExtractionPipeline;
 import at.knowcenter.code.pdf.PdfExtractionPipeline.PdfExtractionResult;
 
+/**
+ * Main function to interact with {@link at.knowcenter.code} to parse the structure of a PDF file
+ *
+ */
 public class PDFConverter {
 	public static void main(String[] args) throws Exception {
 		File file = new File("..\\git-BEL-extractor-test\\1756-9966-27-85.pdf");

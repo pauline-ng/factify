@@ -706,9 +706,8 @@ public class PdfExtractionPipeline {
 	//		String path = debug_dir + id + "_new_paragraphs_3.txt";
 			List<Block> blocks_body_and_heading = extractDocumentBody(pageBlocks, labeling, postprocessedReadingOrder, true);
 			List<Block> blocks_none_body_or_heading = extractDocumentNoneBody(pageBlocks, labeling, postprocessedReadingOrder, true);
-			PDFtoStructure pdftoStructure = new PDFtoStructure();
-			List<Paragraph> body_and_heading = pdftoStructure.convert(blocks_body_and_heading, labeling, this);
-			List<Paragraph> none_body_or_heading = pdftoStructure.convert(blocks_none_body_or_heading, labeling, this);
+			List<Paragraph> body_and_heading = PDFtoStructure.convert(blocks_body_and_heading, labeling, this);
+			List<Paragraph> none_body_or_heading = PDFtoStructure.convert(blocks_none_body_or_heading, labeling, this);
 			//writeFile(path, "", false);
 			//for(Paragraph para : body_and_heading) {
 				//writeFile(path, "----" + para.label+ "--Page " + para.pages + "--" + para.remark + "----------------\r\n", true);

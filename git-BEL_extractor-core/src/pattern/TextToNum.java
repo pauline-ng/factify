@@ -22,12 +22,15 @@ import java.util.Arrays;
 import utility.Debug;
 import utility.Debug.DEBUG_CONFIG;
 /**
- * This is from {@link https://ph.answers.yahoo.com/question/index?qid=20100820042716AAcemIX} ({@link http://pastebin.com/CbaRz14A;http://pastebin.com/cGSFUSBp;http://pastebin.com/fZLypaBn})
+ * Convert text to non-negative integers (long) <br/>
  * 
- * Convert text to non-negative integers (long): cannot deal with decimal or negatives
- * --cannot deal with "half an hour" or "a hundred"
- * 
- *
+ * This is from <a href="https://ph.answers.yahoo.com/question/index?qid=20100820042716AAcemIX">Yahoo Answers</a> (<a href="http://pastebin.com/CbaRz14A">PASTEBIN1</a> <a href="http://pastebin.com/cGSFUSBp">PASTEBIN2</a> <a href="http://pastebin.com/fZLypaBn">PASTEBIN3</a>)
+ * <br/>
+ * <pre>
+ * NOTE:
+ * 1. Cannot deal with decimal or negatives. 
+ * 2. Cannot deal with "half an hour" or "a hundred".
+ *</pre>
  */
 public class TextToNum {
 

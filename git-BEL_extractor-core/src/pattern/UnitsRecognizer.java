@@ -19,8 +19,11 @@ package pattern;
 import de.lodde.jnumwu.formula.Expression;
 
 /**
- * Library from {@link http://sourceforge.net/p/jnumwu/wiki/markdown_syntax/}
- *
+ * Check if a string is a unit/measurement
+ * 
+ * <pre>
+ * Library from <a href="http://sourceforge.net/p/jnumwu/wiki/markdown_syntax/">SourceForge</a>
+ *</pre>
  */
 public class UnitsRecognizer {
 	public static void main(String[] args) {
@@ -46,13 +49,19 @@ public class UnitsRecognizer {
 	}
 	
 	/**
-	 * if a token is following a number and is recognized as Constant or Div then it is a unit
-	 * --the conditions are to filter out false positive such as 
-	 * --1. "all" is a variable expression that has units "l"
-	 * --2. "w/v" is a Div expression that has units
-	 * --Remaining problem:
-	 * --3. "Drugs were prepared as suspensions in 1% methylcellulose (w/v in distilled water)" : unit w/v is not with numbers
-	 * --"Additional significant SNPs were identified in GABRA4 as well" : "as" is identified as unit
+	 * Check if a word is a unit
+	 * 
+	 * <pre>
+	 * If a token is following a number and is recognized as {@link de.lodde.jnumwu.formula.Constant} or {@link de.lodde.jnumwu.formula.Div}, then it is a unit.
+	 * The conditions are to filter out false positive such as 
+	 * 1. "all" is a variable expression that has units "l"
+	 * 2. "w/v" is a Div expression that has units
+	 * </pre>
+	 * <pre>
+	 * Remaining problem:
+	 * 3. "Drugs were prepared as suspensions in 1% methylcellulose (w/v in distilled water)" : unit w/v is not with numbers
+	 *    "Additional significant SNPs were identified in GABRA4 as well" : "as" is identified as unit
+	 * </pre>
 	 * @param token
 	 * @param followingNumber
 	 * @return

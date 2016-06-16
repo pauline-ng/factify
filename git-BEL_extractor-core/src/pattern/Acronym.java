@@ -29,10 +29,13 @@ import nlp.StanfordNLPLight;
 
 
 /**
- * this class is from the following paper
+ * Extract acronyms from text
+ * 
+ * <pre>
+ * This class is from the following paper
  * 
  * Hearst, MAAS Schwartz. "A simple algorithm for identifying abbreviation definitions in biomedical text." (2003): 451-62.
- *
+ *</pre>
  */
 public class Acronym {
 

@@ -115,9 +115,9 @@ public enum StanfordNLPLight {
 	}
 
 	/**
-	 * @param para: input string (typically a paragraph with many sentences)
-	 * @param refindNouns: Since postagger is not good at parsing scientific text, we refine the tag of a word to be noun if there exists an occurrence of the word that has beed tagged Noun.
-	 * @return a list sequences where each sequence represents a sentence
+	 * @param para Input string (typically a paragraph with many sentences)
+	 * @param refineNouns Since postagger is not good at parsing scientific text, we refine the tag of a word to be noun if there exists an occurrence of the word that has beed tagged Noun.
+	 * @return A list sequences where each sequence represents a sentence
 	 */
 	public  List<Sequence> textToSequence(String para, boolean refineNouns) {
 		para = para.replace("fig.", "fig-").replace("Fig.", "Fig-");//to avoid broken sentences 

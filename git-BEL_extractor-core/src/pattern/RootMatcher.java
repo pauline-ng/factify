@@ -22,8 +22,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,24 +40,26 @@ import org.json.simple.parser.ParseException;
 
 import utility.Debug;
 import utility.Span;
+import utility.utility;
 import utility.Debug.DEBUG_CONFIG;
 
 /**
  * <pre>
- * Main entrance of rule matching. All machters implement the same interface @Matcher .
+ * Main entrance of rule matching. All machters implement the same interface {@link Matcher#Match(Sequence) Matcher}. 
+ * Each pattern is extracted independently. At the end, conflicts are resolved in {@link #resolveSpans(List) resolveSpans}; 
  * </pre>
  * 
  * <pre>
  * Three types of Matchers (implementing Matcher interface) are supported:
- * POSTagMatcher: match pos tags;
- * RegularExpressionMatcher: match regular expressions;
- * PreBuiltWordListMatcher: match pre-built word list
- * The matchers are read from an input file. For more information, please visit {@link https://github.com/happybelly/fact-extractor-multiple-java-projects/wiki/Rule-Specification-Files}.
+ * 1. {@link POSTagMatcher}: match pos tags;
+ * 2. {@link RegularExpressionMatcher}: match regular expressions;
+ * 3. {@link PreBuiltWordListMatcher}: match pre-built word list
+ * The matchers are read from an input file. 
+ * For more information, please visit <a href="https://github.com/happybelly/fact-extractor-multiple-java-projects/wiki/Rule-Specification-Files">Rule Specification</a>.
  * It is flexible to change matchers by modifying the input file without modifying the source code.
  * </pre>
- * 
  * <pre>
- * Another four rules are hard coded: Units, TextToNumbers; Acronyms; P-values on PatternMatcher.java
+ * Another five rules are hard coded: Units, TextToNumbers, Acronyms, P-values, Frequent NGrams on {@link PatternMatcher}
  * </pre>
  * 
  *
@@ -139,7 +144,7 @@ public class RootMatcher {
 						}
 					}
 					if(wordList != null)
-						preBuiltWordMatcher = new PreBuiltWordListMatcher(wordList, type, fileVersion_, inputFileVersionFromRoot, inputFilePath,match);
+						preBuiltWordMatcher = new PreBuiltWordListMatcher(wordList, type, fileVersion_, inputFilePath, inputFileVersionFromRoot, match);
 					if(preBuiltWordMatcher != null) matchers.add(preBuiltWordMatcher);
 					break;
 				}
@@ -188,7 +193,6 @@ public class RootMatcher {
 			}
 			br.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -205,7 +209,6 @@ public class RootMatcher {
 		boolean printDetail = true;
 		PatternMatcher pm = new PatternMatcher();
 		for(Sequence s : sentences) {
-//			Debug.println(s.POSTags, DEBUG_CONFIG.debug_pattern);
 			List<List<Span>> matchingDetail = new ArrayList<List<Span>>();
 			StringBuilder detail = new StringBuilder();
 			for(Object matcher : matchers)
@@ -345,12 +348,81 @@ public class RootMatcher {
 				}
 				detail.append("}\r\n");
 			}
-			List<Span> after = pm.resolveSpans(matchingDetail);
+			List<Span> after = resolveSpans(matchingDetail);
 			allFacts.add(after);
 			matchingDetail_description.add(detail.toString());
 			Debug.print(detail.toString(), DEBUG_CONFIG.debug_C_Facts);
 		}
-		C_Facts cFact = pm.formFacts(allFacts, sentences, matchingDetail_description, pageRange);
+		C_Facts cFact = formFacts(allFacts, sentences, matchingDetail_description, pageRange);
 		return cFact;
+	}
+	/**
+	 * merge overlapping spans
+	 * Merge sort
+	 * @param all
+	 * @return
+	 */
+	public  List<Span> resolveSpans(List<List<Span>> all) {
+		List<Span> all_ = new ArrayList<Span>();
+		for(List<Span> spans : all) all_.addAll(spans);
+        Collections.sort(all_, new Comparator<Span>(){public int compare(Span i, Span j){ 
+            if(i.getStart() == j.getStart()) return i.getEnd()-j.getEnd();
+            else return i.getStart()-j.getStart();
+        } });
+        List<Span> ret = new ArrayList<Span>();
+        if(all_.size() < 1) return ret;
+        ret.add(new Span(all_.get(0).getStart(), all_.get(0).getEnd()));
+        for(int i = 1; i < all_.size(); i++) {
+        	Span last = ret.get(ret.size()-1);
+        	Span cur = all_.get(i);
+            if(last.getEnd() > cur.getStart()) last.setEnd(Math.max(last.getEnd(), cur.getEnd()));
+            else ret.add(new Span(cur.getStart(), cur.getEnd()));
+        }
+        return ret;
+	}
+	
+	/**
+	 * Form the facts from all rules
+	 * <pre>
+	 * Any token that crosses the span of the extracted facts would be counted in.
+	 * </pre>
+	 * @param all_facts The output of {@link RootMatcher#resolveSpans(List) resolveSpan}
+	 * @param sentens The source sentence
+	 * @param details Record which rule matches which substring
+	 * @param pageRange The pages the facts cover
+	 * @return
+	 */
+	public  C_Facts formFacts(List<List<Span>> all_facts, List<Sequence> sentens, List<String> details, Span pageRange) {
+		if(sentens.size() == 0) return null; 
+		C_Facts cfacts = new C_Facts(pageRange.getStart(), pageRange.getEnd());
+		for(int senIndex = 0; senIndex < sentens.size(); senIndex++) {
+			List<Span> facts_per_sen = all_facts.get(senIndex);
+			Sequence senten = sentens.get(senIndex);
+			utility.sortByStart(facts_per_sen);
+
+			// Any token that crosses the span of all would be counted in.
+			HashSet<Integer> crossToken = new HashSet<Integer>();//the relative order of tokens that the span cross
+			for(int i = 0; i < facts_per_sen.size(); i++) {
+				Span cur = facts_per_sen.get(i);
+				for(int j = 0; j < senten.getWordCount(); j++) {
+					Span token = senten.getSpanOfWord(j);
+					if(token.intersects(cur)) crossToken.add(j);
+				}
+			}
+			List<Integer> crossToken_ = new ArrayList<Integer>(); crossToken_.addAll(crossToken);
+			Collections.sort(crossToken_);
+			ArrayList<String> facts = new ArrayList<>();
+			ArrayList<Span> relativeOrders = new ArrayList<Span>();
+			LinkedHashMap<Integer, Integer> spans = new LinkedHashMap<>();
+			for(int i = 0; i < crossToken_.size(); i++) {
+				int relativeOrder = crossToken_.get(i);
+				facts.add(senten.getWord(relativeOrder));
+				relativeOrders.add(new Span(relativeOrder,relativeOrder));
+				spans.put(senten.getSpanOfWord(relativeOrder).getStart(), senten.getSpanOfWord(relativeOrder).getEnd() - 1);
+			}
+			cfacts.addFact(facts, senIndex, relativeOrders, spans, details.get(senIndex));
+			cfacts.addSentence(sentens.get(senIndex).getSourceString());
+		}
+		return cfacts;
 	}
 }

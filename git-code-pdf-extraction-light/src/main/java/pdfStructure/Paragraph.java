@@ -26,14 +26,11 @@ import at.knowcenter.code.pdf.AnnotatedDocumentBuilder.LineCollector;
 import utility.Span;
 
 /**
- * this is not exactly a paragraph, but a huge block of texts across columns, pages
- * @author huangxc
+ * This is not exactly a paragraph, but a huge block of texts across columns, pages
  *
  */
 public class Paragraph {
 
-//	public enum TYPE {Paragraph, Heading};
-	
 	public String text;
 	public Span pages; //[) ; start with 1
 	public BlockLabel label;
@@ -43,11 +40,9 @@ public class Paragraph {
 	public List<Block> bodySubBlocks;
 	
 	public Paragraph(String text) {
-		// TODO Auto-generated constructor stub
 		this.text = text;
 	}
 	public Paragraph(LineCollector lc, BlockLabel label) {
-		// TODO Auto-generated constructor stub
 		t = lc;
 		this.label = label;
 		HashSet<Integer> pages_ = new HashSet<Integer>();
@@ -55,7 +50,6 @@ public class Paragraph {
 			pages_.add(lc.lineToPage.get(line).getNumber());
 		}
 		pages = new Span(Collections.min(pages_), Collections.max(pages_) + 1);
-//		this.text = lc.
 	}
 	public String toString() {
 		String s = "";

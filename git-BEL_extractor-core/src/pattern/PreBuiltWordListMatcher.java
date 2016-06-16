@@ -26,6 +26,11 @@ import utility.Debug;
 import utility.Span;
 import utility.Debug.DEBUG_CONFIG;
 
+/**
+ * 
+ * Match word stems with PreBuiltWordList
+ *
+ */
 public class PreBuiltWordListMatcher implements Matcher{
 	private HashSet<Sequence> wordList;
 	private String type;
@@ -36,11 +41,10 @@ public class PreBuiltWordListMatcher implements Matcher{
 	private String match;//if match is not null (="contains") then this is a "contain" match. For "contain" match, each word in wordlist should be single word, otherwise the program will overwrite "contain" match to match.
 	/**
 	 * 
-	 * @param postags
-	 * @param args: type; inputFileVersion; inputFilePath; inputFileVersionFromRoot; match
+	 * @param words
+	 * @param args type; inputFileVersion; inputFilePath; inputFileVersionFromRoot; match
 	 */
 	public PreBuiltWordListMatcher(HashSet<String> words, String...args) {
-		// TODO Auto-generated constructor stub
 		this.wordList = new HashSet<Sequence>();
  		for(String s : words) {
  			List<Sequence> seqs = StanfordNLPLight.INSTANCE.textToSequence(s, false);
@@ -57,12 +61,12 @@ public class PreBuiltWordListMatcher implements Matcher{
 			inputFileVersion = args[1];
 		}
 		if(length > 2) {
-			setInputFileVersionFromRoot(args[2]);
-		}
-		if(length > 3) {
-			inputFilePath = args[3];
+			inputFilePath = args[2];
 			File file = new File(inputFilePath);
 			if(file.exists()) fileName = file.getName();
+		}
+		if(length > 3) {
+			setInputFileVersionFromRoot(args[3]);
 		}
 		if(length > 4) {
 			this.match = args[4];
@@ -71,7 +75,6 @@ public class PreBuiltWordListMatcher implements Matcher{
 
 	@Override
 	public List<Span> Match(Sequence senten) {
-		// TODO Auto-generated method stub
 		if(this.match == null) {
 			PatternMatcher pm = new PatternMatcher();
 			return pm.findMatches(senten, wordList); 

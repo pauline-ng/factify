@@ -24,6 +24,11 @@ import java.util.List;
 import nlp.Sequence;
 import utility.Span;
 
+/**
+ * 
+ * Match POSTags of words 
+ *
+ */
 public class POSTagMatcher implements Matcher{
 
 	private HashSet<String> postags;
@@ -35,11 +40,10 @@ public class POSTagMatcher implements Matcher{
 	
 	/**
 	 * 
-	 * @param postags
-	 * @param args: type; inputFileVersion; inputFilePath; inputFileVersionFromRoot
+	 * @param postags Read from input
+	 * @param args type; inputFileVersion; inputFilePath; inputFileVersionFromRoot
 	 */
 	public POSTagMatcher(HashSet<String> postags, String...args) {
-		// TODO Auto-generated constructor stub
 		this.postags = new HashSet<String>();
 		this.postags.addAll(postags);
 		int length = args.length;
@@ -61,7 +65,6 @@ public class POSTagMatcher implements Matcher{
 
 	@Override
 	public List<Span> Match(Sequence senten) {
-		// TODO Auto-generated method stub
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		for(int i = 0; i < senten.getWordCount(); i++) {
 			String tag = senten.getPOSTagOfWord(i);

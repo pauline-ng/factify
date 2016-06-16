@@ -34,45 +34,17 @@ import utility.Debug.DEBUG_CONFIG;
 import nlp.Sequence;
 
 /**
- * Patterns:
- *Each pattern is extracted independently. At the end, we will resolve conflicts in resolveSpans();
- * 1. numbers
- * a. rational numbers: subset of reg_equation
- *     reg_rational = "(?:(?i)(?:[+-]?)(?:(?=[.]?[0123456789])(?:[0123456789]*)(?:(?:[.])(?:[0123456789]{0,}))?)(?:(?:[E])(?:(?:[+-]?)(?:[0123456789]+))|))";
- *     one token
- * b. operators with numbers e.g. 10%, 1/10 (be careful with empty string) // NOT IN USE
- *     reg_equation = reg_rational?\\s*operators?\\s*reg_rational? :i.e. super set of reg_rational
- *     multiple tokens
- * 2. textToNum (e.g. two, three)
- *    find text that express numbers and then textToNum.parse()
- *     multiple tokens
- * 3. p < 0.00 i.e. p value
- *    reg_pvalue = "\\(?\\s*p\\s*(=|>|<|(>\\s*=)|(<\\s*=)\\s*)\\s*"+reg_rational + "\\s*\\)?"
- *    multiple tokens
- * 4. comparative than /superlative e.g. less than 0.3
- *    single token: POS tag (JJR, RBR) + keyword "than"; POS tag (JJS, RBS) 
- * 5. units (e.g. kg, g/ml)
- *    unitsRecognizer.isUnit();
- *    two tokens (current and previous token)
- * 7. acronyms 
- * 8. ngrams + nouns -- for result section
- * 9. signal words -- for result section: significant, increase, decrease etc.
- * 10. nouns -- for methods section
- * 11. signal words -- for method section: not yet
- * 12. signal words in common: e.g. not, no, rare, seldom etc.
+ * <pre>
+ * Pattern Matcher for matching Units, TextToNumbers, Acronyms, P-values, Frequent NGrams
+ * </pre>
  * 
- * 13. 4 out of 6; 4 of/in the 6; 4 of/in 6
- * 	reg_rational + "\\s((out of)|(of)|(in)|(of the)|(in the))\\s" + reg_rational;
- * 
- * 14. 3 to 5; 3' to 5' //NOT IN USE
- * --problem: 3' to 5': 2 to 3; 
- * 
- * 
- *ATTENTION:
- *The NLP tokenizer outputs 3 tokens for "N=9", i.e. "N", "=", "9". This has not been captured by our approach. We simply captured = as operators
- *1. Ma et al. as author names are not identified.
- *2.
- * 
+ *<pre>
+ *NOT SUPPORTED 
+ *1. Equation: N = 3
+ *2. 4 out of 6; 4 of/in the 6; 4 of/in 6 
+ *3. 3 to 5; 3' to 5'
+ *4. Ma et al. as author names are not identified.
+ *</pre>
  *
  */
 
@@ -80,49 +52,6 @@ public class PatternMatcher {
 
 	public static final String reg_rational =  "(?:(?i)(?:[+-]?)(?:(?=[.]?[0123456789])(?:[0123456789]*)(?:(?:[.])(?:[0123456789]{0,}))?)(?:(?:[E])(?:(?:[+-]?)(?:[0123456789]+))|))";
 	public static final String reg_pvalue = "\\(?\\s*(p|P)\\s*(=|>|<|(>\\s*=)|(<\\s*=)\\s*)\\s*"+reg_rational + "\\s*\\)?";
-	 //4 out of 6; 4 of/in the 6; 4 of/in 6
-//	public static final String reg_outof =	reg_rational + "\\s((out of)|(of)|(in)|(of the)|(in the))\\s" + reg_rational;
-	
-	public static String reg_equation; //contains epsilon, be careful
-	//http://www.utf8-chartable.de/unicode-utf8-table.pl?utf8=dec //TODO
-	private final static String[] operators = {"\\+", "-", "/", "%", "\\*", ">", "<","=",
-		Character.toString((char )181),//\mu
-		Character.toString((char )'\u2215'),//division sign
-		Character.toString((char) 176),//design sign
-		Character.toString((char) 177), //plus minus
-		Character.toString((char) '\u2228'),//logical or
-		Character.toString((char) '\u2227'),//logical and
-		Character.toString((char) '\u2229'),//intersection
-		Character.toString((char) '\u222A'),//union
-		Character.toString((char) '\u2264'),//<=
-		Character.toString((char) '\u2265'),//>=
-		Character.toString((char) '\u2013'),//end dash; \u002D is minus sign
-
-		};
-	
-	public  void formReg_Equation() {
-		if(reg_equation != null) return;
-		reg_equation = reg_rational;
-		for(int i = 0; i < operators.length; i++) {
-			String c = operators[i];
-			if(i == 0) reg_equation = "(" + reg_equation + ")?\\s*(" + c;
-			else
-				reg_equation = reg_equation + "|" + c;
-			if( i == operators.length -1) reg_equation = reg_equation + ")?\\s*(" + reg_rational + ")?";
-		}
-		Debug.println(reg_equation,DEBUG_CONFIG.debug_pattern);
-	}
-	public  boolean matchReg_Equation(String s) {
-		formReg_Equation();
-		boolean result = false;
-		Pattern pattern = Pattern.compile(reg_equation);
-		Matcher matcher = pattern.matcher(s);
-		while (matcher.find()) {
-			String matchString = matcher.group();
-			if(!matchString.trim().equals("")) result = true;
-		}
-		return result;
-	}
 
 	private  List<Span> extractReg_Rational(Sequence senten) {
 		HashSet<Span>	results = new HashSet<Span>();//[)
@@ -244,15 +173,20 @@ public class PatternMatcher {
 	}
 	
 	/**
-	 * find matches based on stem
-	 * @param senten
-	 * @param freNGrams
+	 * For each pattern in patterns, find matches based on stem
+	 * 
+	 * <pre>
+	 * This method works as a general interface for matchers such as {@link PreBuiltWordListMatcher}, {@link PatternMatcher}, since every rule is represented as a {@link nlp.Sequence Sequence}.
+	 * For example, "a lot" in a {@link PreBuiltWordListMatcher} is represented as a {@link nlp.Sequence Sequence}.
+	 * </pre>
+	 * @param senten Input sentence as a Sequence
+	 * @param patterns Sequences to be matched against
 	 * @return
 	 */
-	public  List<Span> findMatches(Sequence senten, HashSet<Sequence> freNGrams ) {
+	public  List<Span> findMatches(Sequence senten, HashSet<Sequence> patterns ) {
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		HashSet<Integer> freSeqLen = new HashSet<Integer>();
-		for(Sequence s : freNGrams) freSeqLen.add(s.getWordCount());
+		for(Sequence s : patterns) freSeqLen.add(s.getWordCount());
 		ArrayList<Integer> enty_indices = new ArrayList<Integer>(); //[)
 		//match from longest to shortest
 		HashSet<Integer> matchedToken = new HashSet<Integer>();
@@ -260,7 +194,7 @@ public class PatternMatcher {
 		while(k > 0) {
 			if(!freSeqLen.contains(k)) {k--; continue;}
 			boolean coarseMatch = false;
-			for(Sequence s : freNGrams) {
+			for(Sequence s : patterns) {
 				if(s.getWordCount() == k && s.isSubsequenceOrSelfOf(senten)) coarseMatch = true;
 				if(coarseMatch) break;
 			}
@@ -271,7 +205,7 @@ public class PatternMatcher {
 				for(int m = b; m < b + k; m++) if(matchedToken.contains(m)) {//matched token in the middle, start from next token
 					foundOne = false; break;
 				}
-				if(foundOne && freNGrams.contains(senten.getSubsequence(b, b+k))) {//find one and it's matched to a freq pattern
+				if(foundOne && patterns.contains(senten.getSubsequence(b, b+k))) {//find one and it's matched to a freq pattern
 					enty_indices.add(b); enty_indices.add(b+k); 
 					for(int j = b; j < b+k; j++) matchedToken.add(j);
 					b = b + k; 
@@ -291,17 +225,17 @@ public class PatternMatcher {
 		return results_;
 	}
 	/**
-	 * find matches based on stem
-	 * @param senten
-	 * @param freNGrams: one token only
+	 * For each senten, check if it contains the string in patterns.
+	 * @param senten Input sentence as a Sequence
+	 * @param patterns Each Sequence has one token only
 	 * @return
 	 */
-	public  List<Span> findContainingMatches(Sequence senten, HashSet<Sequence> freNGrams ) {
+	public  List<Span> findContainingMatches(Sequence senten, HashSet<Sequence> patterns ) {
 		HashSet<Span>	results = new HashSet<Span>();//[)
 		for(int i = 0; i < senten.getWordCount(); i++) {
 			String word = senten.getWord(i);
 			boolean contains = false;
-			for(Sequence s : freNGrams) {
+			for(Sequence s : patterns) {
 				if(word.contains(s.getSourceString())) {
 					contains = true; break;
 				}
@@ -358,147 +292,6 @@ String para = "In contrast, behavioral economic theory suggests that incentives 
 //		sfact.writeFacts("test/PMC1513515/Methods_section_ngram.fact");
 	}
 	
-	/**
-	 * merge overlapping spans
-	 * Merge sort
-	 * @param all
-	 * @return
-	 */
-	public  List<Span> resolveSpans(List<List<Span>> all) {
-		List<Span> all_ = new ArrayList<Span>();
-		for(List<Span> spans : all) all_.addAll(spans);
-        Collections.sort(all_, new Comparator<Span>(){public int compare(Span i, Span j){ 
-            if(i.getStart() == j.getStart()) return i.getEnd()-j.getEnd();
-            else return i.getStart()-j.getStart();
-        } });
-        List<Span> ret = new ArrayList<Span>();
-        if(all_.size() < 1) return ret;
-        ret.add(new Span(all_.get(0).getStart(), all_.get(0).getEnd()));
-        for(int i = 1; i < all_.size(); i++) {
-        	Span last = ret.get(ret.size()-1);
-        	Span cur = all_.get(i);
-            if(last.getEnd() > cur.getStart()) last.setEnd(Math.max(last.getEnd(), cur.getEnd()));
-            else ret.add(new Span(cur.getStart(), cur.getEnd()));
-        }
-        return ret;
-	}
-	public List<Span> merge(List<Span> intervals) {
-        if(intervals == null || intervals.size() == 0) return intervals;
-        
-        return merge(intervals, 0, intervals.size());
-    }
-    public List<Span> merge(List<Span> intervals, int i, int j) {//[i,j);
-        if(j - i < 2) {
-            List<Span> tmp = new ArrayList<Span>();
-            tmp.add(intervals.get(i));
-            return tmp;
-        }
-        int mid = i + (j-i)/2;//higher mid
-        List<Span> l = merge(intervals, i, mid);
-        List<Span> r = merge(intervals, mid, j);
-        List<Span> result = new ArrayList<Span>();
-        int k = 0;
-        int p = 0;
-        while(k < l.size() && p < r.size()) {
-        	Span left = l.get(k);
-        	Span right = r.get(p);
-            if(left.getEnd() <= right.getStart()) {
-                result.add(left); k++;
-            }else if(right.getEnd() <= left.getStart()) {
-                result.add(right); p++;
-            }else {
-                if(left.getStart() <= right.getStart()) {
-                	Span newleft = new Span(left.getStart(), left.getEnd());
-                	newleft.setEnd(Math.max(newleft.getEnd(), right.getEnd()));
-                    //make sure l is disjoint
-                    while(k < l.size() -1 && l.get(k+1).getStart()< newleft.getEnd()) newleft.setEnd(Math.max(newleft.getEnd(), l.get(++k).getEnd()));
-                    l.set(k, newleft);
-                    p++;
-                }else {
-                	Span newRight = new Span(right.getStart(), right.getEnd());
-                	newRight.setEnd(Math.max(left.getEnd(), newRight.getEnd()));
-                    while(p < r.size()-1 && r.get(p+1).getStart()< newRight.getEnd()) {
-                    	newRight.setEnd(Math.max(newRight.getEnd(), r.get(++p).getEnd()));
-                    }
-                    r.set(p, newRight);
-                    k++;
-                }
-            }
-        }
-        while(k < l.size()) {
-        	Span cur = l.get(k);
-            if(result.size() == 0) {
-                result.add(cur);
-                k++;
-                continue;
-            }
-            Span pre = result.get(result.size() - 1);
-            if(pre.getEnd() <= cur.getStart()) {
-                result.add(cur);
-            }else {
-                pre.setEnd(Math.max(cur.getEnd(), pre.getEnd()));
-            }
-            k++;
-        }
-        while(p < r.size()) {
-        	Span cur = r.get(p);
-            if(result.size() == 0) {
-                result.add(cur);
-                p++;
-                continue;
-            }
-            Span pre = result.get(result.size() - 1);
-            if(pre.getEnd() <= cur.getStart()) {
-                result.add(cur);
-            }else {
-                pre.setEnd(Math.max(cur.getEnd(), pre.getEnd()));
-            }
-            p++;
-        }
-        
-        return result;
-    }
 	
-	/**
-	 * Any token that crosses the span of all would be counted in.
-	 * TODO: could be optimized using merge join instead of nested-loop join
-	 * 
-	 * @param all: the output of resolveSpans()
-	 * @param senten: the source sentence
-	 * @return
-	 */
-	public  C_Facts formFacts(List<List<Span>> all_facts, List<Sequence> sentens, List<String> details, Span pageRange) {
-		if(sentens.size() == 0) return null; 
-		C_Facts cfacts = new C_Facts(pageRange.getStart(), pageRange.getEnd());
-		for(int senIndex = 0; senIndex < sentens.size(); senIndex++) {
-			List<Span> facts_per_sen = all_facts.get(senIndex);
-			Sequence senten = sentens.get(senIndex);
-			utility.sortByStart(facts_per_sen);
-
-			// Any token that crosses the span of all would be counted in.
-			HashSet<Integer> crossToken = new HashSet<Integer>();//the relative order of tokens that the span cross
-			for(int i = 0; i < facts_per_sen.size(); i++) {
-				Span cur = facts_per_sen.get(i);
-				for(int j = 0; j < senten.getWordCount(); j++) {
-					Span token = senten.getSpanOfWord(j);
-					if(token.intersects(cur)) crossToken.add(j);
-				}
-			}
-			List<Integer> crossToken_ = new ArrayList<Integer>(); crossToken_.addAll(crossToken);
-			Collections.sort(crossToken_);
-			ArrayList<String> facts = new ArrayList<>();
-			ArrayList<Span> relativeOrders = new ArrayList<Span>();
-			LinkedHashMap<Integer, Integer> spans = new LinkedHashMap<>();
-			for(int i = 0; i < crossToken_.size(); i++) {
-				int relativeOrder = crossToken_.get(i);
-				facts.add(senten.getWord(relativeOrder));
-				relativeOrders.add(new Span(relativeOrder,relativeOrder));
-				spans.put(senten.getSpanOfWord(relativeOrder).getStart(), senten.getSpanOfWord(relativeOrder).getEnd() - 1);
-			}
-			cfacts.addFact(facts, senIndex, relativeOrders, spans, details.get(senIndex));
-			cfacts.addSentence(sentens.get(senIndex).getSourceString());
-		}
-		return cfacts;
-	}
 	
 }

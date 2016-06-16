@@ -19,6 +19,15 @@ package pdfStructure;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Structure of a PDF
+ * 
+ * <pre>
+ * {@link at.knowcenter.code.pdf} provides blocks (of lines of text), but not paragraphs
+ * This class draws the line between {@link at.knowcenter.code.pdf} with {@link extractor}
+ * </pre>
+ *
+ */
 public class PDF {
 	public List<Paragraph> body_and_heading;
 	public List<String> htmlTables_string;
