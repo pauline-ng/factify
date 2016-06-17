@@ -210,10 +210,10 @@ public class PdfExtractionPipeline {
 //	private static final String DEFAULT_TOKEN_MODEL = MODEL_DIR + "token-classifier-model.bin";
 //    private static final String DEFAULT_REFERENCE_MODEL = MODEL_DIR + "references-classifier-model.bin";
 
-    /**
-	 * creates a new PDF extraction pipeline
-	 * @throws IOException 
-	 */
+//    /**
+//	 * creates a new PDF extraction pipeline
+//	 * @throws IOException 
+//	 */
 //	public PdfExtractionPipeline() {
 //		this(DEFAULT_BLOCK_MODEL, DEFAULT_FEATURES, DEFAULT_TOKEN_MODEL, DEFAULT_LANG_MODEL, DEFAULT_REFERENCE_MODEL);
 //		this(DEFAULT_BLOCK_MODEL, DEFAULT_FEATURES, DEFAULT_TOKEN_MODEL, DEFAULT_LANG_MODEL);
@@ -585,11 +585,8 @@ public class PdfExtractionPipeline {
 
 	/**
 	 * runs the pipeline on a pdf file and returns a pdf extraction result
-	 * @param id the id (used for logging)
 	 * @param file the input pdf file
 	 * @return the pdf extraction result
-	 * @throws PdfParserException
-	 * @throws  
 	 */
 	public PdfExtractionResult runPipeline(File file)  {
 		try{
@@ -791,11 +788,11 @@ catch(PdfParserException e) {
 		}
 	}
 	
-    /**
-     * @param annotatedDocument
-     * @param articleMetadata
-     * @throws PdfParserException 
-     */
+//    /**
+//     * @param annotatedDocument
+//     * @param articleMetadata
+//     * @throws PdfParserException 
+//     */
 //    private void extractCitations(AnnotatedDocument annotatedDocument,
 //            ArticleMetadataCollector articleMetadata) throws PdfParserException {
 //        try {

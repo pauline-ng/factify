@@ -126,9 +126,9 @@ public class HeadingDetector implements Detector {
 	
 	/**
 	 * creates a new instance
-	 * @param document the document (used for font information)
-	 * @param readingOrder the reading order (used for sequential alignment to main text)
-	 * @param blockNeighborhood the block neighborhood (used for sequential alignment to main text)
+//	 * @param document the document (used for font information)
+//	 * @param readingOrder the reading order (used for sequential alignment to main text)
+//	 * @param blockNeighborhood the block neighborhood (used for sequential alignment to main text)
 	 * @param tol the tolerance (used for geometrical alignment to main text)
 	 * @param maxNumLines the max number of lines allowed for headings
 	 * @param maxDistanceInLines the max distance to the following block measured in lines

@@ -46,7 +46,7 @@ public interface Detector {
 	 * @param labeling the current block labeling, which is modified by this method
 	 * @param readingOrder the {@link ReadingOrder} of the blocks
 	 * @param articleMetadata TODO
-	 * @param neighbourHood the {@link BlockNeighborhood}
+	 * @param neighbourhood the {@link BlockNeighborhood}
 	 */
 	public void detect(Document doc, List<Block> pageBlocks, BlockLabeling labeling, 
 			ReadingOrder readingOrder, BlockNeighborhood neighbourhood, ArticleMetadataCollector articleMetadata);

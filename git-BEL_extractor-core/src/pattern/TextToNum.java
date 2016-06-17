@@ -22,10 +22,9 @@ import java.util.Arrays;
 import utility.Debug;
 import utility.Debug.DEBUG_CONFIG;
 /**
- * Convert text to non-negative integers (long) <br/>
+ * Convert text to non-negative integers (long)
  * 
  * This is from <a href="https://ph.answers.yahoo.com/question/index?qid=20100820042716AAcemIX">Yahoo Answers</a> (<a href="http://pastebin.com/CbaRz14A">PASTEBIN1</a> <a href="http://pastebin.com/cGSFUSBp">PASTEBIN2</a> <a href="http://pastebin.com/fZLypaBn">PASTEBIN3</a>)
- * <br/>
  * <pre>
  * NOTE:
  * 1. Cannot deal with decimal or negatives. 

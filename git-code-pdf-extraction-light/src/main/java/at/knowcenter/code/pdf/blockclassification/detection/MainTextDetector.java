@@ -112,7 +112,7 @@ public class MainTextDetector implements Detector {
 	
 	/**
 	 * creates a new instance
-	 * @param document the document (used for font information)
+//	 * @param document the document (used for font information)
 	 * @param distanceThreshold the distance threshold (stoppage criterion for HAC)
 	 * @param widthDiffThreshold upper threshold for the allowed width difference
 	 * @param sizeDiffThreshold upper threshold for the allowed cluster size difference

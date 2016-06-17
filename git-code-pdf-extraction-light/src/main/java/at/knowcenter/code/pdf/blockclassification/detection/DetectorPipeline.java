@@ -73,12 +73,12 @@ public class DetectorPipeline implements Detector {
 	}
 	
 	/**
-	 * invokes the {@link Detector#detect(List)} method for each detector sequentially
+//	 * invokes the {@link Detector#detect(List)} method for each detector sequentially
 	 * @param doc the {@link Document} the blocks come from
 	 * @param pageBlocks the list of page blocks
 	 * @param labeling the block labeling, which is modified by individual detectors
 	 * @param readingOrder the {@link ReadingOrder} of the blocks
-	 * @param neighbourHood the {@link BlockNeighborhood}
+	 * @param neighborhood the {@link BlockNeighborhood}
 	 */
 	@Override
 	public void detect(Document doc, List<Block> pageBlocks, BlockLabeling labeling, 

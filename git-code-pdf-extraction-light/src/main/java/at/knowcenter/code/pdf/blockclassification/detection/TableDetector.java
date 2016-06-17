@@ -47,7 +47,7 @@ import at.knowcenter.code.pdf.blockrelation.geometric.BlockNeighborhood;
 /**
  * implements a detector for tables via labelling sparse lines (tables, formulas, references etc.).
  * 
- * Liu, Y., Mitra, P., & Giles, C. L. (2008). 
+ * Liu, Y., Mitra, P., &amp; Giles, C. L. (2008). 
  * Identifying table boundaries in digital documents via sparse line detection. 
  * Proceeding of the 17th ACM conference on Information and knowledge mining CIKM 08 (pp. 1311–1320).
  * ACM Press. doi:10.1145/1458082.1458255
