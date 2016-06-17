@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Stack;
 
+import edu.stanford.nlp.ling.CoreAnnotations;
 import utility.Span;
 
 /**
@@ -33,13 +34,20 @@ import utility.Span;
  *</pre>
  */
 public class Sequence {
-	/**words/tokens without stemming */
+	/**words/tokens without stemming {@link CoreAnnotations.TextAnnotation}
+	 * <pre>
+	 * Note the difference between {@link CoreAnnotations.TextAnnotation} and {@link CoreAnnotations.OriginalTextAnnotation}
+	 * E.g. consider symbol '-'. For sentence "There is compelling evidence that a diverse range of de novo mutations, including copy-number variants (CNVs),1–5 single-nucleotide variants (SNVs), and insertions and deletions (indels),6–10 play an important role." in paper 10.1016%j.ajhg.2013.07.024.pdf,
+	 * consider the dash between "6" and "10". Its {@link CoreAnnotations.TextAnnotation} is "--" (two '\u002d'), while {@link CoreAnnotations.OriginalTextAnnotation} is a symbol '\u2013'. 
+	 * Currently '\u2013' is not in the rule but '\u002d' is. So we use {@link CoreAnnotations.TextAnnotation} rather than {@link CoreAnnotations.OriginalTextAnnotation} to be able to extract dashes.
+	 * </pre>
+	 * */
 	private List<String> words;
 	
-	/**lemmas of words/tokens */
+	/**lemmas of words/tokens {@link CoreAnnotations.LemmaAnnotation}*/
 	private List<String> stems;
 	
-	/**POSTag of words/tokens */
+	/**POSTag of words/tokens {@link CoreAnnotations.PartOfSpeechAnnotation} */
 	private List<String> POSTags;
 	
 	/**Physical span of each word in the sentence. [) */

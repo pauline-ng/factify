@@ -181,13 +181,12 @@ public class S_Facts {
 	
 	@SuppressWarnings("unchecked")
 	public JSONArray toJSON(int startingIndex) {
-		String output = "";
 		JSONArray objs = new JSONArray();
 		for(int i = 0; i < merge_facts.size(); i++) {
-			String s = "* ";
+			StringBuilder s = new StringBuilder("* ");
 			for(int j = 0; j < merge_facts.get(i).size(); j++) {
-				s += merge_facts.get(i).get(j);
-				if(j != merge_facts.get(i).size() - 1) s += "    ";
+				s.append(merge_facts.get(i).get(j));
+				if(j != merge_facts.get(i).size() - 1) s.append("    ");
 			}
 			if(startingIndex < 0) 
 				Debug.println("ERROR in toJASON! startingIndex==" + startingIndex,DEBUG_CONFIG.debug_error);
@@ -195,12 +194,11 @@ public class S_Facts {
 			obj.put("type", "Sentence");
 			obj.put("senID", startingIndex);
 			obj.put("paragraphPageRange", cfacts.getPageRange().toString());
-			obj.put("fact", s.replace("-LRB-", "(").replace("-RRB-", ")").replace("-RSB-", "]").replace("-LSB-", "["));
+			obj.put("fact", s.toString().replace("-LRB-", "(").replace("-RRB-", ")").replace("-RSB-", "]").replace("-LSB-", "["));
 			obj.put("details", cfacts.matchingDetial_description.get(i));
 			startingIndex++;
 			objs.add(obj);
 		}
-		output = output.replace("-LRB-", "(").replace("-RRB-", ")").replace("-RSB-", "]").replace("-LSB-", "[");
 		return objs;
 	}
 	

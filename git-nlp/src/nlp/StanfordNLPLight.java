@@ -137,7 +137,7 @@ public enum StanfordNLPLight {
 			List<Span> spans = new ArrayList<Span>();
 			for(CoreMap token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
 				String stem = token.get(CoreAnnotations.LemmaAnnotation.class);
-				words.add(token.get(CoreAnnotations.OriginalTextAnnotation.class));//Difference between OriginalTextAnnotation and TextAnnotation?
+				words.add(token.get(CoreAnnotations.TextAnnotation.class));
 				stems.add(stem);
 				POSTag.add(token.get(CoreAnnotations.PartOfSpeechAnnotation.class));
 				spans.add(new Span(token.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class) - sentence.get(CoreAnnotations.CharacterOffsetBeginAnnotation.class),
