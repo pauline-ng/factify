@@ -1,5 +1,0 @@
-﻿--version:1.0
-NN
-NNS
-NNP
-NNPS
