@@ -3,10 +3,8 @@ package test;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 
 import utility.Debug;
@@ -15,7 +13,6 @@ import utility.utility;
 import at.knowcenter.code.pdf.PdfExtractionPipeline;
 /**
  * cav6qhz.pdf: pdf-extraction works terribly on this pdf.
- * @author huangxc
  *
  */
 public class Debug_pdf_extraction {
@@ -61,14 +58,13 @@ public class Debug_pdf_extraction {
 	public static void findFile() {
 		String input_folder = "D:\\GitHub\\n-projects-ws-repo\\n-projects-ws-repo\\git-BEL_extractor-test\\output\\resultOfTestingPDFs\\";
 		File[] files = new File(input_folder).listFiles();
-		utility util = new utility();
 		int counter = 0;
 		for(File file : files) {
 			if(file.getName().contains("new")) {
-				String s = util.readFromFile(file);
+				String s = utility.readFromFile(file);
 				counter++;
 				if(s.contains("new paragraph")) {
-					util.writeFile("output\\new_paragraph.txt", file.getName() + "\r\n", true);
+					utility.writeFile("output\\new_paragraph.txt", file.getName() + "\r\n", true);
 				}
 			}
 		}

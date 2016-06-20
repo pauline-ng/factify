@@ -8,7 +8,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import extractor.ExtractorBELExtractor;
@@ -66,7 +65,6 @@ public class testBatch {
 		}
 		File[] listOfFiles = folder.listFiles();
 		int total_pdf = 0;
-		utility util = new utility();
 //		String output_dir = "output\\resultOfTestingPDFs\\";
 		String output_stat = output_dir + "stat.txt";
 //		util.writeFile(output_stat, "", false);
@@ -76,7 +74,7 @@ public class testBatch {
 //			if(!file.getName().equals("1hgs79.pdf")) {
 //				continue;
 //			}
-			if(total_pdf > 500) return;
+			//if(total_pdf > 500) return;
 			if(finished.contains(file.getName())) {
 				System.out.println("skip " + file.getName());
 				continue;
@@ -87,7 +85,7 @@ public class testBatch {
 				String[] parameters = args.clone();
 				parameters[0] = file.getAbsolutePath();
 				int error = ExtractorBELExtractor.examplePDFExtractor_JSON(parameters);
-				util.writeFile(output_stat, total_pdf + "\t" + file.getName() + "\t" + error + "\r\n", true);
+				utility.writeFile(output_stat, total_pdf + "\t" + file.getName() + "\t" + error + "\r\n", true);
 			}
 			
 		}
@@ -121,6 +119,7 @@ public class testBatch {
 				 String line;
 				 while((line = br.readLine())!=null) {
 					 StringTokenizer st = new StringTokenizer(line, "\t");
+					 st.nextToken();
 					 result.add(st.nextToken());
 				 }
 				 return result;
@@ -138,20 +137,19 @@ public class testBatch {
 	
 		File file = new File(output_stat);
 		if(!file.exists() || !file.isFile()) return ;
-		utility util = new utility();
 		 BufferedReader br;
 		 try {
 				 br= new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
-				 util.writeFile(output_stat + "1", "", false);
+				 utility.writeFile(output_stat + "1", "", false);
 				 String line;
 				 while((line = br.readLine())!=null) {
 					 StringTokenizer st = new StringTokenizer(line, "\t");
 					 String fileName = st.nextToken() ;
 					 String errorCode = st.nextToken();
-					 if(errorCode.equals("1") && util.readFromFile(new File(output_dir + fileName+ "_body_standard.txt")).length() == 0) {
-						 util.writeFile(output_stat + "1", fileName + "\t" + "3" + "\r\n", true);
+					 if(errorCode.equals("1") && utility.readFromFile(new File(output_dir + fileName+ "_body_standard.txt")).length() == 0) {
+						 utility.writeFile(output_stat + "1", fileName + "\t" + "3" + "\r\n", true);
 					 }else {
-						 util.writeFile(output_stat + "1", line + "\r\n", true);
+						 utility.writeFile(output_stat + "1", line + "\r\n", true);
 					 }
 				 }
 		 }

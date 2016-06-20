@@ -1,27 +1,30 @@
 package test;
 
 import java.io.File;
+import java.text.NumberFormat;
 
 import knowledge_model.C_Facts;
 import knowledge_model.S_Facts;
 import nlp.StanfordNLPLight;
 import pattern.RootMatcher;
-import pattern.NGrams;
 import utility.Debug;
 import utility.Span;
-import utility.utility;
 import utility.Debug.DEBUG_CONFIG;
+import utility.utility;
 import extractor.ExtractorBELExtractor;
 
 public class Debug_BEL_extractor {
 
 	public static void main(String[] args) {
+		System.out.println(File.separator);
+		System.out.println(utility.MD5("C:\\Users\\huangxc\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\bydnc2zp.20160118\\zotero\\storage\\7B7X6TIV\\cbdgmlu_.pdf"));
+		if(true)return;
 		// TODO Auto-generated method stub
 //		String path = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\ccok4xz.pdf.pdf";
 //		examplePDFExtractor(path, path + "_.fact");
 //		exampleXMLExtractor(path,path + "_");
 //		ExtractorBELExtractor extractor = new ExtractorBELExtractor();
-		if(true){
+		if(false){
 			if(args.length != 1) {
 				Debug.print("Please specify the matcher file!", DEBUG_CONFIG.debug_error);
 				return;
@@ -43,9 +46,7 @@ public class Debug_BEL_extractor {
 //				ngrams.wn = nlp.wn;
 //				List<Sequence> freSeq = ngram.getFreqSequences(sentences);
 //				freSeq_ = new HashSet<Sequence>(); freSeq_.addAll(freSeq);
-				if(StanfordNLPLight.nlp == null) 
-					StanfordNLPLight.nlp = new StanfordNLPLight("tokenize, ssplit, pos, lemma");
-				C_Facts cFact = matcher.parsePara(StanfordNLPLight.nlp.textToSequence(para, true), null, null, new Span(0,0));
+				C_Facts cFact = matcher.parsePara(StanfordNLPLight.INSTANCE.textToSequence(para, true), null, null, new Span(0,0));
 				if(cFact != null) {
 					S_Facts sfact = new S_Facts(cFact);
 					sfact.mergeFacts();
@@ -69,8 +70,36 @@ public class Debug_BEL_extractor {
 //			fileOrFolder = false;
 //		}
 //		if(fileOrFolder == true) {
+		Runtime runtime = Runtime.getRuntime();
+
+		NumberFormat format = NumberFormat.getInstance();
+		{
+			StringBuilder sb = new StringBuilder();
+			long maxMemory = runtime.maxMemory();
+			long allocatedMemory = runtime.totalMemory();
+			long freeMemory = runtime.freeMemory();
+
+			sb.append("free memory: " + format.format(freeMemory / 1024) + "\r\n");
+			sb.append("allocated memory: " + format.format(allocatedMemory / 1024) + "\r\n");
+			sb.append("max memory: " + format.format(maxMemory / 1024) + "\r\n");
+			sb.append("total free memory: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / 1024) + "\r\n");
+			System.out.println(sb);
+		}
 			ExtractorBELExtractor.main(args);
-//		}else if(fileOrFolder == false) {
+			
+			{
+			StringBuilder sb = new StringBuilder();
+			long maxMemory = runtime.maxMemory();
+			long allocatedMemory = runtime.totalMemory();
+			long freeMemory = runtime.freeMemory();
+
+			sb.append("free memory: " + format.format(freeMemory / 1024) + "\r\n");
+			sb.append("allocated memory: " + format.format(allocatedMemory / 1024) + "\r\n");
+			sb.append("max memory: " + format.format(maxMemory / 1024) + "\r\n");
+			sb.append("total free memory: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / 1024) + "\r\n");
+			System.out.println(sb);
+			}
+			//		}else if(fileOrFolder == false) {
 //			testFromFolder(args[0], args[1], args[2]);
 //		}
 		
