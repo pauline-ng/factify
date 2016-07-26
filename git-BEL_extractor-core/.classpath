@@ -18,5 +18,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/git-utility"/>
 	<classpathentry kind="lib" path="lib/JNumWu_1_1_12.jar"/>
 	<classpathentry kind="lib" path="lib/simmetrics_jar_v1_6_2_d07_02_07.jar"/>
-	<classpathentry kind="output" path="nonegit-bin"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

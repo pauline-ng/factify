@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>nonegit-bin</name>
-			<type>2</type>
-			<location>D:/GitHub/n-projects-ws-repo-nonegit/n-projects-ws-repo-nonegit/nonegit-parseJSON/bin</location>
-		</link>
-	</linkedResources>
 </projectDescription>
