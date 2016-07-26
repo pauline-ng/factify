@@ -3,15 +3,15 @@ package test;
 import java.io.File;
 import java.text.NumberFormat;
 
+import extractor.ExtractorBELExtractor;
 import knowledge_model.C_Facts;
 import knowledge_model.S_Facts;
 import nlp.StanfordNLPLight;
 import pattern.RootMatcher;
 import utility.Debug;
-import utility.Span;
 import utility.Debug.DEBUG_CONFIG;
+import utility.Span;
 import utility.Utility;
-import extractor.ExtractorBELExtractor;
 
 public class Debug_BEL_extractor {
 

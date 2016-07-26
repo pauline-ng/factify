@@ -15,6 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package utility;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,20 +45,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-
-
-
-
-
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 import utility.Debug.DEBUG_CONFIG;
-
-import java.io.BufferedReader;
 
 /**
  * Utility class, noninstantiable
