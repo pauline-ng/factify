@@ -384,7 +384,11 @@ public class Utility {
 			    fis.close();
 	//		    System.out.println("Digest(in hex format):: " + sb.toString());
 				return sb.toString();
-		    } catch (NoSuchAlgorithmException | IOException e) {
+		    } catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+//				e.printStackTrace();
+		    	return null;
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 //				e.printStackTrace();
 		    	return null;
