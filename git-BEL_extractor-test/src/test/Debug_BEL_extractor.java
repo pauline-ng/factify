@@ -10,14 +10,14 @@ import pattern.RootMatcher;
 import utility.Debug;
 import utility.Span;
 import utility.Debug.DEBUG_CONFIG;
-import utility.utility;
+import utility.Utility;
 import extractor.ExtractorBELExtractor;
 
 public class Debug_BEL_extractor {
 
 	public static void main(String[] args) {
 		System.out.println(File.separator);
-		System.out.println(utility.MD5("C:\\Users\\huangxc\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\bydnc2zp.20160118\\zotero\\storage\\7B7X6TIV\\cbdgmlu_.pdf"));
+		System.out.println(Utility.MD5("C:\\Users\\huangxc\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\bydnc2zp.20160118\\zotero\\storage\\7B7X6TIV\\cbdgmlu_.pdf"));
 		if(true)return;
 		// TODO Auto-generated method stub
 //		String path = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\ccok4xz.pdf.pdf";

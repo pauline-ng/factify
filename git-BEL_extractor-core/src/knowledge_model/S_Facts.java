@@ -27,7 +27,7 @@ import org.json.simple.JSONObject;
 
 
 import utility.Debug;
-import utility.utility;
+import utility.Utility;
 import utility.Span;
 import utility.Debug.DEBUG_CONFIG;
 /**
@@ -148,10 +148,10 @@ public class S_Facts {
 				s += merge_facts.get(i).get(j);
 				if(j != merge_facts.get(i).size() - 1) s += ", ";
 			}
-			utility.writeFile(path, 
+			Utility.writeFile(path, 
 					s + "\r\n\r\n",
 					true);
-			utility.writeFile(path, "\r\n",true);
+			Utility.writeFile(path, "\r\n",true);
 		}
 	}
 	

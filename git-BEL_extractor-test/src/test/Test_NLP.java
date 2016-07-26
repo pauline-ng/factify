@@ -7,7 +7,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import utility.utility;
+import utility.Utility;
 import nlp.Sequence;
 import nlp.StanfordNLPLight;
 
@@ -27,9 +27,9 @@ public class Test_NLP {
 	
 	public static void testXMLPaper(){
 		String path = "C:\\Users\\huangxc\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\5266ax06.grant-zotero\\zotero\\cbdgmlu_text_withoutspace.xml";
-		String xmlContent = utility.readFromFile(path);
+		String xmlContent = Utility.readFromFile(path);
 		xmlContent = xmlContent.replace("\n", " ").replace("\r", "");
-		Document xmlDoc = utility.stringToDomWithoutDtd(xmlContent);
+		Document xmlDoc = Utility.stringToDomWithoutDtd(xmlContent);
 		if(xmlDoc == null) return ;
 		long start = System.currentTimeMillis();
 		long end = System.currentTimeMillis();
@@ -60,7 +60,7 @@ public class Test_NLP {
 //		}
 		output += "--------------------------------------------------\r\n";
 		}
-		utility.writeFile("D:\\GitHub\\grant-zotero\\test on nlp_compromise\\stanford_cbdgmlu_text_withoutspace.xml", output, false);
+		Utility.writeFile("D:\\GitHub\\grant-zotero\\test on nlp_compromise\\stanford_cbdgmlu_text_withoutspace.xml", output, false);
 	}
 
 }

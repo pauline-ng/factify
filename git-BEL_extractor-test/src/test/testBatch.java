@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 import extractor.ExtractorBELExtractor;
 import utility.Debug;
 import utility.Debug.DEBUG_CONFIG;
-import utility.utility;
+import utility.Utility;
 
 public class testBatch {
 
@@ -85,7 +85,7 @@ public class testBatch {
 				String[] parameters = args.clone();
 				parameters[0] = file.getAbsolutePath();
 				int error = ExtractorBELExtractor.examplePDFExtractor_JSON(parameters);
-				utility.writeFile(output_stat, total_pdf + "\t" + file.getName() + "\t" + error + "\r\n", true);
+				Utility.writeFile(output_stat, total_pdf + "\t" + file.getName() + "\t" + error + "\r\n", true);
 			}
 			
 		}
@@ -140,16 +140,16 @@ public class testBatch {
 		 BufferedReader br;
 		 try {
 				 br= new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
-				 utility.writeFile(output_stat + "1", "", false);
+				 Utility.writeFile(output_stat + "1", "", false);
 				 String line;
 				 while((line = br.readLine())!=null) {
 					 StringTokenizer st = new StringTokenizer(line, "\t");
 					 String fileName = st.nextToken() ;
 					 String errorCode = st.nextToken();
-					 if(errorCode.equals("1") && utility.readFromFile(new File(output_dir + fileName+ "_body_standard.txt")).length() == 0) {
-						 utility.writeFile(output_stat + "1", fileName + "\t" + "3" + "\r\n", true);
+					 if(errorCode.equals("1") && Utility.readFromFile(new File(output_dir + fileName+ "_body_standard.txt")).length() == 0) {
+						 Utility.writeFile(output_stat + "1", fileName + "\t" + "3" + "\r\n", true);
 					 }else {
-						 utility.writeFile(output_stat + "1", line + "\r\n", true);
+						 Utility.writeFile(output_stat + "1", line + "\r\n", true);
 					 }
 				 }
 		 }

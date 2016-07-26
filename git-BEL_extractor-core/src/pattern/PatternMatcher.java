@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 import knowledge_model.C_Facts;
 import utility.Debug;
 import utility.Span;
-import utility.utility;
+import utility.Utility;
 import utility.Debug.DEBUG_CONFIG;
 import nlp.Sequence;
 

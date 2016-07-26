@@ -65,14 +65,14 @@ public class Debug {
 			if(configs.get(debug)) {
 				if(debugFile == null) System.err.println(s);
 				else {
-					utility.writeFile(debugFile, "HIGHLIGHT: " + s + "\r\n", true);
+					Utility.writeFile(debugFile, "HIGHLIGHT: " + s + "\r\n", true);
 				}
 			}
 		}else
 			if(configs.get(debug)) {
 				if(debugFile == null) System.out.println(s);
 				else {
-					utility.writeFile(debugFile, s + "\r\n", true);
+					Utility.writeFile(debugFile, s + "\r\n", true);
 				}
 			}
 	}
@@ -82,14 +82,14 @@ public class Debug {
 			if(configs.get(debug)) {
 				if(debugFile == null) System.err.println();
 				else {
-					utility.writeFile(debugFile, "HIGHLIGHT: \r\n", true);
+					Utility.writeFile(debugFile, "HIGHLIGHT: \r\n", true);
 				}
 			}
 		}else
 			if(configs.get(debug)) {
 				if(debugFile == null) System.out.println();
 				else {
-					utility.writeFile(debugFile, "\r\n", true);
+					Utility.writeFile(debugFile, "\r\n", true);
 				}
 			}
 	}
@@ -99,14 +99,14 @@ public class Debug {
 			if(configs.get(debug)) {
 				if(debugFile == null) System.err.print(s);
 				else {
-					utility.writeFile(debugFile, "HIGHLIGHT: " + s, true);
+					Utility.writeFile(debugFile, "HIGHLIGHT: " + s, true);
 				}
 			}
 		}else
 			if(configs.get(debug)) {
 				if(debugFile == null) System.out.print(s);
 				else {
-					utility.writeFile(debugFile, s, true);
+					Utility.writeFile(debugFile, s, true);
 				}
 			}
 	}

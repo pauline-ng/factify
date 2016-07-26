@@ -40,7 +40,7 @@ import org.json.simple.parser.ParseException;
 
 import utility.Debug;
 import utility.Span;
-import utility.utility;
+import utility.Utility;
 import utility.Debug.DEBUG_CONFIG;
 
 /**
@@ -398,7 +398,7 @@ public class RootMatcher {
 		for(int senIndex = 0; senIndex < sentens.size(); senIndex++) {
 			List<Span> facts_per_sen = all_facts.get(senIndex);
 			Sequence senten = sentens.get(senIndex);
-			utility.sortByStart(facts_per_sen);
+			Utility.sortByStart(facts_per_sen);
 
 			// Any token that crosses the span of all would be counted in.
 			HashSet<Integer> crossToken = new HashSet<Integer>();//the relative order of tokens that the span cross

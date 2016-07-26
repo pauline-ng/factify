@@ -46,7 +46,7 @@ import pdfStructure.PDFtoStructure;
 import pdfStructure.Paragraph;
 import utility.Debug;
 import utility.Debug.DEBUG_CONFIG;
-import utility.utility;
+import utility.Utility;
 import at.knowcenter.code.api.pdf.Block;
 import at.knowcenter.code.api.pdf.BlockLabel;
 import at.knowcenter.code.api.pdf.Document;
@@ -628,12 +628,12 @@ public class PdfExtractionPipeline {
             if(Debug.get(DEBUG_CONFIG.debug_textpieces)) {
 //        	String debug_output_location = PdfExtractionPipeline.global_debug_dir + PdfExtractionPipeline.global_id + "_textpieces_location.txt";
         	String debug_output_text = PdfExtractionPipeline.global_debug_dir + PdfExtractionPipeline.global_id + "_textpieces_text.txt";
-        	utility.writeFile(debug_output_text, "", false);
+        	Utility.writeFile(debug_output_text, "", false);
 //        	util.writeFile(debug_output_location, "", false);
         	int counter = 0;
         	for(int i = 0; i < pageBlocks.size(); i++) {
         		for(int j = 0; j < pageBlocks.get(i).getLineBlocks().size(); j++) {
-        			utility.writeFile(debug_output_text, counter + "\t" + pageBlocks.get(i).getLineBlocks().get(j).getText() + "\r\n", true);
+        			Utility.writeFile(debug_output_text, counter + "\t" + pageBlocks.get(i).getLineBlocks().get(j).getText() + "\r\n", true);
         			//        		util.writeFile(debug_output_text, counter + "\t" + pdfPage.getFragments().get(i).getText() + "\r\n", true);
         			counter++;
         		}

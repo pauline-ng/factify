@@ -41,7 +41,7 @@ import pattern.RootMatcher;
 import pdfStructure.PDF;
 import pdfStructure.Paragraph;
 import utility.Debug;
-import utility.utility;
+import utility.Utility;
 import utility.Debug.DEBUG_CONFIG;
 import knowledge_model.C_Facts;
 import knowledge_model.S_Facts;
@@ -132,7 +132,7 @@ public class ExtractorBELExtractor {
 		if(args.length > 5) {
 			if(args[5].trim().equals("MD5")) {
 				String facts_name = "";
-				facts_name = utility.MD5(path);
+				facts_name = Utility.MD5(path);
 				if(facts_name != null) fact_file = output_dir + facts_name + "_facts.json";
 			}
 			else fact_file = args[5];
@@ -285,7 +285,7 @@ public class ExtractorBELExtractor {
 			factsToOutput.add(decoration);
 		}
 		
-		utility.writeFile(fact_file, factsToOutput.toJSONString(), false);
+		Utility.writeFile(fact_file, factsToOutput.toJSONString(), false);
 		if(pdf.body_and_heading.size() == 0) return 3;
 		return 1;
 	}

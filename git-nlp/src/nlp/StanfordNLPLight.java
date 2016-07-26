@@ -28,7 +28,7 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 
 import utility.Span;
-import utility.utility;
+import utility.Utility;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
@@ -183,7 +183,7 @@ public enum StanfordNLPLight {
 	public String getResourceAsString(String fileName) {
 		try{	 
 			BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(fileName )));
-			return utility.toString(br);
+			return Utility.toString(br);
 		}
 		catch(Exception e) {
 			ClassLoader classLoader = getClass().getClassLoader();

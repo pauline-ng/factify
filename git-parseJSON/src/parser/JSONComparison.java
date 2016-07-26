@@ -6,7 +6,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import utility.utility;
+import utility.Utility;
 
 /**
  * 
@@ -33,11 +33,11 @@ public class JSONComparison {
 		JSONArray array1 = null;
 		JSONArray array2 = null;
 		{
-			String str = utility.readFromFile(file1);
+			String str = Utility.readFromFile(file1);
 			Object obj=JSONValue.parse(str);
 			array1 =(JSONArray)obj;
 		}{
-			String str = utility.readFromFile(file2);
+			String str = Utility.readFromFile(file2);
 			Object obj=JSONValue.parse(str);
 			array2 =(JSONArray)obj;
 		}

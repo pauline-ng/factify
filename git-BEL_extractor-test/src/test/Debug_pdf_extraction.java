@@ -9,7 +9,7 @@ import java.nio.file.Files;
 
 import utility.Debug;
 import utility.Debug.DEBUG_CONFIG;
-import utility.utility;
+import utility.Utility;
 import at.knowcenter.code.pdf.PdfExtractionPipeline;
 /**
  * cav6qhz.pdf: pdf-extraction works terribly on this pdf.
@@ -61,10 +61,10 @@ public class Debug_pdf_extraction {
 		int counter = 0;
 		for(File file : files) {
 			if(file.getName().contains("new")) {
-				String s = utility.readFromFile(file);
+				String s = Utility.readFromFile(file);
 				counter++;
 				if(s.contains("new paragraph")) {
-					utility.writeFile("output\\new_paragraph.txt", file.getName() + "\r\n", true);
+					Utility.writeFile("output\\new_paragraph.txt", file.getName() + "\r\n", true);
 				}
 			}
 		}
