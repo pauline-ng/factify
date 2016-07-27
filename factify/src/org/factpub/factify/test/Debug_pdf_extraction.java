@@ -13,35 +13,50 @@ import utility.Debug.DEBUG_CONFIG;
 import utility.Utility;
 /**
  * cav6qhz.pdf: pdf-extraction works terribly on this pdf.
- *
  */
 public class Debug_pdf_extraction {
 
-	private static String dirInput = "";
+	//private static String input_folder = "pdf\\";
+	private static String input_folder = "pdf\\incorrectDOI\\";
 	
-	public static void main(String[] args) {
+	private static String pdf_file = "DOI10.1053j.gastro.2009.04.032_EvidenceForTheRole.pdf";
+	//private static String pdf_file = "DOI10.1093nargkg509_SIFT.pdf";
+	
+	private static String path = input_folder + pdf_file;
+	
+	public static void main(String[] arguments) {
 		// TODO Auto-generated method stub
-//		findFile();
-//		moveFiles();
+		//findFile();
+		//moveFiles();
+		
+		String[] args = new String[3]; 
+		args[0] = path;
+		args[1] = input_folder;
+		args[2] = input_folder;
+		
 		if(args.length != 3) {
 			Debug.print("Please specify 3 parameters: filePath, output_dir, and debug_dir!", DEBUG_CONFIG.debug_error);
 			return;
 		}
+		
 		if(!new File(args[0]).exists()) {
 			Debug.print("Please specify a valid input file or folder!", DEBUG_CONFIG.debug_error);
 			return;
 		}
+		
 		Boolean fileOrFolder = null;//true if it is a file
 		if(new File(args[0]).isFile()) {
 			fileOrFolder = true;
 		}else if (new File(args[0]).isDirectory()) {
 			fileOrFolder = false;
 		}
+		
 		if(fileOrFolder == true) {
 			testOneFile(args[0], args[1], args[2]);
 		}else if(fileOrFolder == false) {
 //			testFromFolder(args[0], args[1], args[2]);
 		}
+		
 //		testOneFile();
 	}
 	
@@ -58,7 +73,6 @@ public class Debug_pdf_extraction {
 	}
 	
 	public static void findFile() {
-		String input_folder = "D:\\GitHub\\n-projects-ws-repo\\n-projects-ws-repo\\git-BEL_extractor-test\\output\\resultOfTestingPDFs\\";
 		File[] files = new File(input_folder).listFiles();
 		int counter = 0;
 		for(File file : files) {
@@ -66,14 +80,14 @@ public class Debug_pdf_extraction {
 				String s = Utility.readFromFile(file);
 				counter++;
 				if(s.contains("new paragraph")) {
-					Utility.writeFile("output\\new_paragraph.txt", file.getName() + "\r\n", true);
+					Utility.writeFile("new_paragraph.txt", file.getName() + "\r\n", true);
 				}
 			}
 		}
 		System.out.println("in total " + files.length + " new_paragraph_3.txt files");
 	}
+	
 	public static void moveFiles() {
-		String path = "D:\\GitHub\\n-projects-ws-repo\\n-projects-ws-repo\\git-BEL_extractor-test\\output\\";
 		try {
 			BufferedReader  br= new BufferedReader(new InputStreamReader(new FileInputStream(path + "new_paragraph.txt"), "UTF-8"));
 			String line;
@@ -89,6 +103,4 @@ public class Debug_pdf_extraction {
 			e.printStackTrace();
 		}
 	}
-	
-
 }
