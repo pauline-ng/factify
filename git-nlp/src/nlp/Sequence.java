@@ -69,11 +69,13 @@ public class Sequence {
 			this.stems.addAll(stems);
 		}
 	}
+	
 	public Sequence(String stem) {
 		this.stems = new ArrayList<String>();
 		if(stems == null) this.stems = null;
 		else this.stems.add(stem);
 	}
+	
 	public Sequence(List<String> stems, List<String> POSTags, List<Span> spans, String sourceString) {
 		this.stems = new ArrayList<String>();
 		if(stems == null) this.stems = null;
@@ -106,6 +108,7 @@ public class Sequence {
 		if(words == null)  this.words = null;
 		else this.words.addAll(words);
 	}
+	
 	public Sequence(List<String> words, List<String> stems, List<String> POSTags, List<Span> spans, String sourceString, int senID) {
 		this.stems = new ArrayList<String>();
 		if(stems == null) this.stems = null;
@@ -124,6 +127,7 @@ public class Sequence {
 		else this.words.addAll(words);
 		this.senID = senID;
 	}
+	
 	public Sequence(String[] stems) {
 		this.stems = new ArrayList<String>();
 		if(stems == null) this.stems = null;
@@ -134,6 +138,7 @@ public class Sequence {
 		
 		return stems.toString().hashCode();
 	}
+	
 	public boolean equals(Object obj) {
 		return this.hashCode() == obj.hashCode();
 	}
@@ -145,6 +150,7 @@ public class Sequence {
 		}
 		return false;
 	}
+	
 	public int indexOfSequence(Sequence subS) {
 		Sequence superS = this;
 		for(int i = 0; i < superS.getWordCount() - subS.getWordCount() + 1; i++) {
@@ -157,9 +163,11 @@ public class Sequence {
 	public boolean isSupersequenceOrSelfOf(Sequence subS) {
 		return subS.isSubsequenceOrSelfOf(this);
 	}
+	
 	public boolean isSupersequenceOf(Sequence subS) {
 		return subS.getWordCount() < this.getWordCount() && subS.isSubsequenceOrSelfOf(this);
 	}
+	
 	public boolean isSupbsequenceOf(Sequence sup) {
 		return sup.isSupersequenceOf(this);
 	}
@@ -196,6 +204,7 @@ public class Sequence {
 		if(this.stems.size() > 0) s = s.substring(0, s.length() -1);//remove the space added to the end
 		return s;
 	}
+	
 	public String details() {
 		String s = "";
 		for(int i = 0; i < this.stems.size(); i++) {
@@ -207,12 +216,15 @@ public class Sequence {
 		if(this.stems.size() > 0) s = s.substring(0, s.length() -1);//remove the space added to the end
 		return s;
 	}
+	
 	public int getAbsoluteFreq() {
 		return absoluteFreq;
 	}
+	
 	public void setAbsoluteFreq(int absoluteFreq) {
 		this.absoluteFreq = absoluteFreq;
 	}
+	
 	public boolean containsNouns() {
 		HashSet<String> nouns = new HashSet<String>();
 		nouns.add("NN");
@@ -224,6 +236,7 @@ public class Sequence {
 		}
 		return false;
 	}
+	
 	/**
 	 * check if stem as itself is equal to (not as a substring of) any existing stem
 	 * @param stem
@@ -247,6 +260,7 @@ public class Sequence {
 		}
 		return false;
 	}
+	
 	public boolean endsWithIndivStem(String stem) {
 		String last = this.stems.get(this.stems.size()-1);
 		if(last.trim().equals(stem.trim())) return true;
@@ -264,6 +278,7 @@ public class Sequence {
 			return true;
 		return false;
 	}
+	
 	public boolean startsWithIndivStem(String stem) {
 		String start = this.stems.get(0);
 		if(start.trim().equals(stem.trim())) return true;
@@ -319,6 +334,7 @@ public class Sequence {
 		if(!stk.empty()) return true;
 		return false;
 	}
+	
 	public boolean hasCommonIndivStem(Sequence s) {
 		HashSet<String> these = new HashSet<String>();
 		HashSet<String> those = new HashSet<String>();
@@ -328,31 +344,40 @@ public class Sequence {
 		if(these.size() > 0) return true;
 		return false;
 	}
+	
 	public String getWord(int index) {
 		return this.words.get(index);
 	}
+	
 	public String getStemOfWord(int index) {
 		return this.stems.get(index);
 	}
+	
 	public Span getSpanOfWord(int index) {
 		return this.spans.get(index);
 	}
+	
 	public String getPOSTagOfWord(int index) {
 		return this.POSTags.get(index);
 	}
+	
 	public String getSourceString() {
 		return sourceString;
 	}
+	
 	public void setSourceString(String sourceString) {
 		this.sourceString = sourceString;
 	}
+	
 	public int getWordCount() {
 		if(this.words == null) return 0;
 		return this.words.size();
 	}
+	
 	public int getWordIndexOfSpan(Span s) {//expensive
 		return this.spans.indexOf(s);
 	}
+	
 	public void setPOSTagOfWord(int index, String tag) {
 		this.POSTags.set(index, tag);
 	}

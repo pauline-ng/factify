@@ -14,6 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 /**
  * This class servers as the ONLY interface for NLP processing
  */
@@ -41,9 +42,11 @@ import edu.stanford.nlp.util.CoreMap;
  *
  */
 public enum StanfordNLPLight {
+	
 	INSTANCE("tokenize, ssplit, pos, lemma");
 	final private StanfordCoreNLP pipeline;
 	final private HashSet<String> stopwords;
+	
 	private StanfordNLPLight( String props_str) {
 		Properties prop = new Properties();
 		prop.put("annotators",props_str);
@@ -51,6 +54,7 @@ public enum StanfordNLPLight {
 		stopwords = importStopWords();
 
 	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//		StanfordNLPLight nlp = new StanfordNLPLight()
@@ -99,7 +103,6 @@ public enum StanfordNLPLight {
 			System.out.println();
 		}
 	}
-
 
 	public List<Span> splitSentences(String s) {
 		Annotation annotation = new Annotation(s);
@@ -174,6 +177,7 @@ public enum StanfordNLPLight {
 			return null;
 		}
 	}
+	
 	public static boolean isNoun(String pos) {
 		if(pos.equals("NN") || pos.equals("NNS") || pos.equals("NNP") || pos.equals("NNPS"))
 			return true;
