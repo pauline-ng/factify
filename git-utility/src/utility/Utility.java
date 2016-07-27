@@ -54,10 +54,11 @@ import utility.Debug.DEBUG_CONFIG;
 
 /**
  * Utility class, noninstantiable
- *
  */
 public class Utility {
-	private Utility() {	}
+	
+	private Utility() {}
+	
 	public static void writeFile(String path, String s, boolean append) {
 		File log_f;
 		log_f = new File(path);
@@ -149,8 +150,8 @@ public class Utility {
 				e.printStackTrace();
 			}
 		}
-
 	}
+	
 	public static String readFromFile(File file) {
 		BufferedReader br;
 		try {
@@ -290,6 +291,7 @@ public class Utility {
 		s = s.substring(0, Math.min(indexDot + 3, s.length()));
 		return Double.parseDouble(s);
 	}
+	
 	public static void sortByStart(List<Span> input) {
 		//			 List<Span> result = new ArrayList<Span>();
 		for(int i = 0; i < input.size(); i++) {
@@ -335,6 +337,7 @@ public class Utility {
 			return null;
 		}
 	}
+	
 	public static boolean copyDirectory(String src, String dest) {
 		try{
 			FileUtils.copyDirectory(new File(src), new File(dest));
@@ -345,6 +348,7 @@ public class Utility {
 			return false;
 		}
 	}
+	
 	public static boolean copyFile(String src, String dest) {
 		try{
 			FileUtils.copyFile(new File(src), new File(dest));
@@ -388,6 +392,3 @@ public class Utility {
 			}
 	}
 }
-
-
-
