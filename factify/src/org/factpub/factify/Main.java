@@ -29,9 +29,6 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import nlp.Sequence;
-import nlp.StanfordNLPLight;
-
 import org.factpub.factify.knowledge_model.C_Facts;
 import org.factpub.factify.knowledge_model.S_Facts;
 import org.factpub.factify.pattern.Acronym;
@@ -41,11 +38,13 @@ import org.factpub.factify.pdfconverter.PDFConverter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import nlp.Sequence;
+import nlp.StanfordNLPLight;
 import pdfStructure.PDF;
 import pdfStructure.Paragraph;
 import utility.Debug;
-import utility.Utility;
 import utility.Debug.DEBUG_CONFIG;
+import utility.Utility;
 
 /**
  * This is the main class for fact extractor
@@ -53,7 +52,7 @@ import utility.Debug.DEBUG_CONFIG;
 public class Main {
 	
 	public static void main(String[]  args) {
-		int error = examplePDFExtractor_JSON(args);
+		int error = runFactify(args);
 		Debug.println("Finished with errorcode " + error, DEBUG_CONFIG.debug_error);
 		//System.exit(error);//The system has to exit with code 0, otherwise zotero would see it as failed.
 	}
@@ -75,7 +74,8 @@ public class Main {
 	 * 3: PDF Converter succeeded, but no body text (or section heading)<br>
 	 * 4: Facts exist<br>
 	 */
-	public static int examplePDFExtractor_JSON(String...args) {
+	
+	public static int runFactify(String...args) {
 		{
 			String[] javaVersionElements = System.getProperty("java.runtime.version").split("\\.");//1.8.0_45-b14
 			try {

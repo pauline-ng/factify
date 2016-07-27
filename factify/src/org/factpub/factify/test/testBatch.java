@@ -23,20 +23,24 @@ public class testBatch {
 //		testFromFolder("D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers\\");
 //		clean();
 //		System.out.println("test");
+		
 		{
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 			Calendar cal = Calendar.getInstance();
 //			System.out.println(dateFormat.format(cal.getTime())); //2014/08/06 16:00:22
 			Debug.debugFile = "D:\\debug-" + dateFormat.format(cal.getTime()) + ".txt";
 		}
+		
 //		if(args.length != 4) {
 //			Debug.print("Please specify 3 parameters: filePath, output_dir, debug_dir, and matcher file!", DEBUG_CONFIG.debug_error);
 //			return;
 //		}
+		
 //		if(!new File(args[0]).exists()) {
 //			Debug.print("Please specify a valid input file or folder!", DEBUG_CONFIG.debug_error);
 //			return;
 //		}
+		
 		Boolean fileOrFolder = null;//true if it is a file
 		if(new File(args[0]).isFile()) {
 			fileOrFolder = true;
@@ -85,7 +89,7 @@ public class testBatch {
 				System.out.println("process " + file.getName());
 				String[] parameters = args.clone();
 				parameters[0] = file.getAbsolutePath();
-				int error = Main.examplePDFExtractor_JSON(parameters);
+				int error = Main.runFactify(parameters);
 				Utility.writeFile(output_stat, total_pdf + "\t" + file.getName() + "\t" + error + "\r\n", true);
 			}
 			
@@ -95,21 +99,13 @@ public class testBatch {
 	}
 	
 	/**
-	 * 
 	 * @param args: String path, String output_dir, String debug_dir, String matcherFile, String debug_log
 	 */
 	public static void testOneFile(String ...args) {
-//		String path = "D:\\huangxcwd\\Data\\reddit\\odesk\\allpapers";
-//		File file = new File(path);
-//		if(!file.exists() || !file.isFile()) {
-//			Debug.print(path + " is not a valid file!", DEBUG_CONFIG.debug_error);
-//			return;
-//		}
-//		if(file.getName().endsWith(".pdf")) {
-			int error = Main.examplePDFExtractor_JSON(args);
-			Debug.print("Finished with errorcode " + error, DEBUG_CONFIG.debug_error);
-//		}
+		int error = Main.runFactify(args);
+		Debug.print("Finished with errorcode " + error, DEBUG_CONFIG.debug_error);
 	}
+	
 	public static HashSet<String> getFinishedSet(String path) {
 		File file = new File(path);
 		if(!file.exists() || !file.isFile()) return new HashSet<String>();
@@ -129,9 +125,8 @@ public class testBatch {
 			 e.printStackTrace();
 			 return null;
 		 }
-			
-		
 	}
+	
 	public static void clean() {
 		String output_dir = "output\\resultOfTestingPDFs\\";
 		String output_stat = output_dir + "stat.txt";

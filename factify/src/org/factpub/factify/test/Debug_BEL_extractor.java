@@ -16,7 +16,7 @@ import utility.Utility;
 
 public class Debug_BEL_extractor {
 
-	private static String samplePDF_Path = "C:\\Users\\huangxc\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\bydnc2zp.20160118\\zotero\\storage\\7B7X6TIV\\cbdgmlu_.pdf";
+	private static String samplePDF_Path = ".\\pdf\\DOI10.1093nargkg509_SIFT.pdf";
 	
 	public static void main(String[] args) {
 		System.out.println(File.separator);

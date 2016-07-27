@@ -16,6 +16,7 @@ public class Test_NLP {
 	public static void main(String[] args) {
 		testXMLPaper();
 		if(true) return;
+
 		// TODO Auto-generated method stub
 		List<Sequence> results = StanfordNLPLight.INSTANCE.textToSequence("The rate grows by 2.1 percent.", false);
 		for(Sequence seq : results) {
@@ -26,6 +27,7 @@ public class Test_NLP {
 	}
 	
 	public static void testXMLPaper(){
+		
 		String path = "C:\\Users\\huangxc\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\5266ax06.grant-zotero\\zotero\\cbdgmlu_text_withoutspace.xml";
 		String xmlContent = Utility.readFromFile(path);
 		xmlContent = xmlContent.replace("\n", " ").replace("\r", "");
@@ -35,6 +37,7 @@ public class Test_NLP {
 		long end = System.currentTimeMillis();
 		System.out.println("loading models:" + (end-start));
 		List<List<Sequence>> allSequences = new ArrayList<List<Sequence>>();
+		
 		{
 			NodeList paras = xmlDoc.getElementsByTagName("p");
 			for(int i = 0; i < paras.getLength(); i++) {
@@ -44,7 +47,8 @@ public class Test_NLP {
 				allSequences.add(seqOfPara);
 			}
 		}
-		 end = System.currentTimeMillis();
+		
+		end = System.currentTimeMillis();
 		System.out.println("Time cost: " + (end-start)); 
 		
 		String output = "";
@@ -58,7 +62,7 @@ public class Test_NLP {
 //			for(String tag : s.POSTags) output += tag + "\t";
 //			output += "--\r\n\rn";
 //		}
-		output += "--------------------------------------------------\r\n";
+			output += "--------------------------------------------------\r\n";
 		}
 		Utility.writeFile("D:\\GitHub\\grant-zotero\\test on nlp_compromise\\stanford_cbdgmlu_text_withoutspace.xml", output, false);
 	}

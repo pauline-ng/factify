@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import utility.Debug;
-import utility.Span;
 import utility.Debug.DEBUG_CONFIG;
+import utility.Span;
 
 /**
  * Facts at the client side.

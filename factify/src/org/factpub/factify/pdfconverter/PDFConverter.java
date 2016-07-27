@@ -32,11 +32,15 @@ import at.knowcenter.code.pdf.PdfExtractionPipeline.PdfExtractionResult;
  *
  */
 public class PDFConverter {
+	
+	private static String testPDF = "..\\git-BEL-extractor-test\\1756-9966-27-85.pdf";
+	
 	public static void main(String[] args) throws Exception {
-		File file = new File("..\\git-BEL-extractor-test\\1756-9966-27-85.pdf");
+		File file = new File(testPDF);
 		PDFConverter converter = new PDFConverter();
 		converter.run(file);
 	}
+	
 	public PDF run(File file) {
 		if(!file.exists()) {
 			Debug.print("File " + file.getAbsolutePath() + " does not exist!", DEBUG_CONFIG.debug_error);
@@ -55,6 +59,7 @@ public class PDFConverter {
 		if(result == null) return null;
 		return pipeline.getPDF();
 	}
+	
 	public PDF run(File file, String...args) {
 		Debug.println("****Start Parsing PDF****", DEBUG_CONFIG.debug_timeline);
 		if(!file.exists()) {

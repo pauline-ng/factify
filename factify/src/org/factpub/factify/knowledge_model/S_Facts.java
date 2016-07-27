@@ -24,9 +24,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import utility.Debug;
-import utility.Utility;
-import utility.Span;
 import utility.Debug.DEBUG_CONFIG;
+import utility.Span;
+import utility.Utility;
 /**
  * Facts at the server side, i.e. fulltext-free
  * (Post-process of client side facts).
