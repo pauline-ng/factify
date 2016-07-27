@@ -1,0 +1,472 @@
+0	3812–3814 Nucleic Acids Research, 2003, Vol. 31, No. 13
+1	DOI: 10.1093/nar/gkg509
+2	SIFT: predicting amino acid changes that affect
+3	protein function
+4	Pauline C. Ng and Steven Henikoff *
+5	Fred Hutchinson Cancer Research Center, 1100 Fairview Avenue N A1-162, Seattle, WA 98109, USA
+6	Received January 4, 2003; Revised and Accepted February 28, 2003
+7	ABSTRACT
+8	D
+9	o
+10	w
+11	n
+12	l o
+13	a
+14	d
+15	e
+16	d
+17	f
+18	r
+19	o
+20	m
+21	h
+22	advantage of not requiring structure is that a larger number of
+23	substitutions can be predicted on. Of the non-synonymous
+24	SNPs identified by the SNP Consortium, 74% were sufficiently
+25	similar to homologs in protein sequence databases for SIFT
+26	prediction. The number of substitutions that SIFT can predict
+27	on is expected to increase as more genomes are sequenced and
+28	more protein sequences become available.
+29	t
+30	t
+31	p
+32	:
+33	/
+34	/
+35	n
+36	a
+37	Single nucleotide polymorphism (SNP) studies and
+38	random mutagenesis projects identify amino acid
+39	substitutions in protein-coding regions. Each sub-
+40	stitution has the potential to affect protein function.
+41	SIFT (Sorting Intolerant From Tolerant) is a program
+42	that predicts whether an amino acid substitution
+43	affects protein function so that users can prioritize
+44	substitutions for further study. We have shown that
+45	SIFT can distinguish between functionally neutral
+46	and deleterious amino acid changes in mutagenesis
+47	studies and on human polymorphisms. SIFT is
+48	available at http://blocks.fhcrc.org/sift/SIFT.html.
+49	r
+50	.
+51	o
+52	SIFT PREDICTION METHOD
+53	x
+54	f
+55	o
+56	r
+57	d
+58	j o
+59	u
+60	r
+61	n
+62	a
+63	l s
+64	. o
+65	r
+66	g
+67	a
+68	INTRODUCTION
+69	t
+70	U
+71	n
+72	i v
+73	e
+74	r
+75	s
+76	i t
+77	y
+78	SIFT presumes that important amino acids will be conserved
+79	in the protein family, and so changes at well-conserved
+80	positions tend to be predicted as deleterious. For example, if a
+81	position in an alignment of a protein family only contains the
+82	amino acid isoleucine, it is presumed that substitution to any
+83	other amino acid is selected against and that isoleucine is
+84	necessary for protein function. Therefore, a change to any
+85	other amino acid will be predicted to be deleterious to protein
+86	function. If a position in an alignment contains the
+87	hydrophobic amino acids isoleucine, valine and leucine, then
+88	SIFT assumes, in effect, that this position can only contain
+89	amino acids with hydrophobic character. At this position,
+90	changes to other hydrophobic amino acids are usually
+91	predicted to be tolerated but changes to other residues (such
+92	as charged or polar) will be predicted to affect protein
+93	function.
+94	o
+95	f
+96	W
+97	Single nucleotide polymorphisms (SNPs) are used as markers
+98	in linkage and association studies to detect which regions in
+99	the human genome may be involved in disease. SNPs in
+100	coding and regulatory regions may be implicated in disease
+101	themselves. Non-synonymous SNPs that lead to an amino acid
+102	change in the protein product are of major interest, because
+103	amino acid substitutions currently account for approximately
+104	half of the known gene lesions responsible for human inherited
+105	disease (1). SIFT (Sorting Intolerant From Tolerant) uses
+106	sequence homology to predict whether an amino acid
+107	substitution will affect protein function and hence, potentially
+108	alter phenotype (2,3).
+109	a
+110	s
+111	h
+112	i n
+113	g
+114	t
+115	o
+116	n
+117	L
+118	i b
+119	r
+120	a
+121	r
+122	i e
+123	s
+124	o
+125	n
+126	M
+127	a
+128	r
+129	c
+130	h
+131	To predict whether an amino acid substitution in a protein
+132	will affect protein function, SIFT considers the position at
+133	which the change occurred and the type of amino acid
+134	change. Given a protein sequence, SIFT chooses related
+135	proteins and obtains an alignment of these proteins with the
+136	query. Based on the amino acids appearing at each position
+137	in the alignment, SIFT calculates the probability that an
+138	amino acid at a position is tolerated conditional on the most
+139	frequent amino acid being tolerated. If this normalized value
+140	is less than a cutoff, the substitution is predicted to be
+141	deleterious (2). The SIFT algorithm and software have been
+142	described previously (2,3).
+143	2
+144	4
+145	,
+146	2
+147	0
+148	1
+149	0
+150	SIFT has been applied to human variant databases and was
+151	able to distinguish mutations involved in disease from neutral
+152	polymorphisms (3). Assuming that disease-causing amino acid
+153	substitutions are damaging to protein function, we applied SIFT
+154	to a database of missense substitutions associated with or
+155	involved in disease (4). SIFT predicted 69% to be damaging.
+156	When SIFT was applied to the non-synonymous SNPs in
+157	dbSNP (5), a database of putative SNPs, 25% of the variants
+158	were predicted to be deleterious. This was similar to SIFT’s
+159	20% false positive error which suggested that most non-
+160	synonymous SNPs are functionally neutral. Furthermore, a
+161	subset of the variants from dbSNP predicted to affect function
+162	were involved in disease which confirmed SIFT sensitivity.
+163	SIFT WEBSITE
+164	Input
+165	Users can obtain predictions for amino acid changes of interest
+166	at http://www.blocks.fhcrc.org/sift/SIFT.html. From this page,
+167	The SIFT algorithm relies solely on sequence for prediction,
+168	yet performs similarly to tools that use structure (3,6–8). An
+169	*To whom correspondence should be addressed. Tel: þ 1 2066674515; Fax: þ 1 2066675889; Email: steveh@fhcrc.org
+170	Nucleic Acids Research, Vol. 31, No. 13 # Oxford University Press 2003; all rights reserved
+171	Nucleic Acids Research, 2003, Vol. 31, No. 13 3813
+172	D
+173	o
+174	w
+175	n
+176	l o
+177	a
+178	d
+179	e
+180	d
+181	Figure 1. An example of SIFT prediction on amino acid changes in a protein. Substitutions with score less than 0.05 are predicted to affect protein function. In the
+182	last prediction, the median conservation of the sequences does not meet the threshold so a warning is issued.
+183	f
+184	r
+185	o
+186	m
+187	h
+188	t
+189	t
+190	p
+191	:
+192	/
+193	/
+194	n
+195	and 10). The quantitative score allows users to prioritize their
+196	amino acid changes by ranking them from the lowest scores to
+197	the highest.
+198	there are links to three submission pages which allow users
+199	different levels of involvement in order to control the quality of
+200	their predictions.
+201	a
+202	r
+203	.
+204	o
+205	x
+206	f
+207	o
+208	r
+209	d
+210	Confidence in a substitution predicted to be deleterious
+211	depends on the diversity of the sequences in the alignment. If
+212	the sequences used for prediction are closely related, then
+213	many positions will appear conserved and SIFT will predict
+214	most substitutions to affect protein function. This leads to a
+215	high false positive error where functionally neutral substitu-
+216	tions are predicted to be deleterious.
+217	For minimal involvement, users can simply submit their
+218	protein sequences and amino acid substitutions. In its fully
+219	automated mode, SIFT will search for protein sequences
+220	homologous to the query protein and based on these
+221	sequences, calculate probabilities for each possible amino acid
+222	change. Users can select from among SWISS-PROT, SWISS-
+223	PROT/TrEMBL, or NCBI’s non-redundant protein databases
+224	for SIFT to search (4,9).
+225	j o
+226	u
+227	r
+228	n
+229	a
+230	l s
+231	. o
+232	r
+233	g
+234	a
+235	t
+236	U
+237	n
+238	i v
+239	e
+240	r
+241	s
+242	i t
+243	y
+244	o
+245	f
+246	W
+247	To alert the user to these situations, SIFT calculates the
+248	median conservation value which measures the diversity of the
+249	sequences in the alignment. Conservation, as measured by
+250	information content (11), is calculated for each position in the
+251	alignment and the median of these values is obtained.
+252	Conservation ranges from log 2 20 ( ¼ 4.32), when a position
+253	is completely conserved and only one amino acid is observed,
+254	to zero, when all 20 amino acids are observed at a position. By
+255	default, SIFT builds alignments with a median conservation
+256	value of 3.0. Predictions based on sequence alignments with
+257	higher median conservation values are less diverse and will
+258	have a higher false positive error (Fig. 2).
+259	Although SIFT can choose sequences automatically, better
+260	prediction results may be obtained when all of the sequences
+261	that are provided are orthologous to the query protein. This is
+262	because inclusion of paralogous sequences confounds predic-
+263	tion at residues conserved only among the orthologues. If a
+264	user already has sequences that are thought to be functionally
+265	similar to the protein of interest, these sequences can be
+266	directly submitted and SIFT’s step for choosing sequences
+267	skipped. Given the query protein and homologous sequences,
+268	SIFT obtains the alignment.
+269	a
+270	s
+271	h
+272	i n
+273	g
+274	t
+275	o
+276	n
+277	L
+278	i b
+279	r
+280	a
+281	r
+282	i e
+283	s
+284	o
+285	n
+286	M
+287	If regions are misaligned, SIFT will not recognize conserved
+288	positions and therefore miss potentially damaging substitu-
+289	tions. For best prediction quality, a third mode of operation
+290	allows users to submit their own alignments.
+291	a
+292	r
+293	c
+294	h
+295	Output
+296	2
+297	4
+298	,
+299	2
+300	0
+301	1
+302	0
+303	Even if there are few homologous sequences available, SIFT
+304	performs better than simply predicting non-conservative amino
+305	acid substitutions as deleterious, where non-conservative
+306	changes are defined as having negative scores in an amino
+307	acid substitution scoring matrix. We have shown that with only
+308	one sequence homologous to the test protein, SIFT can predict
+309	twice as many neutral substitutions correctly compared to a
+310	substitution scoring matrix (2). Even with few homologous
+311	sequences, there will be positions that differ between the test
+312	protein and the other sequences. Depending on the amino acids
+313	appearing at these positions, SIFT may predict these positions
+314	to be unimportant for protein function. This additional
+315	information can eliminate functionally neutral substitutions
+316	and increase selectivity to deleterious substitutions.
+317	Predictions are given for all 20 possible amino acid changes at
+318	each position in the protein. The alignment is also returned so
+319	that users can examine the sequences used for prediction and
+320	modify them for resubmission. This option is also useful for
+321	removing uncertain, erroneous and misaligned sequences from
+322	alignment output generated by SIFT in its automatic mode.
+323	For amino acid substitutions submitted by the user, a more
+324	detailed synopsis is provided (Fig. 1). The score is the
+325	normalized probability that the amino acid change is tolerated.
+326	SIFT predicts substitutions with scores less than 0.05 as
+327	deleterious. Some SIFT users have found that substitutions
+328	with scores less than 0.1 provide better sensitivity for detecting
+329	deleterious SNPs (Cornelia Ulrich, personal communication
+330	In summary, a large number of substitutions can be obtained
+331	from mutagenesis projects, SNP datasets, and changes between
+332	closely related organisms. When it is not feasible to conduct
+333	experiments on all substitutions, SIFT and other similar
+334	prediction tools (13) may be useful in prioritizing which
+335	3814 Nucleic Acids Research, 2003, Vol. 31, No. 13
+336	D
+337	o
+338	w
+339	n
+340	l o
+341	a
+342	d
+343	e
+344	d
+345	f
+346	r
+347	o
+348	m
+349	h
+350	t
+351	t
+352	p
+353	:
+354	/
+355	/
+356	n
+357	a
+358	r
+359	.
+360	o
+361	x
+362	f
+363	o
+364	r
+365	d
+366	j o
+367	u
+368	r
+369	n
+370	a
+371	l s
+372	. o
+373	r
+374	g
+375	a
+376	Figure 2. Prediction depends on the diversity of the sequences used in the alignment. Percentage of substitutions correctly predicted is based on over 4000 sub-
+377	stitutions that were assayed throughout the LacI protein of Escherichia coli (2,12). When the sequences in the alignment used for prediction are closely related (high
+378	median conservation) then many positions appear conserved and important for function. In this situation, prediction accuracy on deleterious substitutions is high but
+379	many functionally neutral substitutions are erroneously predicted to be deleterious. To obtain an alignment with a specified median conservation, the LacI protein
+380	sequence of E.coli was submitted to the SIFT website and the median conservation setting adjusted. Because the homologous sequences available are distantly
+381	related to E.coli LacI, alignments with higher median conservation values could not be obtained. In order to obtain alignments with median conservation values
+382	more than 3.25, closely related sequences were simulated by starting with an alignment of identical E.coli LacI sequences. A position and a sequence were randomly
+383	selected from the LacI alignment with median conservation 2.75. The amino acid corresponding to this location was substituted in the starting alignment. Amino
+384	acids continued to be randomly selected and substituted until the desired median conservation was met. The simulated alignment was then evaluated for its per-
+385	formance as previously described (2) and the plotted value is the average performance of 100 simulated alignments.
+386	t
+387	U
+388	n
+389	i v
+390	e
+391	r
+392	s
+393	i t
+394	y
+395	o
+396	f
+397	W
+398	changes affect protein function and may contribute to
+399	phenotypic differences.
+400	a
+401	s
+402	h
+403	i n
+404	g
+405	t
+406	o
+407	n
+408	L
+409	i b
+410	r
+411	a
+412	r
+413	i e
+414	s
+415	o
+416	n
+417	M
+418	ACKNOWLEDGEMENTS
+419	We thank Jorja Henikoff for advice and encouragement. This
+420	work was supported by a grant from NIH (GM29009).
+421	6. Sunyaev,S., Ramensky,V., Koch,I., Lathe,W.,III, Kondrashov,A.S. and
+422	Bork,P. (2001) Prediction of deleterious human alleles. Hum. Mol. Genet.,
+423	10, 591–597.
+424	7. Chasman,D. and Adams,R.M. (2001) Predicting the functional
+425	consequences of non-synonymous single nucleotide polymorphisms:
+426	structure-based assessment of amino acid variation. J. Mol. Biol., 307,
+427	683–706.
+428	8. Saunders,C.T. and Baker,D. (2002) Evaluation of structural and evolu-
+429	tionary contributions to deleterious mutation prediction. J. Mol. Biol., 322,
+430	891–901.
+431	9. Wheeler,D.L., Church,D.M., Lash,A.E., Leipe,D.D., Madden,T.L,
+432	Pontius,J.U., Schuler,G.D., Schriml,L.M., Tatusova,T.A., Wagner,L. and
+433	Rapp,B.A. (2002) Database resources of the National Center for
+434	Biotechnology Information: 2002 update. Nucleic Acids Res., 30, 13–16.
+435	10. Leabman,M.K., Huang,C.C., DeYoung,J., Carlson,E.J., Taylor,T., de la
+436	Cruz,M., Johns,S.J., Stryke,D., Kawamoto,M., Urban,T.J., et al. (2003)
+437	Natural variation in human membrane transporter genes reveals evolu-
+438	tionary and functional constraints. Proc. Natl Acad. Sci. USA, in press.
+439	11. Schneider,T.D., Stormo,G.D., Gold,L. and Ehrenfeucht,A. (1986)
+440	Information content of binding sites on nucleotide sequences.
+441	a
+442	r
+443	c
+444	h
+445	REFERENCES
+446	2
+447	4
+448	,
+449	2
+450	0
+451	1
+452	0
+453	1. Krawczak,M., Ball,E.V., Fenton,I., Stenson,P.D., Abeysinghe,S., Tho-
+454	mas,N. and Cooper,D.N. (2000) Human gene mutation database-a
+455	biomedical information and research resource. Hum. Mutat., 15, 45–51.
+456	2. Ng,P.C. and Henikoff,S. (2001) Predicting deleterious amino acid
+457	substitutions. Genome Res., 11, 863–874.
+458	3. Ng,P.C. and Henikoff,S. (2002) Accounting for human polymorphisms
+459	predicted to affect protein function. Genome Res., 12, 436–446.
+460	4. Bairoch,A. and Apweiler,R. (2000) The SWISS-PROT protein sequence
+461	database and its supplement TrEMBL in 2000. Nucleic Acids Res., 28,
+462	45–48.
+463	5. Sherry,S.T., Ward,M.H., Kholodov,M., Baker,J., Phan,L., Smigielski,E.M.
+464	and Sirotkin,K. (2001) dbSNP: the NCBI database of genetic variation.
+465	J. Mol. Biol., 188, 415–431.
+466	12. Pace,H.C., Kercher,M.A., Lu,P., Markiewicz,P., Miller,J.H., Chang,G. and
+467	Lewis,M. (1997) Lac repressor genetic map in real space. Trends Biochem.
+468	Sci., 22, 334–339.
+469	13. Ramensky,V., Bork,P. and Sunyaev, S. (2002) Human non-synonymous
+470	SNPs: server and survey. Nucleic Acids Res., 30, 3894–3900.
+471	Nucleic Acids Res., 29, 308–311.

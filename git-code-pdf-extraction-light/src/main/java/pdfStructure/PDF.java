@@ -34,6 +34,9 @@ public class PDF {
 	public List<String> htmlTables_caption;
 	public List<Paragraph> noneBodynorHeading;
 	public List<Paragraph> candidateTitle;
+	
+	public String doi;
+	
 	public PDF() {
 		body_and_heading = new ArrayList<Paragraph>();
 		noneBodynorHeading = new ArrayList<Paragraph>();
@@ -42,5 +45,4 @@ public class PDF {
 		this.htmlTables_string = new ArrayList<String>();
 		
 	}
-	public String doi;
 }
