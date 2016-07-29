@@ -1,0 +1,12 @@
+Total:
+Code:
+Text:
+Micro-Precision: 0,859974; Micro-Recall: 0,883051; Micro-F1: 0,871360
+Macro-Precision: 0,953664; Macro-Recall: 0,970528; Macro-F1: 0,954388
+Headings:
+Micro-Precision: 0,900425; Micro-Recall: 0,730062; Micro-F1: 0,806343
+Macro-Precision: 0,917601; Macro-Recall: 0,786876; Macro-F1: 0,827522
+Code (Raw):
+Text:
+Micro-Precision: 0,858053; Micro-Recall: 0,883443; Micro-F1: 0,870563
+Macro-Precision: 0,951314; Macro-Recall: 0,970662; Macro-F1: 0,953274

@@ -1,0 +1,9 @@
+index      	4122	count	0.98	precision	0.88	recall	0.93	f1
+other      	53534	count	0.86	precision	0.91	recall	0.89	f1
+email      	1483	count	0.98	precision	0.96	recall	0.97	f1
+middle-name	1992	count	0.89	precision	0.84	recall	0.87	f1
+surname    	5806	count	0.91	precision	0.83	recall	0.87	f1
+affiliation	10722	count	0.63	precision	0.55	recall	0.59	f1
+affiliation-start	668	count	0.66	precision	0.52	recall	0.58	f1
+given-name 	5222	count	0.92	precision	0.85	recall	0.89	f1
+separator  	589	count	0.97	precision	0.93	recall	0.95	f1

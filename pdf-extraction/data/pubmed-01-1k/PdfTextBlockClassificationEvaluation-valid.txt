@@ -1,0 +1,8 @@
+abstract   	1594	count	0.91	precision	0.82	recall	0.86	f1
+affiliations	783	count	0.90	precision	0.85	recall	0.87	f1
+journal    	287	count	0.87	precision	0.81	recall	0.84	f1
+authors    	892	count	0.96	precision	0.90	recall	0.93	f1
+title      	888	count	0.98	precision	0.93	recall	0.95	f1
+keywords   	136	count	0.66	precision	0.33	recall	0.44	f1
+other      	9900	count	0.93	precision	0.97	recall	0.95	f1
+emails     	384	count	0.93	precision	0.81	recall	0.87	f1
