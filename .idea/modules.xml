@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/factify/factify.iml" filepath="$PROJECT_DIR$/factify/factify.iml" />
+      <module fileurl="file://$PROJECT_DIR$/git-code-pdf-extraction-light/git-code-pdf-extraction-light.iml" filepath="$PROJECT_DIR$/git-code-pdf-extraction-light/git-code-pdf-extraction-light.iml" />
+      <module fileurl="file://$PROJECT_DIR$/git-nlp/git-nlp.iml" filepath="$PROJECT_DIR$/git-nlp/git-nlp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/git-utility/git-utility.iml" filepath="$PROJECT_DIR$/git-utility/git-utility.iml" />
+    </modules>
+  </component>
+</project>

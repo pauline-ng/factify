@@ -22,7 +22,7 @@ public class Debug_pdf_extraction {
 //
 
 	/* sample pdf file 3 */
-	private static String input_folder = "pdf\\incorrectDOI\\";
+	private static String input_folder = "pdf" + File.separator + "incorrectDOI" + File.separator;
 	private static String pdf_file = "DOI(10.1126science.1240729)_BetaCaMKII_wrong_is_(10.1126science.1236501).pdf";
 	
 //	/* sample pdf file 4 */
