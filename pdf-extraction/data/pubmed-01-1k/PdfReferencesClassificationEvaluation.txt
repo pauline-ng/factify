@@ -1,0 +1,16 @@
+edition    	15	count	0.00	precision	0.00	recall	NaN	f1
+other      	13945	count	0.84	precision	0.45	recall	0.59	f1
+location   	338	count	0.72	precision	0.40	recall	0.52	f1
+pages      	123	count	0.57	precision	0.10	recall	0.17	f1
+issue      	127	count	0.92	precision	0.53	recall	0.67	f1
+authorGivenName	34299	count	0.95	precision	0.99	recall	0.97	f1
+date       	8181	count	0.96	precision	0.99	recall	0.97	f1
+publisher  	1833	count	0.84	precision	0.50	recall	0.63	f1
+authorOther	955	count	0.86	precision	0.36	recall	0.51	f1
+title      	106722	count	0.93	precision	0.99	recall	0.96	f1
+editor     	477	count	0.84	precision	0.56	recall	0.67	f1
+source     	25285	count	0.94	precision	0.87	recall	0.91	f1
+volume     	6824	count	0.97	precision	0.99	recall	0.98	f1
+conference 	21	count	0.00	precision	0.00	recall	NaN	f1
+authorSurname	34963	count	0.95	precision	0.99	recall	0.97	f1
+note       	23189	count	0.90	precision	0.87	recall	0.89	f1

@@ -1,0 +1,2 @@
+articles	extractedRefBlocks	groundTruth	extracted	missing	spurious
+490	477	19001	19394	1108	1501
