@@ -53,6 +53,7 @@ import at.knowcenter.code.api.pdf.Document;
 import at.knowcenter.code.api.pdf.PdfParser.PdfParserException;
 import at.knowcenter.code.api.pdf.ReadingOrder;
 import at.knowcenter.code.api.pdf.TableRegion;
+import at.knowcenter.code.pdf.PdfExtractionPipeline.PdfExtractionResult;
 import at.knowcenter.code.pdf.blockclassification.BlockLabeling;
 import at.knowcenter.code.pdf.blockclassification.detection.CaptionDetector;
 import at.knowcenter.code.pdf.blockclassification.detection.DecorationDetector;
@@ -98,6 +99,43 @@ public class PdfExtractionPipeline {
 	private PDF pdf;
 	
 	private String doi;
+	
+	public static void main(String[] args) throws PdfParserException {
+		
+		/* To test if PdfExtractionPipeline works well. */
+		
+//		/* sample pdf file 1 */
+//		String input_folder = "pdf\\";
+//		String pdf_file = "DOI10.1093nargkg509_SIFT.pdf";
+	//	
+//		/* sample pdf file 2 */
+//		String input_folder = "pdf\\";
+//		String pdf_file = "DOI10.1146annurev.genom.7.080505.115630_PredictingTheEffects.pdf";
+	//
+
+		/* sample pdf file 3 */
+		String input_folder = "pdf\\incorrectDOI\\";
+		String pdf_file = "DOI(10.1126science.1240729)_BetaCaMKII_wrong_is_(10.1126science.1236501).pdf";
+		
+//		/* sample pdf file 4 */
+//		String input_folder = "pdf\\incorrectDOI\\";
+//		String pdf_file = "DOI(10.1053j.gastro.2009.04.032)_EvidenceForTheRole_wrong_is_(10.1053j.gastro.2009.04.032).pdf";
+
+		String pdfpath = input_folder + pdf_file;
+		String outputPath = input_folder;
+		String debugPath = input_folder;
+		
+		PdfExtractionPipeline  pipeline = new PdfExtractionPipeline();
+		pipeline.setParameter((new File(pdfpath)).getName(), outputPath, debugPath);
+		Debug.set(DEBUG_CONFIG.debug_textpieces, true);
+		
+		
+		PdfExtractionResult result = pipeline.runPipeline(new File(pdfpath));
+		PDF pdf = pipeline.getPDF();
+
+		System.out.println(pdf);
+		System.out.println(result);
+	}
 	
 	public enum PdfExtractionBackend {
 	    PDFBox 
@@ -199,6 +237,128 @@ public class PdfExtractionPipeline {
 	}
 	
 	protected final DetectorPipeline pipeline;
+	    
+	/*
+	 * Not original. Written by xiaochengh.
+	 */
+	public static void writeFile(String path, String s, boolean append) {
+		File log_f;
+		log_f = new File(path);
+		Writer out; 
+		try {
+			
+			if(!log_f.exists()) {
+				Path pathToFile = Paths.get(path);
+				Path parent = Files.createDirectories(pathToFile.getParent());
+				Path current = Files.createFile(pathToFile);
+				if(parent == null || current== null) {
+					Debug.print("Failed to create file " + path, DEBUG_CONFIG.debug_error);
+					return;
+				}
+			}
+			out = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(new File(path), append), "UTF-8"));
+//			out = new BufferedWriter(new FileWriter(new File(path), append));
+			out.append(s);
+			out.flush();
+			out.close();
+			
+		}
+		catch(Exception e) {
+			Debug.print("Failed to create file " + path, DEBUG_CONFIG.debug_error);
+			e.printStackTrace();
+			
+		}
+		
+//		try {
+//			PrintWriter writer;
+//			writer = new PrintWriter(path, "UTF-8");
+//			writer.println(s);
+////			writer.println("BEL");
+//			writer.close();
+//			} catch (FileNotFoundException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (UnsupportedEncodingException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+	}
+	
+	/*
+	 * Not original. Written by xiaochengh
+	 */
+	private boolean checkParameterSetting() {
+		if(this.id == null || this.debug_dir == null || this.output_dir == null) {
+			Debug.print("Please specify pipeline's parameters: id, debug_dir, and output_dir", DEBUG_CONFIG.debug_error);
+			return false;
+		}
+		{
+//			File file = new File(this.debug_dir);
+//			if(!file.exists()) {
+//				Path pathToFile = Paths.get(file.getAbsolutePath());
+//				try {
+//					if(Files.createDirectories(pathToFile) == null ){
+//						Debug.print("Failed to create folder " + file.getAbsolutePath(), DEBUG_CONFIG.debug_error);
+//						return false;
+//					}
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//					Debug.print("Failed to create folder " + file.getAbsolutePath(), DEBUG_CONFIG.debug_error);
+//					return false;
+//				}	
+//			}
+		}
+		{
+			File file = new File(this.output_dir);
+			if(!file.exists()) {
+				Path pathToFile = Paths.get(file.getAbsolutePath());
+				try {
+					if(Files.createDirectories(pathToFile) == null ){
+						Debug.print("Failed to create folder " + file.getAbsolutePath(), DEBUG_CONFIG.debug_error);
+						return false;
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					Debug.print("Failed to create folder " + file.getAbsolutePath(), DEBUG_CONFIG.debug_error);
+					return false;
+				}	
+			}
+		}
+		global_debug_dir = debug_dir;
+		global_id = id;
+		global_output_dir = output_dir;
+		return true;
+	}
+	/**
+	 * Not original. Written by xiaochengh
+	 * @param args
+	 * 0: id
+	 * 1: output_dir
+	 * 2: debug_dir
+	 * @return
+	 */
+	public boolean setParameter(String...args) {
+		if(args.length < 2) {
+			Debug.print("Please set 3 parameters for PDFExtractionPipeline: id, debug_dir, and output_dir." , DEBUG_CONFIG.debug_error);
+			return false;
+		}
+		
+		this.id = args[0];
+		this.output_dir = args[1];
+		if(args.length > 2) this.debug_dir = args[2];
+		else this.debug_dir = this.output_dir;
+		if(checkParameterSetting())
+			return true;
+		return false;
+	}
+	
+	public PDF getPDF(){
+		return this.pdf;
+	}
+
 	
 //	private static final String MODEL_DIR = "data/pubmed-10k/";
 //	private static final String MODEL_DIR = "data/pubmed-1k-test/";
@@ -218,6 +378,58 @@ public class PdfExtractionPipeline {
 //		this(DEFAULT_BLOCK_MODEL, DEFAULT_FEATURES, DEFAULT_TOKEN_MODEL, DEFAULT_LANG_MODEL, DEFAULT_REFERENCE_MODEL);
 //		this(DEFAULT_BLOCK_MODEL, DEFAULT_FEATURES, DEFAULT_TOKEN_MODEL, DEFAULT_LANG_MODEL);
 //	}
+	
+	/**
+	 * by huangxc
+	 * @param pageBlocks
+	 * @param labeling
+	 * @param readingOrder
+	 * @param clearHyphenations
+	 * @return
+	 */
+	private List<Block> extractDocumentBody(List<Block> pageBlocks, BlockLabeling labeling, ReadingOrder readingOrder,
+			boolean clearHyphenations) {
+		
+		List<Block> paragrahs_and_heading = new ArrayList<Block>();
+		for (int i = 0; i < pageBlocks.size(); i++) {
+			Block[] blocksOnPage = pageBlocks.get(i).getSubBlocks().toArray(new Block[0]);
+			List<Integer> readingOrderOnPage = readingOrder.getReadingOrder(i);
+			for (Integer blockId : readingOrderOnPage) {
+				Block currentBlock = blocksOnPage[blockId];
+				String text = currentBlock.getText();
+				text = Normalizer.normalize(text, Normalizer.Form.NFKC);
+				BlockLabel label = labeling.getLabel(currentBlock);
+				//by huangxc
+				if(label == BlockLabel.Main || label == BlockLabel.Heading) paragrahs_and_heading.add(currentBlock);
+			}
+		}
+		return paragrahs_and_heading;
+	}
+	
+	/**
+	 * by huangxc
+	 * @param pageBlocks
+	 * @param labeling
+	 * @param readingOrder
+	 * @param clearHyphenations
+	 * @return
+	 */
+	private List<Block> extractDocumentNoneBody(List<Block> pageBlocks, BlockLabeling labeling, ReadingOrder readingOrder,
+			boolean clearHyphenations) {
+		
+		List<Block> none_paragrahs_or_heading = new ArrayList<Block>();
+		for (int i = 0; i < pageBlocks.size(); i++) {
+			Block[] blocksOnPage = pageBlocks.get(i).getSubBlocks().toArray(new Block[0]);
+			for (Block currentBlock : blocksOnPage) {
+				BlockLabel label = labeling.getLabel(currentBlock);
+				//by huangxc
+				if(!(label == BlockLabel.Main || label == BlockLabel.Heading)) {
+					none_paragrahs_or_heading.add(currentBlock);
+				}
+			}
+		}
+		return none_paragrahs_or_heading;
+	}
 	
 	public PdfExtractionPipeline() {
 		pipeline = new DetectorPipeline(new DecorationDetector(), 
@@ -477,57 +689,7 @@ public class PdfExtractionPipeline {
 		}
 		return buffer.toString();
 	}
-	/**
-	 * by huangxc
-	 * @param pageBlocks
-	 * @param labeling
-	 * @param readingOrder
-	 * @param clearHyphenations
-	 * @return
-	 */
-	private List<Block> extractDocumentBody(List<Block> pageBlocks, BlockLabeling labeling, ReadingOrder readingOrder,
-			boolean clearHyphenations) {
-		
-		List<Block> paragrahs_and_heading = new ArrayList<Block>();
-		for (int i = 0; i < pageBlocks.size(); i++) {
-			Block[] blocksOnPage = pageBlocks.get(i).getSubBlocks().toArray(new Block[0]);
-			List<Integer> readingOrderOnPage = readingOrder.getReadingOrder(i);
-			for (Integer blockId : readingOrderOnPage) {
-				Block currentBlock = blocksOnPage[blockId];
-				String text = currentBlock.getText();
-				text = Normalizer.normalize(text, Normalizer.Form.NFKC);
-				BlockLabel label = labeling.getLabel(currentBlock);
-				//by huangxc
-				if(label == BlockLabel.Main || label == BlockLabel.Heading) paragrahs_and_heading.add(currentBlock);
-			}
-		}
-		return paragrahs_and_heading;
-	}
-	
-	/**
-	 * by huangxc
-	 * @param pageBlocks
-	 * @param labeling
-	 * @param readingOrder
-	 * @param clearHyphenations
-	 * @return
-	 */
-	private List<Block> extractDocumentNoneBody(List<Block> pageBlocks, BlockLabeling labeling, ReadingOrder readingOrder,
-			boolean clearHyphenations) {
-		
-		List<Block> none_paragrahs_or_heading = new ArrayList<Block>();
-		for (int i = 0; i < pageBlocks.size(); i++) {
-			Block[] blocksOnPage = pageBlocks.get(i).getSubBlocks().toArray(new Block[0]);
-			for (Block currentBlock : blocksOnPage) {
-				BlockLabel label = labeling.getLabel(currentBlock);
-				//by huangxc
-				if(!(label == BlockLabel.Main || label == BlockLabel.Heading)) {
-					none_paragrahs_or_heading.add(currentBlock);
-				}
-			}
-		}
-		return none_paragrahs_or_heading;
-	}
+
 
 	public String clearHyphenations(List<Block> mainTextLines) {
 		Dehyphenator dehyphenator = getDehyphenator();
@@ -803,28 +965,6 @@ catch(PdfParserException e) {
 //        }
 //    }
 
-    public static void main(String[] args) throws PdfParserException {
-//    	if(args.length != 1) {
-//    		System.out.println("Please specify 1 parameter!");
-//    		return;
-//    	}
-//    	String filePath = args[0];
-//    	if(!new File(filePath).exists()) {
-//    		System.out.println("Path: \"" + new File(filePath).getAbsolutePath()+ "\" does not exist!");
-//    		return;
-//    	}
-//    	try {
-    		PdfExtractionPipeline pipeline = new PdfExtractionPipeline();
-//    		String filePath = "../git-BEL_extractor-test/data/960_PR2.pdf";
-    		String filePath = args[0];
-    		File file = new File(filePath);
-    		String fileName = file.getName();
-    		if(!pipeline.setParameter(fileName.endsWith(".pdf") ? fileName.substring(0, fileName.length() - 4) : fileName,
-    				file.getParent() == null ?  "output/" : file.getParent() + "/output/",
-    				file.getParent() == null ?  "debug_output/" : file.getParent() + "/debug_output/"))
-    			return ;
-    		pipeline.runPipeline(file);
-	}
 
 //	@Override
 //	public PdfExtractorResult extract(File pdf)
@@ -850,117 +990,4 @@ catch(PdfParserException e) {
 //			}
 //		}
 //	}
-	public static void writeFile(String path, String s, boolean append) {
-		File log_f;
-		log_f = new File(path);
-		Writer out; 
-		try {
-			
-			if(!log_f.exists()) {
-				Path pathToFile = Paths.get(path);
-				Path parent = Files.createDirectories(pathToFile.getParent());
-				Path current = Files.createFile(pathToFile);
-				if(parent == null || current== null) {
-					Debug.print("Failed to create file " + path, DEBUG_CONFIG.debug_error);
-					return;
-				}
-			}
-			out = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream(new File(path), append), "UTF-8"));
-//			out = new BufferedWriter(new FileWriter(new File(path), append));
-			out.append(s);
-			out.flush();
-			out.close();
-			
-		}
-		catch(Exception e) {
-			Debug.print("Failed to create file " + path, DEBUG_CONFIG.debug_error);
-			e.printStackTrace();
-			
-		}
-		
-//		try {
-//			PrintWriter writer;
-//			writer = new PrintWriter(path, "UTF-8");
-//			writer.println(s);
-////			writer.println("BEL");
-//			writer.close();
-//			} catch (FileNotFoundException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (UnsupportedEncodingException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-	}
-	private boolean checkParameterSetting() {
-		if(this.id == null || this.debug_dir == null || this.output_dir == null) {
-			Debug.print("Please specify pipeline's parameters: id, debug_dir, and output_dir", DEBUG_CONFIG.debug_error);
-			return false;
-		}
-		{
-//			File file = new File(this.debug_dir);
-//			if(!file.exists()) {
-//				Path pathToFile = Paths.get(file.getAbsolutePath());
-//				try {
-//					if(Files.createDirectories(pathToFile) == null ){
-//						Debug.print("Failed to create folder " + file.getAbsolutePath(), DEBUG_CONFIG.debug_error);
-//						return false;
-//					}
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//					Debug.print("Failed to create folder " + file.getAbsolutePath(), DEBUG_CONFIG.debug_error);
-//					return false;
-//				}	
-//			}
-		}
-		{
-			File file = new File(this.output_dir);
-			if(!file.exists()) {
-				Path pathToFile = Paths.get(file.getAbsolutePath());
-				try {
-					if(Files.createDirectories(pathToFile) == null ){
-						Debug.print("Failed to create folder " + file.getAbsolutePath(), DEBUG_CONFIG.debug_error);
-						return false;
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					Debug.print("Failed to create folder " + file.getAbsolutePath(), DEBUG_CONFIG.debug_error);
-					return false;
-				}	
-			}
-		}
-		global_debug_dir = debug_dir;
-		global_id = id;
-		global_output_dir = output_dir;
-		return true;
-	}
-	/**
-	 * 
-	 * @param args
-	 * 0: id
-	 * 1: output_dir
-	 * 2: debug_dir
-	 * @return
-	 */
-	public boolean setParameter(String...args) {
-		if(args.length < 2) {
-			Debug.print("Please set 3 parameters for PDFExtractionPipeline: id, debug_dir, and output_dir." , DEBUG_CONFIG.debug_error);
-			return false;
-		}
-		
-		this.id = args[0];
-		this.output_dir = args[1];
-		if(args.length > 2) this.debug_dir = args[2];
-		else this.debug_dir = this.output_dir;
-		if(checkParameterSetting())
-			return true;
-		return false;
-	}
-	
-	public PDF getPDF(){
-		return this.pdf;
-	}
- }
+}
