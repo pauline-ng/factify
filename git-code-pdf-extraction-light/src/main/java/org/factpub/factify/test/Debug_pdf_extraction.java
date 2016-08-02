@@ -39,9 +39,10 @@ public class Debug_pdf_extraction {
 		pipeline.setParameter((new File(pdfpath)).getName(), outputPath, debugPath);
 		Debug.set(DEBUG_CONFIG.debug_textpieces, true);
 		
+		
 		PdfExtractionResult result = pipeline.runPipeline(new File(pdfpath));
 		PDF pdf = pipeline.getPDF();
-		
+
 		System.out.println(pdf);
 		System.out.println(result);
 	}

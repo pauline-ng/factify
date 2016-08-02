@@ -43,9 +43,9 @@
 	<classpathentry kind="lib" path="lib/jlangdetect-0.3.jar"/>
 	<classpathentry kind="lib" path="lib/ie-language-detection-model-en-2.2-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/ie-pipelines-2.2-SNAPSHOT.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/git-nlp"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/git-utility"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="lib" path="lib/bcprov-jdk15-1.44.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/utility"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nlp"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -7,11 +7,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/git-code-pdf-extraction-light"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/git-nlp"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/git-utility"/>
 	<classpathentry kind="lib" path="lib/JNumWu_1_1_12.jar"/>
 	<classpathentry kind="lib" path="lib/simmetrics_jar_v1_6_2_d07_02_07.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nlp"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/pdf-extraction"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/utility"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
