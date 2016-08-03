@@ -27,12 +27,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.factpub.factify.knowledge_model.C_Facts;
-
-import utility.Debug;
-import utility.Span;
-import utility.Utility;
-import utility.Debug.DEBUG_CONFIG;
-import nlp.Sequence;
+import org.factpub.factify.nlp.Sequence;
+import org.factpub.factify.utility.Debug;
+import org.factpub.factify.utility.Span;
+import org.factpub.factify.utility.Utility;
+import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
 
 /**
  * <pre>
@@ -177,8 +176,8 @@ public class PatternMatcher {
 	 * For each pattern in patterns, find matches based on stem
 	 * 
 	 * <pre>
-	 * This method works as a general interface for matchers such as {@link PreBuiltWordListMatcher}, {@link PatternMatcher}, since every rule is represented as a {@link nlp.Sequence Sequence}.
-	 * For example, "a lot" in a {@link PreBuiltWordListMatcher} is represented as a {@link nlp.Sequence Sequence}.
+	 * This method works as a general interface for matchers such as {@link PreBuiltWordListMatcher}, {@link PatternMatcher}, since every rule is represented as a {@link org.factpub.factify.nlp.Sequence Sequence}.
+	 * For example, "a lot" in a {@link PreBuiltWordListMatcher} is represented as a {@link org.factpub.factify.nlp.Sequence Sequence}.
 	 * </pre>
 	 * @param senten Input sentence as a Sequence
 	 * @param patterns Sequences to be matched against

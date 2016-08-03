@@ -42,8 +42,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import utility.Debug;
-import utility.Debug.DEBUG_CONFIG;
+import org.factpub.factify.utility.Debug;
+import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
+
 import at.knowcenter.code.api.pdf.Block;
 import at.knowcenter.code.api.pdf.BlockLabel;
 import at.knowcenter.code.api.pdf.Document;

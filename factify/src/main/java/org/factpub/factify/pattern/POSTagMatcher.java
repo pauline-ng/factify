@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import nlp.Sequence;
-import utility.Span;
+import org.factpub.factify.nlp.Sequence;
+import org.factpub.factify.utility.Span;
 
 /**
  * 

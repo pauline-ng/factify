@@ -31,20 +31,20 @@ import java.util.regex.Pattern;
 
 import org.factpub.factify.knowledge_model.C_Facts;
 import org.factpub.factify.knowledge_model.S_Facts;
+import org.factpub.factify.nlp.Sequence;
+import org.factpub.factify.nlp.StanfordNLPLight;
 import org.factpub.factify.pattern.Acronym;
 import org.factpub.factify.pattern.NGrams;
 import org.factpub.factify.pattern.RootMatcher;
 import org.factpub.factify.pdf.converter.PDFConverter;
+import org.factpub.factify.utility.Debug;
+import org.factpub.factify.utility.Utility;
+import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import at.knowcenter.code.pdf.structure.PDF;
 import at.knowcenter.code.pdf.structure.Paragraph;
-import nlp.Sequence;
-import nlp.StanfordNLPLight;
-import utility.Debug;
-import utility.Debug.DEBUG_CONFIG;
-import utility.Utility;
 
 /**
  * This is the main class for fact extractor

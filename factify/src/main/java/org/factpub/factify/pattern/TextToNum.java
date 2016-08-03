@@ -19,8 +19,8 @@ package org.factpub.factify.pattern;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import utility.Debug;
-import utility.Debug.DEBUG_CONFIG;
+import org.factpub.factify.utility.Debug;
+import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
 /**
  * Convert text to non-negative integers (long)
  * 

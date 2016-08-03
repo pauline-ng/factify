@@ -3,13 +3,12 @@ package org.factpub.factify.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.factpub.factify.nlp.Sequence;
+import org.factpub.factify.nlp.StanfordNLPLight;
+import org.factpub.factify.utility.Utility;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import nlp.Sequence;
-import nlp.StanfordNLPLight;
-import utility.Utility;
 
 public class Test_NLP {
 

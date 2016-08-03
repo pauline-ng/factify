@@ -11,10 +11,9 @@ import java.util.HashSet;
 import java.util.StringTokenizer;
 
 import org.factpub.factify.Factify;
-
-import utility.Debug;
-import utility.Debug.DEBUG_CONFIG;
-import utility.Utility;
+import org.factpub.factify.utility.Debug;
+import org.factpub.factify.utility.Utility;
+import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
 
 public class testBatch {
 

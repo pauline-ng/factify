@@ -20,10 +20,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import org.factpub.factify.utility.Span;
+
 import at.knowcenter.code.api.pdf.Block;
 import at.knowcenter.code.api.pdf.BlockLabel;
 import at.knowcenter.code.pdf.AnnotatedDocumentBuilder.LineCollector;
-import utility.Span;
 
 /**
  * This is not exactly a paragraph, but a huge block of texts across columns, pages

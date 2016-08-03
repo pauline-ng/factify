@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import nlp.Sequence;
-import utility.Span;
+import org.factpub.factify.nlp.Sequence;
+import org.factpub.factify.utility.Span;
 
 /**
  * Match regular expressions

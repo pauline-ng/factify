@@ -40,10 +40,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.lucene.analysis.compound.hyphenation.HyphenationException;
+import org.factpub.factify.utility.Debug;
+import org.factpub.factify.utility.Utility;
+import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
 
-import utility.Debug;
-import utility.Debug.DEBUG_CONFIG;
-import utility.Utility;
 import at.knowcenter.code.api.pdf.Block;
 import at.knowcenter.code.api.pdf.BlockLabel;
 import at.knowcenter.code.api.pdf.Document;

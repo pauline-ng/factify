@@ -1,11 +1,11 @@
 package org.factpub.factify.test.parser;
 
 import java.io.*;
+
+import org.factpub.factify.utility.Utility;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-
-import utility.Utility;
 
 /**
  * 

@@ -30,18 +30,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import nlp.Sequence;
-
 import org.factpub.factify.knowledge_model.C_Facts;
+import org.factpub.factify.nlp.Sequence;
+import org.factpub.factify.utility.Debug;
+import org.factpub.factify.utility.Span;
+import org.factpub.factify.utility.Utility;
+import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import utility.Debug;
-import utility.Span;
-import utility.Utility;
-import utility.Debug.DEBUG_CONFIG;
 
 /**
  * <pre>

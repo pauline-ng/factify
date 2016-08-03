@@ -3,13 +3,12 @@ package org.factpub.factify.test.parser;
 //import java.util.List;
 import java.io.File;
 
+import org.factpub.factify.utility.Debug;
+import org.factpub.factify.utility.Utility;
+import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-
-import utility.Debug;
-import utility.Debug.DEBUG_CONFIG;
-import utility.Utility;
 
 public class ParseJSON {
 

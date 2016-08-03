@@ -29,7 +29,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import utility.Span;
+import org.factpub.factify.utility.Span;
 
 //import opennlp.tools.util.Span;
 

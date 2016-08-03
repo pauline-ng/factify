@@ -18,8 +18,8 @@ package org.factpub.factify.pattern;
 
 import java.util.List;
 
-import nlp.Sequence;
-import utility.Span;
+import org.factpub.factify.nlp.Sequence;
+import org.factpub.factify.utility.Span;
 
 /**
  * 

@@ -6,13 +6,12 @@ import java.text.NumberFormat;
 import org.factpub.factify.Factify;
 import org.factpub.factify.knowledge_model.C_Facts;
 import org.factpub.factify.knowledge_model.S_Facts;
+import org.factpub.factify.nlp.StanfordNLPLight;
 import org.factpub.factify.pattern.RootMatcher;
-
-import nlp.StanfordNLPLight;
-import utility.Debug;
-import utility.Debug.DEBUG_CONFIG;
-import utility.Span;
-import utility.Utility;
+import org.factpub.factify.utility.Debug;
+import org.factpub.factify.utility.Span;
+import org.factpub.factify.utility.Utility;
+import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
 
 public class Debug_BEL_extractor {
 

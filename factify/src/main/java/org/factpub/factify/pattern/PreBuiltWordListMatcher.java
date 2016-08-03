@@ -20,11 +20,11 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 
-import nlp.Sequence;
-import nlp.StanfordNLPLight;
-import utility.Debug;
-import utility.Span;
-import utility.Debug.DEBUG_CONFIG;
+import org.factpub.factify.nlp.Sequence;
+import org.factpub.factify.nlp.StanfordNLPLight;
+import org.factpub.factify.utility.Debug;
+import org.factpub.factify.utility.Span;
+import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
 
 /**
  * 

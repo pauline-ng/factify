@@ -34,8 +34,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import nlp.StanfordNLPLight;
-import utility.Span;
+import org.factpub.factify.nlp.StanfordNLPLight;
+import org.factpub.factify.utility.Span;
+
 import at.knowcenter.code.api.pdf.Block;
 import at.knowcenter.code.api.pdf.BlockLabel;
 import at.knowcenter.code.api.pdf.Document;

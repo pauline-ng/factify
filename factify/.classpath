@@ -5,8 +5,6 @@
 	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/JNumWu_1_1_12.jar"/>
 	<classpathentry kind="lib" path="lib/simmetrics_jar_v1_6_2_d07_02_07.jar"/>
-	
-	<!-- pdf-extraction -->
 	<classpathentry kind="lib" path="lib/clustering-api-1.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/clustering-hierarchical-1.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/clustering-kmeans-1.0-SNAPSHOT.jar"/>
@@ -36,9 +34,9 @@
 	<classpathentry kind="lib" path="lib/ie-pipelines-2.2-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="lib" path="lib/bcprov-jdk15-1.44.jar"/>
-	
+	<classpathentry kind="lib" path="lib/stanford-corenlp-3.5.1-models.jar"/>
+	<classpathentry kind="lib" path="lib/stanford-corenlp-3.5.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/utility"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/stanford-core-nlp"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

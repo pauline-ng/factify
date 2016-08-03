@@ -22,9 +22,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import utility.Debug;
-import utility.Debug.DEBUG_CONFIG;
-import utility.Span;
+import org.factpub.factify.utility.Debug;
+import org.factpub.factify.utility.Span;
+import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
 
 /**
  * Facts at the client side.

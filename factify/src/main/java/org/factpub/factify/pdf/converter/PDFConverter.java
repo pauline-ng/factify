@@ -21,8 +21,9 @@ package org.factpub.factify.pdf.converter;
 
 import java.io.File;
 
-import utility.Debug;
-import utility.Debug.DEBUG_CONFIG;
+import org.factpub.factify.utility.Debug;
+import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
+
 import at.knowcenter.code.pdf.PdfExtractionPipeline;
 import at.knowcenter.code.pdf.PdfExtractionPipeline.PdfExtractionResult;
 import at.knowcenter.code.pdf.structure.PDF;

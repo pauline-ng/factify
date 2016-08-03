@@ -24,22 +24,22 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import nlp.Sequence;
-import nlp.StanfordNLPLight;
+import org.factpub.factify.nlp.Sequence;
+import org.factpub.factify.nlp.StanfordNLPLight;
 
 /**
- * Compute the (frequent) NGrams of a paper i.e. a list of {@link nlp.Sequence Sequence}
+ * Compute the (frequent) NGrams of a paper i.e. a list of {@link org.factpub.factify.nlp.Sequence Sequence}
  * 
  * <pre>
- * NGrams are represented as {@link nlp.Sequence Sequence} too.
+ * NGrams are represented as {@link org.factpub.factify.nlp.Sequence Sequence} too.
  * </pre>
  *
  */
 public class NGrams {
 	/**
 	 * 
-	 * @param sentences_tokens A list of sentences represented by {@link nlp.Sequence Sequence}
-	 * @return A list of frequent ngrams represented as {@link nlp.Sequence Sequence}
+	 * @param sentences_tokens A list of sentences represented by {@link org.factpub.factify.nlp.Sequence Sequence}
+	 * @return A list of frequent ngrams represented as {@link org.factpub.factify.nlp.Sequence Sequence}
 	 * 
 	 * <pre>
 	 * A ngram is a frequent ngram if </br>
@@ -83,8 +83,8 @@ public class NGrams {
 	}
 	/**
 	 * 
-	 * @param sentences A list of sentences represented by {@link nlp.Sequence Sequence}
-	 * @return A list of ngrams represented as {@link nlp.Sequence Sequence} with frequency
+	 * @param sentences A list of sentences represented by {@link org.factpub.factify.nlp.Sequence Sequence}
+	 * @return A list of ngrams represented as {@link org.factpub.factify.nlp.Sequence Sequence} with frequency
 	 * 
 	 * <pre>
 	 * A ngram here refers to ngrams that contain at least one noun, and do not contain '.', ',', ';'. Because those delimiters indicate sentence boundary.

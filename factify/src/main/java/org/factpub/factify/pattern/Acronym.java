@@ -22,10 +22,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import utility.Debug;
-import utility.Debug.DEBUG_CONFIG;
-import nlp.Sequence;
-import nlp.StanfordNLPLight;
+import org.factpub.factify.nlp.Sequence;
+import org.factpub.factify.nlp.StanfordNLPLight;
+import org.factpub.factify.utility.Debug;
+import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
 
 
 /**

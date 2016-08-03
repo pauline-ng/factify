@@ -22,7 +22,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import utility.Span;
+import org.factpub.factify.utility.Span;
+
 import at.knowcenter.code.api.pdf.Block;
 import at.knowcenter.code.api.pdf.BlockLabel;
 import at.knowcenter.code.pdf.AnnotatedDocumentBuilder.LineCollector;
