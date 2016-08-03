@@ -1,0 +1,254 @@
+--version:1.0
+//  List of prepositions taken from Wikipedia
+//  https://en.wikipedia.org/wiki/List_of_English_prepositions
+//  Manually curated to keep those that change meaning of sentence
+//  PN June 1,2016 
+//a
+//aboard
+about
+//'bout
+above
+//bove
+abreast
+abroad
+absent
+across
+//cross
+adjacent
+after
+against
+//'gainst
+along
+//'long
+//alongside
+//amid
+//amidst
+among
+//amongst
+//'mong
+//apropos
+//apud
+around
+//'round
+as
+//astride
+at
+//@
+//atop
+//bar
+before
+//afore
+//B4
+behind
+//ahind
+below
+//ablow
+beneath
+//'neath
+beside
+besides
+between
+//atween
+beyond
+//ayond
+but
+by
+//chez
+circa
+//c.
+//come
+//dehors
+despite
+spite
+down
+during
+except
+//for
+//
+from
+//in
+inside
+//into
+less
+like
+minus
+near
+nearer
+//anear
+notwithstanding
+//of
+//o'
+off
+on
+onto
+opposite
+out
+//outen
+outside
+over
+//o'er
+//pace
+past
+per
+post
+pre
+pro
+//qua
+//re
+sans
+//save
+//sauf
+short
+since
+//sithence
+than
+through
+//thru
+throughout
+//thruout
+to
+//
+toward
+under
+underneath
+unlike
+until
+//'til
+up
+upon
+//'pon
+upside
+versus
+vs.
+via
+//vice
+vis-à-vis
+//with
+//w/
+//within
+//w/i
+without
+w/o
+//worth
+according to
+adjacent to
+ahead of
+apart from
+//as for
+//as of
+as per
+//as regards
+aside from
+//astern of
+back to
+because of
+close to
+due to
+except for
+far from
+inside of
+instead of
+left of
+near to
+next to
+opposite of
+opposite to
+out from
+out of
+outside of
+owing to
+prior to
+pursuant to
+rather than
+regardless of
+right of
+subsequent to
+such as
+//thanks to
+up to
+as far as
+as opposed to
+as soon as
+as well as
+//
+//
+//
+//
+//
+//at the behest of
+by means of
+//by virtue of
+for the sake of
+in accordance with
+//in addition to
+in case of
+in front of
+in lieu of
+in order to
+in place of
+//in point of
+in spite of
+on account of
+on behalf of
+on top of
+with regard to
+with respect to
+with a view to
+//
+//
+//
+//
+//
+//abaft
+//abeam
+//aboon
+//afront
+//ajax
+//alongst
+//aloof
+//anenst
+//athwart
+//atop
+//behither
+//ben
+//betwixt
+//'twixt
+//bewest
+//benorth
+//emforth
+//ere
+//or
+//forby
+//foreanent
+//foregain
+forth
+//fromward
+//furth
+//gainward
+//imell
+//inmid
+//mang
+//mauger
+//nearhand
+next
+//nigh
+//outwith
+//overthwart
+//quoad
+//umbe
+unto
+//uptill
+//
+//
+//
+ago
+apart
+aside
+//aslant
+away
+hence
+notwithstanding
+//on
+//short
+through
+//withal

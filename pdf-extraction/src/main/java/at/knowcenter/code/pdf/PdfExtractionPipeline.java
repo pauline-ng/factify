@@ -98,7 +98,14 @@ public class PdfExtractionPipeline {
 	private String id = null;
 	private PDF pdf;
 	
-	private String doi;
+	/* 
+	 * Modified on 03Aug2016 by Sun SAGONG
+	 * String doi -> ArrayList<String> doi.
+	 * - at.knowcenter.code.pdf.blockextraction.clustering.ClusteringPdfBlockExtractore.java
+	 * - pdfStructure.PDF.java
+	 * ArrayList<String> doi contains more than one DOI.
+	 */  
+	private List<String> doi;
 	
 	public static void main(String[] args) throws PdfParserException {
 		
@@ -784,34 +791,34 @@ public class PdfExtractionPipeline {
 
 	private PdfExtractionResult runPipeline( Document document)  {		
 		try{
-//		log.info("Extracting blocks...");
+		//		log.info("Extracting blocks...");
 		List<Block> pageBlocks = extractBlocks(document, id);
 		{
-            if(Debug.get(DEBUG_CONFIG.debug_textpieces)) {
-//        	String debug_output_location = PdfExtractionPipeline.global_debug_dir + PdfExtractionPipeline.global_id + "_textpieces_location.txt";
-        	String debug_output_text = PdfExtractionPipeline.global_debug_dir + PdfExtractionPipeline.global_id + "_textpieces_text.txt";
-        	Utility.writeFile(debug_output_text, "", false);
-//        	util.writeFile(debug_output_location, "", false);
-        	int counter = 0;
-        	for(int i = 0; i < pageBlocks.size(); i++) {
-        		for(int j = 0; j < pageBlocks.get(i).getLineBlocks().size(); j++) {
-        			Utility.writeFile(debug_output_text, counter + "\t" + pageBlocks.get(i).getLineBlocks().get(j).getText() + "\r\n", true);
-        			//        		util.writeFile(debug_output_text, counter + "\t" + pdfPage.getFragments().get(i).getText() + "\r\n", true);
-        			counter++;
-        		}
-        	}
-            }
+		    if(Debug.get(DEBUG_CONFIG.debug_textpieces)) {
+			//        	String debug_output_location = PdfExtractionPipeline.global_debug_dir + PdfExtractionPipeline.global_id + "_textpieces_location.txt";
+				String debug_output_text = PdfExtractionPipeline.global_debug_dir + PdfExtractionPipeline.global_id + "_textpieces_text.txt";
+				Utility.writeFile(debug_output_text, "", false);
+			//        	util.writeFile(debug_output_location, "", false);
+				int counter = 0;
+				for(int i = 0; i < pageBlocks.size(); i++) {
+					for(int j = 0; j < pageBlocks.get(i).getLineBlocks().size(); j++) {
+						Utility.writeFile(debug_output_text, counter + "\t" + pageBlocks.get(i).getLineBlocks().get(j).getText() + "\r\n", true);
+						//        		util.writeFile(debug_output_text, counter + "\t" + pdfPage.getFragments().get(i).getText() + "\r\n", true);
+						counter++;
+					}
+				}
+		    }
 		}
-//		log.info("Extracting reading order...");
+		//		log.info("Extracting reading order...");
 		ReadingOrder readingOrder = extractReadingOrder(pageBlocks);
 		BlockNeighborhood neighborhood = extractBlockNeighborhood(pageBlocks);
 		BlockLabeling labeling = new BlockLabeling();
 		ArticleMetadataCollector articleMetadata = new ArticleMetadataCollector();
 		
-//		log.info("Running detector pipeline...");
+		//		log.info("Running detector pipeline...");
 		runDetectorPipeline(document, pageBlocks, labeling, readingOrder, neighborhood, articleMetadata);
 		
-//		log.info("Extracting tables...");
+		//		log.info("Extracting tables...");
 		extractTables(document, articleMetadata);
 		
 		List<Paragraph> paragraphs = new ArrayList<Paragraph>();
@@ -819,50 +826,53 @@ public class PdfExtractionPipeline {
 				build(document, pageBlocks, labeling, readingOrder, neighborhood, articleMetadata, paragraphs);
 		
 		{
-//			List<Paragraph> post_paragraphs = new ArrayList<Paragraph>();
-//			path = "data/960_PR2_linecollectors.txt";writeFile(path, "", false);
-//			for(Paragraph ad : paragraphs) {
-//				LineCollector lc = ad.t;
-//				if(lc != null && lc.lines != null)
-//				for(Block line : lc.lines) {//now break to paragraphs
-//					
-//					
-//					writeFile(path, line.getText()+ "--\r\n", true);
-//				}
-//			}
+		//			List<Paragraph> post_paragraphs = new ArrayList<Paragraph>();
+		//			path = "data/960_PR2_linecollectors.txt";writeFile(path, "", false);
+		//			for(Paragraph ad : paragraphs) {
+		//				LineCollector lc = ad.t;
+		//				if(lc != null && lc.lines != null)
+		//				for(Block line : lc.lines) {//now break to paragraphs
+		//					
+		//					
+		//					writeFile(path, line.getText()+ "--\r\n", true);
+		//				}
+		//			}
 		}
+		
 		{
-//			String path = global_path + "_new_paragraphs_1.txt";
-//			PDFtoStructure converter = new PDFtoStructure();
-//			List<Paragraph> new_paragraphs = converter.convert(paragraphs);
-//			writeFile(path, "", false);
-//			for(Paragraph para : new_paragraphs) {
-//				writeFile(path, "----" + para.label+ "--Page " + para.pages + "--" + para.remark + "----------------\r\n", true);
-//				writeFile(path, para.toString() + "---------------------------\r\n", true);
-//			}
+		//			String path = global_path + "_new_paragraphs_1.txt";
+		//			PDFtoStructure converter = new PDFtoStructure();
+		//			List<Paragraph> new_paragraphs = converter.convert(paragraphs);
+		//			writeFile(path, "", false);
+		//			for(Paragraph para : new_paragraphs) {
+		//				writeFile(path, "----" + para.label+ "--Page " + para.pages + "--" + para.remark + "----------------\r\n", true);
+		//				writeFile(path, para.toString() + "---------------------------\r\n", true);
+		//			}
 		}
 		
-//		{
-//			String path = debug_dir + id + "_new_paragraphs_0.txt";
-//			writeFile(path, "", false);
-//			for(Paragraph ad : paragraphs) {
-//				writeFile(path, "----" + ad.label+ "--------------------\r\n", true);
-//				writeFile(path, ad.text + "---------------------------\r\n", true);
-//			}
-//
-//		}
+		//		{
+		//			String path = debug_dir + id + "_new_paragraphs_0.txt";
+		//			writeFile(path, "", false);
+		//			for(Paragraph ad : paragraphs) {
+		//				writeFile(path, "----" + ad.label+ "--------------------\r\n", true);
+		//				writeFile(path, ad.text + "---------------------------\r\n", true);
+		//			}
+		//
+		//		}
 		
-//		extractCitations(annotatedDocument, articleMetadata);
+		//		extractCitations(annotatedDocument, articleMetadata);
 		
-//		log.info("Extracting document text...");
+		//		log.info("Extracting document text...");
 		ReadingOrder postprocessedReadingOrder = postprocessReadingOrder(pageBlocks, labeling, readingOrder);
 		String text = extractDocumentText(pageBlocks, labeling, postprocessedReadingOrder, true);		
-		String rawText = extractDocumentText(pageBlocks, labeling, postprocessedReadingOrder, false);		
+		String rawText = extractDocumentText(pageBlocks, labeling, postprocessedReadingOrder, false);
+		
 		{
-//			writeFile(debug_dir + id + "_body_standard.txt", text, false);
+			//writeFile(debug_dir + id + "_body_standard.txt", text, false);
 		}
-		{
-	//		String path = debug_dir + id + "_new_paragraphs_3.txt";
+		
+		
+			//String path = debug_dir + id + "_new_paragraphs_3.txt";
 			List<Block> blocks_body_and_heading = extractDocumentBody(pageBlocks, labeling, postprocessedReadingOrder, true);
 			List<Block> blocks_none_body_or_heading = extractDocumentNoneBody(pageBlocks, labeling, postprocessedReadingOrder, true);
 			List<Paragraph> body_and_heading = PDFtoStructure.convert(blocks_body_and_heading, labeling, this);
@@ -873,6 +883,7 @@ public class PdfExtractionPipeline {
 				//writeFile(path, para.text + "---------------------------\r\n", true);
 			//}
 			//looking for candidate titles from none_body_or_heading
+			
 			List<Paragraph> candidateTitles = new ArrayList<Paragraph>();
 			if(none_body_or_heading.size() > 0) {
 				double meanFontSize = 0.0;
@@ -893,26 +904,25 @@ public class PdfExtractionPipeline {
 					}
 					k++;
 				}
-				
 			}
+			
 			for(Paragraph p : candidateTitles) none_body_or_heading.remove(p);
-		
-		this.pdf = new PDF();
-		pdf.body_and_heading = body_and_heading;
-		pdf.noneBodynorHeading = none_body_or_heading;
-		pdf.candidateTitle = candidateTitles;
-//		pdf.htmlTables = articleMetadata.getHtmlTables();
-		pdf.htmlTables_caption = articleMetadata.getHtmlTables_caption();
-		pdf.htmlTables_string = articleMetadata.getHtmlTables_string();
-		pdf.doi = this.doi;
-//		return pdf;
+			
+			this.pdf = new PDF();
+			pdf.body_and_heading = body_and_heading;
+			pdf.noneBodynorHeading = none_body_or_heading;
+			pdf.candidateTitle = candidateTitles;
+			//		pdf.htmlTables = articleMetadata.getHtmlTables();
+			pdf.htmlTables_caption = articleMetadata.getHtmlTables_caption();
+			pdf.htmlTables_string = articleMetadata.getHtmlTables_string();
+			pdf.doi = this.doi;
+			//		return pdf;
+			
+			return new PdfExtractionResult(document, pageBlocks, labeling, readingOrder, 
+			postprocessedReadingOrder, neighborhood, getDehyphenator(), text, rawText, annotatedDocument);
+		}catch(PdfParserException e) {
+			return null;
 		}
-		return new PdfExtractionResult(document, pageBlocks, labeling, readingOrder, 
-				postprocessedReadingOrder, neighborhood, getDehyphenator(), text, rawText, annotatedDocument);
-}
-catch(PdfParserException e) {
-	
-	return null;}
 	}
 
     private AnnotatorPipeline getAnnotatorPipeline() throws PdfParserException {

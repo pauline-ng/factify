@@ -49,7 +49,14 @@ public class ClusteringPdfBlockExtractor implements PdfPageBlockExtractor {
     
     public static boolean debug;
     
-    public String doi = null;
+    /* 
+	 * Modified on 03Aug2016 by Sun SAGONG
+	 * String doi -> ArrayList<String> doi.
+	 * - at.knowcenter.code.pdf.PdfEXtractionPipeline.java
+	 * - pdfStructure.PDF.java
+	 * ArrayList<String> doi contains more than one DOI.
+	 */     
+    public List<String> doi = new ArrayList<String>();
     
     /**
      * Creates a new instance of this class.
@@ -72,17 +79,24 @@ public class ClusteringPdfBlockExtractor implements PdfPageBlockExtractor {
             double lineSpacing = new LineSpacingDetector(cleanedLines2).getLineSpacing();
             Block blocksFragments = new BlockMerger(pdfPage, cleanedLines2, lineSpacing, idToFont).merge();
             Block splitedBlocks =  new BlockSplitter(pdfPage, blocksFragments).split();
-            
-            for(int i = 0; i < splitedBlocks.getLineBlocks().size() && doi == null; i++) {
+                                    
+            for(int i = 0; i < splitedBlocks.getLineBlocks().size(); i++) {
             	String line2 = splitedBlocks.getLineBlocks().toString();
             	String regEx = "10\\.[0-9]{4,}/[^\\s]*[^\\s\\.,]";// /10\.[0-9]{4,}\/[^\s]*[^\s\.,]/
             	Pattern pattern = Pattern.compile(regEx);
             	Matcher matcher = pattern.matcher(line2);
-            	while (matcher.find()) {
-            		doi = matcher.group();
-            		System.out.println("doi is " + doi);
-            		break;
-            	}
+            	
+            	/* 
+            	 * Modified on 03Aug2016 by Sun SAGONG
+            	 * String doi -> ArrayList<String> doi.
+            	 * - at.knowcenter.code.pdf.PdfEXtractionPipeline.java
+            	 * - pdfStructure.PDF.java
+            	 * ArrayList<String> doi contains more than one DOI.
+            	 */ 
+        		if(matcher.find() && (matcher.group() != null && !doi.contains(matcher.group()))){
+        			doi.add(matcher.group());
+        		}
+        		
             }
             
             pageBlocks.add(new BlocksEntry(pdfPage, splitedBlocks));
@@ -91,6 +105,7 @@ public class ClusteringPdfBlockExtractor implements PdfPageBlockExtractor {
                 debugOutput(splitedBlocks, id);
             }
         }
+        System.out.println(doi.toString());
         return getPages(pageBlocks);
     }
     

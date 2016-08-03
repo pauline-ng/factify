@@ -35,7 +35,14 @@ public class PDF {
 	public List<Paragraph> noneBodynorHeading;
 	public List<Paragraph> candidateTitle;
 	
-	public String doi;
+	/* 
+	 * Modified on 03Aug2016 by Sun SAGONG
+	 * String doi -> ArrayList<String> doi.
+	 * - at.knowcenter.code.pdf.PdfEXtractionPipeline.java
+	 * - at.knowcenter.code.pdf.blockextraction.clustering.ClusteringPdfBlockExtractore.java
+	 * ArrayList<String> doi contains more than one DOI.
+	 */  
+	public List<String> doi;
 	
 	public PDF() {
 		body_and_heading = new ArrayList<Paragraph>();
