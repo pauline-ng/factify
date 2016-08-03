@@ -67,7 +67,7 @@ public class Factify {
 //		String pdf_file = "DOI(10.1126science.1240729)_BetaCaMKII_wrong_is_(10.1126science.1236501).pdf";
 		
 		/* sample pdf file 4 */
-		String input_folder = "pdf\\incorrectDOI\\";
+		String input_folder = "pdf" + File.separator + "incorrectDOI" + File.separator;
 		String pdf_file = "DOI(10.1053j.gastro.2009.04.032)_EvidenceForTheRole_wrong_is_(10.1053j.gastro.2009.04.022).pdf";
 		
 		String[] parameters = new String[6];
