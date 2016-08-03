@@ -166,7 +166,7 @@ public enum StanfordNLPLight {
 
 	private HashSet<String> importStopWords() {
 		try{
-			String s = getResourceAsString("stopwords.txt");
+			String s = getResourceAsString("stanford-core-nlp-stopwords.txt");
 			StringTokenizer st = new StringTokenizer(s, "\r\n");
 			HashSet<String> t = new HashSet<String>();
 			while(st.hasMoreTokens()) t.add(st.nextToken().trim());
