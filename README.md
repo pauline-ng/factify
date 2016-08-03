@@ -4,4 +4,3 @@ Enabling Public Access to Non-Open Access Biomedical Literature via Idea-Express
 Xiaocheng Huang, Pauline Ng* 
 
 AAAI on Artificial Intelligence: Scholarly Big Data: AI Perspectives, Challenges, and Ideas, 2016
-
