@@ -53,6 +53,11 @@ public class Factify {
 	
 	public static void main(String[]  args) {
 		
+		/*
+		 * Use this main function for debugging purpose for the time being.
+		 * Ideally, Unit test should be prepared as /src/test/java/org.factpub.factify.FactifyTest
+		 */
+		
 //		/* sample pdf file 1 */
 //		String input_folder = "pdf\\";
 //		String pdf_file = "DOI10.1093nargkg509_SIFT.pdf";
@@ -108,6 +113,11 @@ public class Factify {
 	 */
 	
 	public static int runFactify(String...args) {
+		
+
+		/*
+		 * Step0-0: Check JRE version
+		 */
 		{
 			String[] javaVersionElements = System.getProperty("java.runtime.version").split("\\.");//1.8.0_45-b14
 			try {
@@ -118,6 +128,10 @@ public class Factify {
 				
 			}
 		}
+		
+		/*
+		 * Step0-1: Check if the arguments are okay
+		 */
 		if(args.length < 5) {
 			Debug.println("Please input PDF path, output directory, debug directory, matcher file path, and debug_log file!", DEBUG_CONFIG.debug_error);
 			Debug.println("*If debug_log=\"\", then debug info will print to the screen.", DEBUG_CONFIG.debug_error);
@@ -127,6 +141,10 @@ public class Factify {
 			for(String s : args) Debug.println(s, DEBUG_CONFIG.debug_error);
 			return -1;
 		}
+		
+		/*
+		 * Step0-2: Configure Debug file
+		 */
 		{
 				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 				Calendar cal = Calendar.getInstance();
@@ -139,6 +157,11 @@ public class Factify {
 				}
 				Debug.print("========" + dateFormat.format(cal.getTime()) + "==========\r\n", DEBUG_CONFIG.debug_timeline);
 		}
+		
+		
+		/*
+		 * Step0-3: Check each arguments.
+		 */
 		String path = args[0];
 		File file = new File(path);
 		if (!file.exists()) {
@@ -170,6 +193,13 @@ public class Factify {
 			else fact_file = args[5];
 		}
 		JSONArray factsToOutput = new JSONArray();
+		
+		
+		/*
+		 * Step1: pdf-extraction
+		 * Given PDF file is parsed and structuralized by PdfExtractionPipeline.
+		 * The extracted texts are organized as a PDF instance.
+		 */
 		PDFConverter converter = new PDFConverter();
 		PDF pdf =  converter.run(file, file.getName(), output_dir, debug_dir);
 		if(pdf == null) {
@@ -177,6 +207,11 @@ public class Factify {
 			Debug.println("File Path: " + path,DEBUG_CONFIG.debug_error);
 			return 2;
 		}
+		
+		
+		/*
+		 * Step2: Apply Stanford Core NLP to Paragraphs extracted in the previous stage.
+		 */
 		HashMap<Paragraph, S_Facts> paraToFacts = new HashMap<Paragraph, S_Facts>();
 		HashMap<Paragraph, List<Sequence>> paraToSequence = new HashMap<Paragraph, List<Sequence>>();
 		List<Sequence> allSequences = new ArrayList<Sequence>();
@@ -194,15 +229,24 @@ public class Factify {
 		Map<String, Sequence> acronyms = Acronym.findAcronyms(allSequences);
 		List<Sequence> freSeq = ngram.getFreqSequences(allSequences);
 		HashSet<Sequence> freSeq_ = new HashSet<Sequence>(); freSeq_.addAll(freSeq);
+		
+		
+		/*
+		 * Step3: Apply Rule Matching based on the Rule_INPUT files 
+		 */
+		
+		// prepare pattern matcher
 		RootMatcher pat = new RootMatcher();
 		if(!pat.readMacher(matcherFile)) {
 			return -1;
 		}
+		
 		Debug.print("****Start pattern matching****", DEBUG_CONFIG.debug_timeline);
 		for(int i = 0; i < pdf.body_and_heading.size(); i++) {
 			Paragraph para = pdf.body_and_heading.get(i);
 			if(para.isHeading()) continue;
 			Debug.println("Section " + i,DEBUG_CONFIG.debug_temp);
+			
 			C_Facts cFact = pat.parsePara(paraToSequence.get(para), freSeq_, acronyms, para.pages);
 			if(cFact != null) { 
 				S_Facts sFact = new S_Facts(cFact);
@@ -210,6 +254,11 @@ public class Factify {
 				paraToFacts.put(para, sFact);
 			}
 		}
+		
+		
+		/*
+		 * Step4: Create JSON object as an output. 
+		 */
 		{
 			 JSONObject obj=new JSONObject();
 			 obj.put("type", "paper");
@@ -238,7 +287,7 @@ public class Factify {
 				 acro_freqngram.put("values", freqNgrams);
 				 factsToOutput.add(acro_freqngram);
 			 }
-			}
+		}
 		{//write candidate titles:
 			JSONObject candidateTitles = new JSONObject();
 			
@@ -317,8 +366,15 @@ public class Factify {
 			factsToOutput.add(decoration);
 		}
 		
+		//
 		Utility.writeFile(fact_file, factsToOutput.toJSONString(), false);
 		if(pdf.body_and_heading.size() == 0) return 3;
+		
+		/*
+		 * End of runFactify
+		 * If everything is okay, this returns 1.
+		 */
+		
 		return 1;
 	}
 	

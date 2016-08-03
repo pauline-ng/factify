@@ -53,7 +53,6 @@ public enum StanfordNLPLight {
 		prop.put("annotators",props_str);
 		pipeline = new StanfordCoreNLP(prop);
 		stopwords = importStopWords();
-
 	}
 	
 	public static void main(String[] args) {
@@ -196,7 +195,6 @@ public enum StanfordNLPLight {
 			e.printStackTrace();
 			return null;
 		}
-
 	}
 
 	public boolean containsStopWord(String word) {
