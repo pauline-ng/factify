@@ -34,7 +34,7 @@ import org.factpub.factify.knowledge_model.S_Facts;
 import org.factpub.factify.pattern.Acronym;
 import org.factpub.factify.pattern.NGrams;
 import org.factpub.factify.pattern.RootMatcher;
-import org.factpub.factify.pdfconverter.PDFConverter;
+import org.factpub.factify.pdf.converter.PDFConverter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
