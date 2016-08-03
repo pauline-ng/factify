@@ -3,7 +3,7 @@ package org.factpub.factify.test;
 import java.io.File;
 import java.text.NumberFormat;
 
-import org.factpub.factify.Main;
+import org.factpub.factify.Factify;
 import org.factpub.factify.knowledge_model.C_Facts;
 import org.factpub.factify.knowledge_model.S_Facts;
 import org.factpub.factify.pattern.RootMatcher;
@@ -88,7 +88,7 @@ public class Debug_BEL_extractor {
 			sb.append("total free memory: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / 1024) + "\r\n");
 			System.out.println(sb);
 		}
-			Main.main(args);
+			Factify.main(args);
 			
 			{
 			StringBuilder sb = new StringBuilder();

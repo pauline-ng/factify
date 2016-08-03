@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 
-import org.factpub.factify.Main;
+import org.factpub.factify.Factify;
 
 import utility.Debug;
 import utility.Debug.DEBUG_CONFIG;
@@ -89,7 +89,7 @@ public class testBatch {
 				System.out.println("process " + file.getName());
 				String[] parameters = args.clone();
 				parameters[0] = file.getAbsolutePath();
-				int error = Main.runFactify(parameters);
+				int error = Factify.runFactify(parameters);
 				Utility.writeFile(output_stat, total_pdf + "\t" + file.getName() + "\t" + error + "\r\n", true);
 			}
 			
@@ -102,7 +102,7 @@ public class testBatch {
 	 * @param args: String path, String output_dir, String debug_dir, String matcherFile, String debug_log
 	 */
 	public static void testOneFile(String ...args) {
-		int error = Main.runFactify(args);
+		int error = Factify.runFactify(args);
 		Debug.print("Finished with errorcode " + error, DEBUG_CONFIG.debug_error);
 	}
 	

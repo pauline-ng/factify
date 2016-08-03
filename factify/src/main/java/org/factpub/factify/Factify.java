@@ -49,7 +49,7 @@ import utility.Utility;
 /**
  * This is the main class for fact extractor
  */
-public class Main {
+public class Factify {
 	
 	public static void main(String[]  args) {
 		
