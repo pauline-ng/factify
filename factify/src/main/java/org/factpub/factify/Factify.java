@@ -38,10 +38,10 @@ import org.factpub.factify.pdf.converter.PDFConverter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import at.knowcenter.code.pdf.structure.PDF;
+import at.knowcenter.code.pdf.structure.Paragraph;
 import nlp.Sequence;
 import nlp.StanfordNLPLight;
-import pdfStructure.PDF;
-import pdfStructure.Paragraph;
 import utility.Debug;
 import utility.Debug.DEBUG_CONFIG;
 import utility.Utility;

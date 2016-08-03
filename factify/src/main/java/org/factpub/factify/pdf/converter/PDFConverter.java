@@ -21,12 +21,11 @@ package org.factpub.factify.pdf.converter;
 
 import java.io.File;
 
-import pdfStructure.PDF;
-
 import utility.Debug;
 import utility.Debug.DEBUG_CONFIG;
 import at.knowcenter.code.pdf.PdfExtractionPipeline;
 import at.knowcenter.code.pdf.PdfExtractionPipeline.PdfExtractionResult;
+import at.knowcenter.code.pdf.structure.PDF;
 
 /**
  * Main function to interact with {@link at.knowcenter.code} to parse the structure of a PDF file
