@@ -57,8 +57,6 @@ import utility.Debug.DEBUG_CONFIG;
  */
 public class Utility {
 	
-	private Utility() {}
-	
 	public static void writeFile(String path, String s, boolean append) {
 		File log_f;
 		log_f = new File(path);
