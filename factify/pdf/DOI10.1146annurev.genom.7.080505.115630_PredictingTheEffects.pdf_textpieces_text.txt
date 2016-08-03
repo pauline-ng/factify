@@ -1,0 +1,1926 @@
+0	ANRV285-GG07-03 ARI 8 August 2006 1:43
+1	Predicting the Effects of
+2	Amino Acid Substitutions
+3	on Protein Function
+4	Pauline C. Ng and Steven Henikoff
+5	Fred Hutchinson Cancer Research Center, Seattle, Washington 98109;
+6	email: sift@fhcrc.org, steveh@fhcrc.org
+7	Key Words
+8	Annu. Rev. Genomics Hum. Genet. 2006.
+9	7:61–80
+10	nsSNP, nonsynonymous, single nucleotide polymorphism, coding
+11	SNP, missense
+12	The Annual Review of Genomics and Human
+13	Genetics is online at
+14	genom.annualreviews.org
+15	Abstract
+16	This article’s doi:
+17	10.1146/annurev.genom.7.080505.115630
+18	Copyright c© 2006 by Annual Reviews.
+19	All rights reserved
+20	1527-8204/06/0922-0061$20.00
+21	Nonsynonymous single nucleotide polymorphisms (nsSNPs) are
+22	coding variants that introduce amino acid changes in their corre-
+23	sponding proteins. Because nsSNPs can affect protein function, they
+24	are believed to have the largest impact on human health compared
+25	with SNPs in other regions of the genome. Therefore, it is impor-
+26	tant to distinguish those nsSNPs that affect protein function from
+27	those that are functionally neutral. Here we provide an overview of
+28	amino acid substitution (AAS) prediction methods, which use se-
+29	quence and/or structure to predict the effect of an AAS on protein
+30	function. Most methods predict approximately 25–30% of human
+31	nsSNPs to negatively affect protein function, and such nsSNPs tend
+32	to be rare in the population. We discuss the utility of AAS prediction
+33	methods for Mendelian and complex diseases as well as their broader
+34	applications for understanding protein function.
+35	61
+36	ANRV285-GG07-03 ARI 8 August 2006 1:43
+37	INTRODUCTION
+38	Online Mendelian
+39	Inheritance in Man
+40	(OMIM): database
+41	containing mutations
+42	discovered in
+43	patients and found in
+44	genes known to be
+45	involved in disease
+46	pared with positions that are not conserved,
+47	suggested that prediction could be based on
+48	sequence homology (39). It was also observed
+49	that disease-causing AASs had common struc-
+50	tural features that distinguished them from
+51	neutral substitutions, suggesting that struc-
+52	ture could also be used for prediction (68,
+53	77). Since these studies were performed, a
+54	plethora of AAS prediction methods based
+55	on sequence and/or structure have become
+56	available (7, 9, 14, 16–19, 27, 31, 33, 40–
+57	42, 45–47, 53, 58, 59, 64, 65, 68, 69, 72,
+58	73).
+59	Human Gene
+60	Mutation Database
+61	Most genetic variation is considered neutral
+62	but single base changes in and around a gene
+63	can affect its expression or the function of its
+64	protein products (11, 56). A nonsynonymous
+65	or missense variant is a single base change
+66	in a coding region that causes an amino acid
+67	change in the corresponding protein. If a non-
+68	synonymous variant alters protein function,
+69	the change can have drastic phenotypic conse-
+70	quences. Most alterations are deleterious and
+71	so are eventually eliminated through purify-
+72	ing selection. However, beneﬁcial mutations
+73	can sweep through the population and be-
+74	come ﬁxed, thus contributing to species dif-
+75	ferentiation.
+76	(HGMD): database
+77	containing mutations
+78	in genes known to be
+79	involved in disease
+80	Nonsynonymous
+81	SNP (nsSNP): a
+82	single nucleotide
+83	polymorphism
+84	located in a coding
+85	region that causes an
+86	amino acid
+87	substitution in the
+88	corresponding
+89	protein
+90	In this review we ﬁrst survey existing AAS
+91	prediction methods and summarize the his-
+92	tory of the ﬁeld. We also offer practical advice
+93	for researchers who would like to use AAS pre-
+94	diction methods. Next, we look at the useful-
+95	ness of AAS prediction methods in identify-
+96	ing candidate mutations responsible for both
+97	Mendelian and complex diseases. Third, we
+98	discuss other applications of AAS prediction
+99	methods. Finally, we discuss likely future im-
+100	provements of such methods.
+101	Amino acid
+102	substitution (AAS)
+103	prediction method:
+104	The importance of nonsynonymous sub-
+105	stitutions in humans is illustrated by two
+106	databases containing disease-causing vari-
+107	ants, Online Mendelian Inheritance in
+108	Man (OMIM) and Human Gene Muta-
+109	tion Database (HGMD) (24, 62). In both
+110	databases, nonsynonymous changes account
+111	for approximately half of the genetic changes
+112	known to cause disease. Although these
+113	databases contain information primarily con-
+114	cerning disorders caused by single Mendelian
+115	lesions, it is likely that nonsynonymous
+116	changes will play a similarly important role in
+117	complex diseases because of their potentially
+118	large impact.
+119	bioinformatics tool
+120	that evaluates
+121	whether an AAS
+122	affects protein
+123	function
+124	METHODOLOGY OF AMINO
+125	ACID SUBSTITUTION
+126	PREDICTION
+127	Basic Methodology
+128	The human population is estimated to
+129	have 67,000–200,000 common nonsynony-
+130	mous SNPs (nsSNPs) (8, 23, 35) and each
+131	person is thought to be heterozygous for
+132	24,000–40,000 nsSNPs (8). It would be time-
+133	consuming, difﬁcult, and expensive to ex-
+134	perimentally characterize the impact of each
+135	nsSNP on protein function. But because an
+136	amino acid change can have a large impact
+137	on ﬁtness, a computational method that could
+138	predict whether an amino acid substitution
+139	(AAS) affects protein function would help re-
+140	searchers prioritize AASs for additional study.
+141	The observation that disease-causing muta-
+142	tions are more likely to occur at positions that
+143	are conserved throughout evolution, as com-
+144	AAS prediction methods use sequence
+145	and/or structural information for prediction.
+146	Prediction is feasible because mutations
+147	that affect protein function tend to occur at
+148	evolutionarily conserved sites (Figure 1a)
+149	and/or are buried in protein structure
+150	(Figure 1b). These observations came from
+151	several early studies that used AASs found
+152	in disease genes in affected individuals (39,
+153	68, 77). These studies assumed that these
+154	substitutions affected protein function,
+155	thereby causing disease. These studies also
+156	assumed that a majority of nsSNPs in hu-
+157	mans or the substitutions observed between
+158	humans and closely related species are
+159	functionally neutral. When Wang & Moult
+160	(77) modeled disease-causing mutations
+161	62 Ng · Henikoff
+162	ANRV285-GG07-03 ARI 8 August 2006 1:43
+163	a
+164	s
+165	e i
+166	t i
+167	l i
+168	b
+169	a
+170	b
+171	o
+172	r
+173	p
+174	n
+175	o i
+176	t
+177	a
+178	t
+179	u
+180	m
+181	e
+182	v i
+183	t
+184	a
+185	l
+186	e
+187	R
+188	0.50
+189	0.45
+190	0.40
+191	0.35
+192	0.30
+193	0.25
+194	0.20
+195	0.15
+196	0.10
+197	0.05
+198	onto their corresponding wild-type protein
+199	structures, they found that 83% of disease-
+200	causing mutations affected protein stability.
+201	By applying the stability criterion and
+202	several other structural criteria, they could
+203	detect 90% of disease-causing mutations. In
+204	contrast, only 30% of neutral nsSNPs were
+205	detected with the same set of rules, which
+206	suggests that their rules could be used to
+207	distinguish disease-causing mutations from
+208	neutral nsSNPs. Using both structure and
+209	sequence, Sunyaev et al. (68) could detect
+210	70% of disease-causing mutations and only
+211	17% of neutral substitutions. Based on anal-
+212	ysis of protein sequences, Miller & Kumar
+213	(39) showed that disease-causing AASs are
+214	overabundant at conserved sites.
+215	0
+216	0.25
+217	0.50
+218	0.75
+219	1.00
+220	1.25
+221	Conservation of the mutation site
+222	(relative entropy)
+223	Non-synonymous benign
+224	Synonymous benign
+225	Disease
+226	0.45
+227	b
+228	Based on these observations, AAS predic-
+229	tion methods using either sequence and/or
+230	structural information were introduced, some
+231	of which were also implemented as Web
+232	0.40
+233	0.35
+234	servers [Table 1; Supplemental Table 1 (fol-
+235	0.30
+236	0.25
+237	s
+238	e i
+239	t i
+240	l i
+241	b
+242	a
+243	b
+244	o
+245	r
+246	p
+247	n
+248	o i
+249	t
+250	a
+251	t
+252	u
+253	m
+254	e
+255	v i
+256	t
+257	a
+258	l
+259	e
+260	R
+261	0.20
+262	0.15
+263	0.10
+264	Buried sites
+265	0.05
+266	0-10
+267	Solvent accessibility of the mutation site (%)
+268	Figure 1
+269	low the Supplemental Material link from the
+270	Annual Reviews home page at http://www.
+271	annualreviews.org.)] (7, 9, 14, 16–19, 27, 31,
+272	33, 40–42, 45–47, 53, 58, 59, 64, 65, 68, 69,
+273	72, 73). The typical procedure used by AAS
+274	prediction methods is shown in Figure 2. To
+275	make a prediction, AAS prediction methods
+276	can use sequence, structure, and/or annota-
+277	tion. Sequence-based AAS prediction meth-
+278	ods (14, 18, 19, 42, 45, 58, 69, 73) accept
+279	an input sequence and search it against a
+280	sequence database to ﬁnd homologous se-
+281	quences. A multiple sequence alignment of
+282	the homologous sequences reveals what posi-
+283	tions have been conserved throughout evolu-
+284	tionary time, and these positions are inferred
+285	to be important for function. The AAS pre-
+286	diction method then scores the AAS based
+287	on the amino acids appearing in the multi-
+288	ple alignment and the severity of the amino
+289	acid change. An amino acid that is not present
+290	at the substitution site in the multiple align-
+291	ment can still be predicted to be tolerated
+292	if there are amino acids with similar physio-
+293	chemical properties present in the alignment.
+294	For example, if a protein sequence alignment
+295	(a) The probability that a mutation will cause a disease increases
+296	monotonically with an increase in the degree of site conservation.
+297	Nonsynonymous SNPs found in normal individuals are assumed to be
+298	benign and their probabilities show the opposite trend where their
+299	occurrence decreases with the degree of site conservation. The benign
+300	synonymous SNPs do not change amino acids and should be predominantly
+301	neutral. As a result, their probability is uniform across sites, regardless of
+302	whether or not the site is conserved. Figure from Reference 75; licensee
+303	BioMed Central Ltd. (This is an Open Access Article: Verbatim copying
+304	and redistribution of this article are permitted in all media for any purpose.)
+305	(b) The solvent accessibility of an amino acid residue in a protein reﬂects the
+306	degree of the residue’s exposure to the surrounding solvent in the protein
+307	structure. The relative probability of disease-causing mutations is highest in
+308	the protein interior and lowest on the protein surface. The benign SNPs
+309	show the reverse trend, as their relative probability is highest on the surface
+310	and lowest in the protein interior. Figure from Reference 75; licensee
+311	BioMed Central Ltd. (This is an Open Access Article: Verbatim copying
+312	and redistribution of this article are permitted in all media for any purpose.)
+313	www.annualreviews.org • Amino Acid Substitutions on Protein Function 63
+314	ANRV285-GG07-03 ARI 8 August 2006 1:43
+315	Table 1 Amino acid substitution (AAS) prediction methods available on the Internet ∗
+316	Method and Web site
+317	Interface
+318	Performance
+319	Algorithm
+320	SIFT
+321	http://blocks.fhcrc.org/
+322	sift/SIFT.html (45–47)
+323	Input: Protein sequence and AAS,
+324	protein sequence alignment and AAS,
+325	dbSNP id, or protein id
+326	Output: Score ranges from 0 to 1,
+327	where 0 is damaging and 1 is neutral
+328	FN error: 31%
+329	FP error: 20%
+330	dbSNP: 25% predicted
+331	to be damaging
+332	Coverage: 60%
+333	Using sequence
+334	homology, scores are
+335	calculated using
+336	position-speciﬁc scoring
+337	matrices with Dirichlet
+338	priors
+339	Uses sequence
+340	conservation, structure
+341	to model position of
+342	amino acid substitution,
+343	PolyPhen
+344	http://www.bork.embl-
+345	heidelberg.de/PolyPhen
+346	FN error: 31%
+347	FP error: 9%
+348	dbSNP: 32% predicted
+349	damaging
+350	Coverage: 81%
+351	(64, 65)
+352	and SWISS-PROT
+353	Input: Protein sequence and AAS,
+354	dbSNP id, HGVbASE id, or protein id
+355	Output: Score ranges from 0 to a
+356	positive number, where 0 is neutral,
+357	and a high positive number is
+358	damaging
+359	Input: dbSNP id, protein id, literature
+360	search, or gene ontology
+361	Output: Scores from structure-based
+362	SVM and sequence-based SVM
+363	reported separately. Score <0 is
+364	damaging. Mutation on protein
+365	structure can be visualized
+366	SNPs3D
+367	http://www.snps3d.org/
+368	(82, 83)
+369	annotation
+370	Structure-based support
+371	vector machine uses 15
+372	structural factors
+373	Sequence-conservation
+374	support vector machine
+375	uses ﬁve features that
+376	capture sequence
+377	conservation
+378	PANTHER PSEC
+379	Structure-based SVM
+380	FN error: 26%
+381	FP error: 15%
+382	Coverage: 14%
+383	Sequence-based SVM
+384	FN error: 20%
+385	FP error: 10%
+386	Coverage: 71%
+387	Predicted damaging in
+388	dbSNP: 25%
+389	FN error: 59%
+390	FP error: N/A
+391	Coverage: 40%
+392	dbSNP: 9% predicted
+393	damaging
+394	FN error: 21%
+395	FP error: 17%
+396	When structure is
+397	included:
+398	FN error: 12%
+399	FP error: 10%
+400	Input: Protein sequence and AAS
+401	Output: A negative score is damaging,
+402	zero is neutral, and positive is
+403	gain-of-function
+404	https://panther.applied
+405	biosystems.com/methods/
+406	csnpScoreForm.jsp (73)
+407	PMUT
+408	http://mmb2.pcb.ub.es:
+409	8080/PMut/ (16–18)
+410	Input: Protein id, protein sequence, or
+411	multiple sequence alignment
+412	Output: Score ranges from 0 to 1,
+413	where 0 is neutral and high scores are
+414	predicted to be damaging. Mutation
+415	on protein structure is shown
+416	Uses sequence homology;
+417	scores are calculated
+418	using PANTHER
+419	Hidden Markov Model
+420	families
+421	Prediction provided by
+422	one of two neural
+423	networks. Neural
+424	network uses internal
+425	databases, secondary
+426	structure prediction, and
+427	sequence conservation
+428	Classiﬁes substitution as
+429	buried, on the surface, or
+430	in a pocket of the
+431	protein’s structure. Also
+432	provides conservation
+433	score based on Pfam
+434	protein alignments
+435	TopoSNP
+436	http://gila.bioengr.uic.
+437	edu/snp/toposnp (64, 65)
+438	FN error: 12%
+439	FP error: N/A
+440	dbSNP: 68% predicted
+441	to be damaging
+442	Input: Protein id or protein sequence
+443	Output: Can view position of mutation.
+444	Location of substitution on protein
+445	(surface, internal, or pocket) and
+446	conservation reported separately
+447	Results are stored so an input protein
+448	sequence not in the database will not
+449	be processed
+450	∗ False negative (FN) error rate is the percentage of substitutions predicted to be functionally neutral on a set of AASs that are known to affect
+451	protein function. These substitutions come from a mutagenesis set or those suspected to be involved in disease. False positive (FP) error rate is the
+452	percentage of substitutions predicted to be damaging on substitutions known to be functionally neutral. For some methods, error rates were not
+453	reported and are marked as N/A in the table. The coverage shown in this table is for dbSNP (60) and not for mutations in disease genes. Disease
+454	genes tend to have higher coverage because they are well studied. Coverage depends on databases, so methods published later tend to have more
+455	coverage than those published earlier. For a more complete list of AAS prediction methods, see Supplemental Table 1. (Follow the Supplemental
+456	Material link from the Annual Reviews home page at http://www.annualreviews.org.)
+457	64 Ng · Henikoff
+458	ANRV285-GG07-03 ARI 8 August 2006 1:43
+459	Input protein sequence and
+460	amino acid substitution
+461	Structure
+462	Sequence
+463	Annotation
+464	Search a protein
+465	sequence database and
+466	obtain homologous
+467	Search a protein
+468	structure database.
+469	Model input sequence on
+470	to structure of top hit
+471	sequences
+472	Take annotation from
+473	SWISS-PROT database
+474	or use prediction
+475	programs, such as
+476	those that predict
+477	transmembrane regions
+478	or secondary structure ,
+479	to annotate the input
+480	sequence
+481	Assess features at the
+482	site of the amino acid
+483	substitution, such as
+484	solvent accessibility,
+485	B-factor, etc.
+486	Figure 2
+487	Score amino acid
+488	substitution according to
+489	amino acids appearing in
+490	the multiple sequence
+491	alignment, taking into
+492	account conservation and
+493	the physiochemical
+494	properties of amino acids
+495	present
+496	Flowchart for amino
+497	acid substitution
+498	(AAS) prediction.
+499	Input typically
+500	consists of the
+501	protein sequence and
+502	AASs. The method
+503	can use sequence
+504	and/or structural
+505	features for
+506	prediction. Some
+507	methods also use
+508	annotation to aid in
+509	prediction.
+510	Apply scoring rules for prediction
+511	Output AAS prediction
+512	shows tyrosines and tryptophans at a particu-
+513	lar site, one would expect that the other aro-
+514	matic amino acid, phenylalanine, would also
+515	be tolerated at that site. The probability of
+516	observing a particular AAS at a site can be es-
+517	timated from an appropriate model of protein
+518	conservation, and substitutions that are un-
+519	likely to be observed at a site are expected to
+520	reduce protein stability or function.
+521	atomic level, they can model the substitution
+522	onto the structure of a homologous protein
+523	rather than require the exact structure of the
+524	input sequence. AAS prediction methods then
+525	examine the position of the AAS and can take
+526	into account several structure factors such
+527	as solvent accessibility, carbon-beta density,
+528	crystallographic B-factor, and the difference
+529	in free energy between the new and the old
+530	amino acid. Based on these structural features,
+531	structure-based AAS prediction methods fol-
+532	low rules to arrive at a prediction.
+533	Structure-based AAS prediction methods
+534	(9, 27, 65, 69, 72) take an input sequence and
+535	ﬁnd the best match against a protein structure
+536	database. Because most structure-based AAS
+537	prediction methods use general structural fea-
+538	tures surrounding the site of substitution and
+539	do not require detailed information at the
+540	AAS prediction methods can also incor-
+541	porate annotations to reﬁne prediction. The
+542	Swiss-Prot database annotates the positions of
+543	a protein that are located in the active site,
+544	www.annualreviews.org • Amino Acid Substitutions on Protein Function 65
+545	ANRV285-GG07-03 ARI 8 August 2006 1:43
+546	lating results. For the data sets that contain
+547	mutations found in disease genes, it is as-
+548	sumed that the AAS found in the patient is
+549	the causative variant. However, the database
+550	entry is not necessarily the etiological variant.
+551	Instead, it could be in linkage disequilibrium
+552	with the causative variant. Alternatively, the
+553	causative mutation could be in an unscreened
+554	gene.
+555	are involved in ligand binding, are part of
+556	a disulﬁde bridge, or are involved in other
+557	protein-protein interactions (1). AAS predic-
+558	tion methods can use this information to guide
+559	prediction (17, 18, 68, 69, 77). For example,
+560	if the position of the AAS is annotated as
+561	involved in ligand binding, then the AAS is
+562	predicted to affect the protein. Also, one can
+563	use sequence-based predictions of secondary
+564	structure and solvent accessibility and incor-
+565	porate this annotation into the scoring scheme
+566	(18, 31).
+567	Popular neutral sets include substitutions
+568	that cause no phenotypic effect in mutagenesis
+569	experiments (36, 49, 54, 80) and nonsynony-
+570	mous single-nucleotide mutations that have
+571	been ﬁxed during divergence between human
+572	and a closely related species. The false posi-
+573	tive error rate based on the ﬁrst set tends to be
+574	higher than the second set because mutations
+575	deemed neutral in laboratory experiments are
+576	those that do not give a detectable pheno-
+577	type. However, such mutations could have too
+578	small an impact on protein function or re-
+579	quire alternative environmental conditions to
+580	reveal phenotypic effects (46). In the second
+581	set, substitutions between human and another
+582	species have undergone millions of years of
+583	evolutionary selective pressure, whereas those
+584	with negligible selection coefﬁcients and very
+585	small effects on protein function have been
+586	eliminated.
+587	Direct comparisons between AAS predic-
+588	tion methods are difﬁcult because they were
+589	trained and tested on different data sets using
+590	different versions of sequence and structural
+591	databases as resources. The performance of an
+592	AAS prediction method depends on the data
+593	sets the method is tested on. AAS prediction
+594	methods are typically tested on two types of
+595	data sets: a nonneutral set, which contains sub-
+596	stitutions assumed to affect protein function,
+597	and a neutral set, which contains substitutions
+598	assumed to have no effect. An AAS prediction
+599	method should predict the substitutions in
+600	the nonneutral set to be damaging to protein
+601	function. The percentage of non-neutral sub-
+602	stitutions incorrectly predicted to be tolerated
+603	is an approximation of the false negative er-
+604	ror rate. The AAS prediction method should
+605	also predict the majority of the substitutions
+606	in a neutral set as having no effect on protein
+607	function. The percentage of neutral substitu-
+608	tions incorrectly predicted to affect protein
+609	function approximates the false positive error
+610	rate. The best AAS prediction methods mini-
+611	mize both false negative and false positive er-
+612	ror rates.
+613	There are many AAS prediction meth-
+614	ods available and it is beyond the scope of
+615	this review to critique and compare every
+616	method. We have tried to summarize the ma-
+617	jor points of each method (Supplemental
+618	Table 1). It is encouraging that progress is
+619	being made in that overall prediction per-
+620	formance has improved over early meth-
+621	ods, and many methods are now available
+622	to the research community as Web servers
+623	(Table 1).
+624	Caveats for Using Structure in
+625	Prediction
+626	Popular nonneutral sets include data from
+627	laboratory mutagenesis experiments (36, 49,
+628	54, 80), human disease proteins where many
+629	mutations have been characterized (3, 21,
+630	22, 25, 32, 50, 55, 70), and human disease
+631	databases such as OMIM, HGMD, or Swiss-
+632	Prot (1, 24, 62), which contain AASs that have
+633	been found in patients. Currently, the muta-
+634	genesis data sets represent only a few pro-
+635	teins, so caution should be used in extrapo-
+636	AAS methods that use only protein struc-
+637	ture provide fewer predictions than meth-
+638	ods that use sequence because there are far
+639	fewer protein structures than sequences for
+640	66 Ng · Henikoff
+641	ANRV285-GG07-03 ARI 8 August 2006 1:43
+642	inferred to be potential functional binding
+643	regions, as done in the AAS prediction
+644	method topoSNP (64, 65).
+645	Polymorphism
+646	Phenotyping
+647	(PolyPhen): a
+648	popular structure-/
+649	sequence-based
+650	amino acid
+651	substitution
+652	prediction method
+653	available on the
+654	Internet
+655	which homology can be found. The percent-
+656	age of amino acid substitutions that can be
+657	predicted by an AAS method is deﬁned as the
+658	method’s coverage. Coverage for AAS meth-
+659	ods that rely on protein structure only is ap-
+660	proximately 14% (83), whereas coverage for
+661	AAS methods that use sequence can be as
+662	high as 81% (53). Notably, most methods
+663	now have a sequence-based score and anal-
+664	ysis of structure has become an option of-
+665	fered by the methods. Sequence-based cov-
+666	erage should continue to improve, because
+667	large-scale sequencing projects are deposit-
+668	ing predicted protein sequences into public
+669	databases at an increasing rate, whereas de-
+670	termination of three-dimensional (3D) struc-
+671	tures remains a challenging endeavor.
+672	(http://www.bork.
+673	embl-heidelberg.
+674	de/PolyPhen/)
+675	Some AAS methods use structural and
+676	functional annotation from the Swiss-Prot
+677	database in addition to structure and sequence
+678	modeling (17, 18, 68, 69, 77). The functional
+679	annotation is used to identify the residues that
+680	are part of a binding site, active site, or disul-
+681	ﬁde bond. It is presumed that changes at these
+682	types of sites would have major effects on
+683	protein function. Hence, substitutions occur-
+684	ring at these positions are predicted to affect
+685	function. One would think that use of such
+686	annotation would improve prediction, but a
+687	recent study shows that use of Swiss-Prot
+688	functional annotation decreases the overall
+689	prediction accuracy (83). Although use of
+690	Swiss-Prot annotation reduces the false neg-
+691	ative rate by 1.6%, it increases the false posi-
+692	tive rate by 2.1%. Therefore, caution is war-
+693	ranted when interpreting results, based solely
+694	on functional annotation, in which an AAS is
+695	predicted to be damaging.
+696	Sorting Intolerant
+697	From Tolerant
+698	(SIFT): a popular
+699	sequence-based
+700	amino acid
+701	substitution
+702	prediction method
+703	available on the
+704	Internet
+705	(http://blocks.fhcrc.
+706	org/sift/SIFT.html)
+707	When the structure of the query pro-
+708	tein is not available, AAS prediction meth-
+709	ods model the query protein’s structure based
+710	on a homolog. If the homolog is too distantly
+711	related, prediction accuracy can suffer. Chas-
+712	man & Adams (9) obtained their best predic-
+713	tion results when the query protein was at least
+714	60% identical to its homolog. Yue & Moult
+715	(82) found that prediction is best when the
+716	sequence identity between the query protein
+717	and the homologous protein is greater than
+718	40%. The false positive rate for their AAS
+719	prediction method increased by 11% when
+720	structures with less than 40% sequence iden-
+721	tity were used (82).
+722	Even when a structure is available, predic-
+723	tion based solely on protein structure can be
+724	misleading because the protein’s structure is
+725	often determined in the isolated context of
+726	a crystal and cannot take into consideration
+727	supramolecular interactions. Structure-based
+728	AAS prediction methods tend to predict
+729	positions on the surface of the protein as
+730	neutral. Although substitutions at sites buried
+731	in protein structure are more likely to be
+732	damaging than surface residues, substitutions
+733	at sites that appear to be solvent-accessible in
+734	the crystal structure may also be important
+735	for function. These sites might be involved
+736	in intermolecular interactions with proteins
+737	that are absent from the 3D structure of the
+738	single protein. For example, the β-globin
+739	E6V substitution causes sickle-cell anemia.
+740	The substitution occurs on the surface of the
+741	protein and leads to formation of hemoglobin
+742	aggregates that underlie the sickling phe-
+743	notype. E6V is incorrectly predicted to be
+744	benign by a structure-/sequence-based AAS
+745	prediction method, Polymorphism Pheno-
+746	typing (PolyPhen) (71), whereas it is correctly
+747	predicted by a sequence homology-based
+748	AAS prediction method, Sorting Intolerant
+749	From Tolerant (SIFT). One possible way
+750	to compensate for such misprediction is to
+751	identify surface pockets or depressed regions
+752	in the protein’s structure, which can be
+753	Caveats for Using Sequence
+754	in Prediction
+755	The ﬁrst step for all sequence-based AAS
+756	prediction methods is to choose homologous
+757	sequences, whether manually or automati-
+758	cally. Because the amino acids appearing in
+759	the aligned sequences form the basis of the
+760	www.annualreviews.org • Amino Acid Substitutions on Protein Function 67
+761	ANRV285-GG07-03 ARI 8 August 2006 1:43
+762	functions, then the positions that differentiate
+763	function among orthologs may be incorrectly
+764	predicted.
+765	Figure 3
+766	Although functional differences between
+767	orthologs can result in misprediction by AAS
+768	methods, prior knowledge that orthologs have
+769	different functions can be used to identify
+770	which amino acid(s) caused the functional
+771	change. For example, AlcR is a transcrip-
+772	tional regulator whose activation depends on
+773	the presence of an inducer in one Bordetella
+774	species but not in another species (5). Al-
+775	though the AlcR genes are clearly orthologs
+776	in the genus, they behave differently in dif-
+777	ferent species. To ﬁnd the amino acid change
+778	underlying this behavioral difference, the au-
+779	thors of this study used the AAS prediction
+780	method, SIFT, which predicted that a seem-
+781	ingly conservative change (S103T) should not
+782	be tolerated. The authors deduced that this
+783	residue was likely responsible for inducer de-
+784	pendence, which they subsequently proved
+785	by showing that S103T eliminated inducer
+786	dependence.
+787	For some amino acid substitution (AAS) prediction methods, researchers
+788	can submit a multiple sequence alignment for their protein of interest;
+789	using orthologs in the multiple sequence alignment instead of paralogs
+790	gives better performance. Blue points represent prediction accuracy based
+791	on an alignment of the input protein and ﬁve sequences randomly chosen
+792	from a group of orthologs and paralogs. The red point is the prediction
+793	accuracy based on a multiple sequence alignment of the input protein
+794	sequence and ﬁve orthologs. Figure from Reference 67. Published with
+795	permission from Genome Research, Volume 15, copyright by Cold Spring
+796	Harbor Laboratory Press.
+797	scoring and the prediction, the sequences and
+798	their alignment are extremely important, and
+799	users can take an active role in this prediction
+800	step, which determines the quality of their
+801	predictions. The optimal set of sequences is
+802	distantly related orthologs. Using orthologs
+803	instead of paralogs can improve performance
+804	by 8%, even when there are few sequences
+805	(67) (Figure 3).
+806	Most AAS prediction methods do not take
+807	DNA sequence into account. As a result,
+808	they can miss changes that alter splice sites
+809	or changes in regions under positive selec-
+810	tion. By ignoring DNA sequence differences,
+811	these methods might incorrectly predict sub-
+812	stitutions at sites under positive selection to
+813	be neutral because of the many amino acids
+814	present at that position. However, the AAS
+815	prediction method of Fleming et al. (19) uses
+816	the DNA sequences of homologous genes in
+817	addition to protein sequences to ﬁnd sites un-
+818	der positive selection. The nonsynonymous-
+819	to-synonymous substitution rate ratio is al-
+820	lowed to vary at different amino acid sites and
+821	positions with high ratios are posited to be un-
+822	der positive selection. It is assumed that amino
+823	acid changes at these positions affect pro-
+824	tein function. Thus, knowledge of positively
+825	selected sites can lower the false negative
+826	error.
+827	Users should be cautious even with pro-
+828	teins that are judged to be orthologous based
+829	on phylogeny. Orthologous genes in differ-
+830	ent species are derived from a common an-
+831	cestor, but they may not necessarily have the
+832	same function. If function has changed, then
+833	amino acids that are important for the func-
+834	tion of one protein may not necessarily be
+835	important for the function of the ortholog,
+836	and hence may have changed without any se-
+837	lection pressure. For example, 2% of disease-
+838	causing mutations in human genes are identi-
+839	cal to the sequences of their respective mouse
+840	orthologs, suggesting that even though these
+841	positions have huge phenotypic effects on
+842	human health, they have different roles or
+843	are no longer important in mice. If the or-
+844	thologs in alignment have slightly different
+845	It is often assumed that the protein
+846	sequence derived from the reference se-
+847	quence genome is functional and the “disease”
+848	68 Ng · Henikoff
+849	ANRV285-GG07-03 ARI 8 August 2006 1:43
+850	this large number of nsSNPs and the obser-
+851	vation that single AASs can have a large effect
+852	on an organism or species, it is of great in-
+853	terest to identify which nsSNPs affect protein
+854	function and, consequently, may affect human
+855	health.
+856	mutation reduces protein function. But in
+857	some instances, the amino acid correspond-
+858	ing to the more common allele reduces pro-
+859	tein function and a mutation causes gain-of-
+860	function. Thomas et al. (73) noticed this phe-
+861	nomenon when they applied their AAS pre-
+862	diction method PANTHER PSEC to mu-
+863	tations likely to cause disease. They found
+864	that the reference amino acid was predicted
+865	to damage protein function whereas the dis-
+866	ease mutation was predicted to be function-
+867	ally neutral for a small percentage of the
+868	cases (0.1%). This type of prediction re-
+869	veals two things. First, it suggests that the
+870	human protein sequence has reduced func-
+871	tion compared with orthologous proteins in
+872	other organisms. Second, it predicts that
+873	the “disease” mutation returns protein func-
+874	tion to a level similar to that in ortholo-
+875	gous proteins. Thus the mutation can be
+876	thought to have a gain-of-function effect
+877	in humans. Characterizing this mutation in
+878	model organisms may be inappropriate be-
+879	cause the common human allele has reduced
+880	protein activity compared with that in model
+881	organisms.
+882	nsSNPs in the human population are ob-
+883	served less frequently than expected from the
+884	overall mutation rate, which is evidence that
+885	they are under strong purifying selection (8,
+886	23, 63). Speciﬁcally, if a random mutation
+887	were to occur in a coding region, it should
+888	lead to an amino acid change two thirds of the
+889	time, but nsSNPs comprise only half of the
+890	observed coding SNPs in the human genome
+891	(8). Furthermore, nsSNPs that cause a non-
+892	conservative amino acid change in the corre-
+893	sponding protein (for example, hydrophobic
+894	amino acid to a charged amino acid) survive
+895	at approximately half the rate of conservative
+896	nsSNPs (for example, a hydrophobic amino
+897	acid changed to another hydrophobic amino
+898	acid). These data strongly support the notion
+899	that AASs play an important role in human
+900	health. By providing information about which
+901	substitutions are selected against, AAS predic-
+902	tion methods can help identify which nsSNPs
+903	may be involved in disease.
+904	Both structure and sequence are useful for
+905	prediction. Having a structure appears to pro-
+906	vide prediction performance that is equiva-
+907	lent to having four homologous sequences,
+908	with information from structure and sequence
+909	complementing each other (59). Finally, it is
+910	important to understand that these are pre-
+911	dictions only. They are meant to guide future
+912	experiments and not to be used directly in a
+913	clinical setting (71).
+914	Putative nsSNPs are catalogued in the
+915	dbSNP database maintained by NCBI, which
+916	currently contains >50,000 nsSNPs (dbSNP
+917	build 124) (60). Of these nsSNPs, 25–30% are
+918	predicted to reduce protein function by most
+919	AAS prediction methods (46, 69, 83). Such
+920	nsSNPs have a lower minor allele frequency
+921	distribution than those that are predicted to
+922	be functionally neutral (33–35, 69, 78). This
+923	suggests that damaging nsSNPs are being ac-
+924	tively selected against and conﬁrms that AAS
+925	prediction methods can successfully identify
+926	putatively damaging nsSNPs that play an
+927	important role in health. In one study, the
+928	AAS prediction method SIFT was applied to
+929	nsSNPs found in genes implicated in DNA
+930	repair, cell cycle arrest, apoptosis, and detox-
+931	iﬁcation (78). nsSNPs with low minor allele
+932	frequency (<6%) were predicted by SIFT to
+933	be damaging to the protein twice as often as
+934	USEFULNESS OF AMINO ACID
+935	SUBSTITUTION PREDICTION
+936	METHODS IN HUMAN
+937	VARIATION AND DISEASE
+938	Nonsynonymous SNPs
+939	There are an estimated 67,000–200,000 com-
+940	mon nsSNPs in the human population (8, 23,
+941	35), with each person expected to be heterozy-
+942	gous for 24,000–40,000 nsSNPs (8). Given
+943	www.annualreviews.org • Amino Acid Substitutions on Protein Function 69
+944	ANRV285-GG07-03 ARI 8 August 2006 1:43
+945	In summary, AAS prediction methods
+946	have proven useful for identifying damaging
+947	nsSNPs involved in human disease. Experi-
+948	mentally characterizing an AAS can be expen-
+949	sive and time-consuming, and AAS prediction
+950	methods provide a valuable resource to sub-
+951	stantially reduce the effort.
+952	Application to Mendelian Disease
+953	common nsSNPs (>10%). In a second study,
+954	less than 2% of common nsSNPs in en-
+955	vironmental response genes were predicted
+956	to be damaging by AAS prediction meth-
+957	ods PolyPhen and SIFT (34, 35). In a third
+958	study, SIFT was applied to nsSNPs found
+959	in membrane transporter genes (34). Of the
+960	nsSNPs with minor allele frequency <0.01,
+961	between 0.01 and 0.10, and >0.1, 40%, 13%,
+962	and 5% of nsSNPs were predicted to be
+963	damaging, respectively. The authors found
+964	that general-purpose AAS scoring matrices,
+965	such as BLOSUM62, could not distinguish
+966	nsSNPs by minor allele frequency. Thus, ap-
+967	plication of AAS prediction methods to large
+968	nsSNP data sets has conﬁrmed that putatively
+969	damaging nsSNPs are selected against and are
+970	likely to have an impact on their respective
+971	proteins.
+972	AAS prediction methods have succeeded in
+973	distinguishing nonsynonymous changes that
+974	cause simple Mendelian diseases from neutral
+975	nsSNPs that do not. AAS prediction meth-
+976	ods are trained and tested on AASs that were
+977	identiﬁed in disease genes in afﬂicted indi-
+978	viduals from databases such as OMIM (24),
+979	HGMD (62), and Swiss-Prot (1). It is assumed
+980	that these substitutions found in patients af-
+981	fect protein function and cause disease as a
+982	result. Currently, most of the diseases repre-
+983	sented by the genes in these databases segre-
+984	gate in a Mendelian manner, which suggests
+985	that they are caused by single deleterious le-
+986	sions. Most AAS prediction methods predict
+987	that 70–90% of the AASs catalogued in these
+988	disease databases are damaging, whereas only
+989	10–20% of variants in neutral data sets are
+990	predicted to be damaging (Table 1). This
+991	demonstrates that AAS prediction methods
+992	can distinguish between AASs that cause
+993	Mendelian disease and neutral AASs. In
+994	this way, AAS prediction methods can help
+995	narrow down candidate nsSNPs to iden-
+996	tify the causative lesion within a large ge-
+997	nomic region implicated in disease by linkage
+998	studies.
+999	Experimental studies of individual pro-
+1000	teins have also conﬁrmed the accuracy of AAS
+1001	prediction methods. In one study, Brooks-
+1002	Wilson et al. (6) studied mutations in E-
+1003	cadherin that cause hereditary diffuse gastric
+1004	cancer. They used SIFT to predict that three
+1005	missense mutations found in families with dif-
+1006	fuse gastric cancer would be damaging to E-
+1007	cadherin function, and all three were con-
+1008	ﬁrmed to be damaging using in vitro assays.
+1009	In a second study, Zhang et al. (84) examined
+1010	the variants in PEPT1, a protein involved in
+1011	transporting drugs across the cell membrane.
+1012	nsSNPs found in the gene for PEPT1 were
+1013	tested in vitro. The single SNP that reduced
+1014	transport capacity was predicted by SIFT to
+1015	affect protein function. This polymorphism
+1016	may be important in drug delivery for phar-
+1017	macogenetics. In a third study, SIFT was used
+1018	to predict categories of cancer risk. Mutations
+1019	in the gene encoding melanocyte stimulating
+1020	hormone receptor (MSHR) increase the risk
+1021	of skin cancer. Kanetsky et al. (30) identiﬁed
+1022	risk variants in the gene for MSHR from ei-
+1023	ther published literature or using SIFT pre-
+1024	dictions. The ability to assign an individual to
+1025	a risk category was found to be similar when
+1026	using either published literature or SIFT
+1027	prediction.
+1028	Although most simple Mendelian diseases
+1029	remain rare because of purifying selection,
+1030	some become relatively common in popu-
+1031	lations because of overdominant selection.
+1032	Overdominant selection occurs when the het-
+1033	eroyzgote carrier has higher ﬁtness than
+1034	both the mutant and normal homozygotes.
+1035	The E6V substitution in β-globin mentioned
+1036	above is common in certain populations be-
+1037	cause heterozygous carriers are more resis-
+1038	tant to malaria than normal homozygotes,
+1039	70 Ng · Henikoff
+1040	ANRV285-GG07-03 ARI 8 August 2006 1:43
+1041	ing variants involved in complex disease ac-
+1042	cording to the two models.
+1043	Common disease-common variant. Ac-
+1044	whereas individuals homozygous for the rare
+1045	allele have sickle-cell anemia. In this example,
+1046	the AAS affects protein function but is main-
+1047	tained in the population because reduced ac-
+1048	tivity correlates with an advantageous effect.
+1049	Another well-known example is overdomi-
+1050	nance associated with methylenetetrahydro-
+1051	folate reductase (MTHFR) alleles. Variants
+1052	that reduce MTHFR activity can cause mental
+1053	retardation and cardiovascular disease in car-
+1054	riers. Reduced MTHFR activity is thought to
+1055	have been beneﬁcial to an individual’s over-
+1056	all ﬁtness during recent human evolution,
+1057	so MTHFR variants damaging to protein
+1058	function have became common in human
+1059	populations. Because overdominant nsSNPs
+1060	can severely affect protein function, they may
+1061	be detected by AAS prediction methods, and
+1062	both E6V in β-globin and overdominant
+1063	MTHFR missense alleles are predicted to be
+1064	damaging by SIFT (Reference 46 and data not
+1065	shown).
+1066	cording to the common disease-common vari-
+1067	ant hypothesis, variants that are common in
+1068	the population, with minor allele frequency
+1069	greater than 5% or 1%, contribute to disease.
+1070	If nsSNPs involved in complex disease can be
+1071	categorized according to the rules of struc-
+1072	ture and sequence conservation that AAS pre-
+1073	diction methods have been trained on, then
+1074	current AAS prediction methods will be use-
+1075	ful in identifying these common etiological
+1076	variants. A list of common nsSNPs that have
+1077	been associated with complex disease has been
+1078	compiled (28, 37). When the AAS prediction
+1079	method PANTHER PSEC was applied to
+1080	this set of disease-causing nsSNPs, the score
+1081	distribution was different from the distribu-
+1082	tion for Mendelian disease mutations (74).
+1083	More importantly, the score distribution of
+1084	these disease-associated nsSNPs is indistin-
+1085	guishable from the distribution for normal
+1086	human variation (Figure 4). The authors con-
+1087	clude that nsSNPs involved in complex dis-
+1088	eases caused by common variants do not occur
+1089	at highly conserved positions, and thus cannot
+1090	be detected by current AAS prediction meth-
+1091	ods. The data set of nsSNPs known to be in-
+1092	volved in common disease is relatively small
+1093	compared with the set of mutations known
+1094	to be involved in Mendelian disease. As more
+1095	causative common variants implicated in com-
+1096	plex disease are discovered, it will be interest-
+1097	ing to see if future studies yield similar results.
+1098	If so, new rules will need to be formulated to
+1099	predict the common polymorphisms involved
+1100	in complex disease.
+1101	Application to Complex Diseases
+1102	Although AAS prediction methods can iden-
+1103	tify nsSNPs involved in Mendelian diseases,
+1104	their usefulness in studying complex diseases,
+1105	such as hypertension, diabetes, and heart dis-
+1106	ease, is still being explored. Complex genetic
+1107	diseases are those that cannot be mapped to
+1108	single loci, which might indicate an interac-
+1109	tion between multiple loci or an interaction
+1110	with the environment, or both. Two general
+1111	models have been proposed to explain the na-
+1112	ture of genetic variation underlying complex
+1113	disease (4, 51, 52, 85). The common disease-
+1114	common variant model predicts that the vari-
+1115	ants of a particular locus that contribute to
+1116	disease are few but common in the popula-
+1117	tion and that complex disease results from
+1118	interactions between variants of many differ-
+1119	ent genes. The common disease-rare variant
+1120	model predicts that there are many etiological
+1121	variants at a locus, and each variant is present
+1122	at a low allele frequency in the human popu-
+1123	lation. In this section, we discuss how useful
+1124	AAS prediction methods might be for detect-
+1125	AAS prediction methods can still be useful
+1126	in identifying the etiological variants in hap-
+1127	lotypes. Haplotypes are particular combina-
+1128	tions of alleles that are observed in a popu-
+1129	lation. When a haplotype is associated with
+1130	affected individuals, the variants belonging to
+1131	the haplotype are all candidates for being the
+1132	causative mutation. If a haplotype contains
+1133	a set of missense alleles, one can use AAS
+1134	www.annualreviews.org • Amino Acid Substitutions on Protein Function 71
+1135	ANRV285-GG07-03 ARI 8 August 2006 1:43
+1136	1.0
+1137	to distinguish the causative missense variants
+1138	from neutral variants.
+1139	0.8
+1140	Mendelian disease (HGMD)
+1141	Neutral model
+1142	Normal variation (dbSNP)
+1143	Complex disease
+1144	n o i t c 0.6
+1145	a
+1146	r
+1147	f
+1148	e
+1149	v i
+1150	t
+1151	a l
+1152	u
+1153	m
+1154	u
+1155	C
+1156	0.4
+1157	0.2
+1158	0
+1159	– 10 – 8
+1160	– 6
+1161	0
+1162	– 4
+1163	– 2
+1164	SubPSEC score
+1165	Figure 4
+1166	A study on the plasma levels of HDL
+1167	cholesterol (HDL-C) demonstrates the use of
+1168	AAS prediction methods to detect rare dele-
+1169	terious alleles that contribute to common dis-
+1170	ease (10). Low levels of HDL-C are a ma-
+1171	jor risk factor for coronary atherosclerosis.
+1172	Three candidate genes involved in Mendelian
+1173	forms of low HDL-C levels were sequenced
+1174	in apparently normal individuals and a larger
+1175	number of rare nsSNPs were found in peo-
+1176	ple with low levels of HDL-C compared with
+1177	those with high levels of HDL-C. The au-
+1178	thors then applied the AAS prediction method
+1179	PolyPhen on the nsSNPs. The fraction of
+1180	nsSNPs predicted to be damaging in individ-
+1181	uals with low levels of HDL-C is highly sig-
+1182	niﬁcant for two of the genes: p=9×10 −13 for
+1183	ABCA1 and p= 0.0003 for LCAT (Table 2).
+1184	In the third gene, APOA1, only one nsSNP
+1185	was detected, and although it was predicted to
+1186	be damaging, this is not statistically signiﬁcant
+1187	(p = 0.09). If technological advances permit us
+1188	to inexpensively sequence the coding regions
+1189	of many individuals, one could possibly iden-
+1190	tify the genes and variants involved in disease
+1191	by the increased number of nsSNPs and the
+1192	signiﬁcantly high proportion of nsSNPs pre-
+1193	dicted to be damaging in the affected pop-
+1194	ulation. Even with a Bonferroni correction
+1195	taking into account the approximately 30,000
+1196	genes in the human genome, the result of
+1197	ABCA1 is still signiﬁcant atp=10 −8 . The re-
+1198	sult of LCAT is no longer signiﬁcant at the
+1199	genome-wide level. This could be compen-
+1200	sated for by detecting more variants, which re-
+1201	quires sequencing, or improved performance
+1202	of AAS prediction methods to reduce the false
+1203	positive error.
+1204	Amino acid substitution (AAS) prediction methods may not be able to
+1205	identify disease variants in the common disease/common variant model.
+1206	Cumulative distributions of scores from the AAS prediction method
+1207	PANTHER subPSEC are shown. A subPSEC score of 0 is predicted to be
+1208	functionally neutral and very negative scores are predicted to be damaging
+1209	to protein function. Distributions are shown for mutations involved in
+1210	Mendelian disease (red), common variants associated with complex disease
+1211	(blue squares), neutral and “normal” human variation (yellow and green,
+1212	respectively). Figure from Reference 74, Volumes 90–102. Copyright c©
+1213	1993–2005. Natl. Acad. Sci. USA. All rights reserved.
+1214	prediction methods to prioritize which
+1215	nsSNP may be the etiological variant (84).
+1216	Common disease-rare variant. According
+1217	to the common disease/rare variant hypothe-
+1218	sis, low-frequency variants with strong effects
+1219	on a locus can contribute to disease (52). That
+1220	is, some “complex” diseases could actually
+1221	be simple Mendelian diseases, but are caused
+1222	by different allelic variants in different indi-
+1223	viduals. Identifying these rare causative vari-
+1224	ants requires sequencing genes in many indi-
+1225	viduals. This process would uncover a large
+1226	number of missense variants but only a few
+1227	may contribute to disease. Below we discuss
+1228	two studies that used AAS prediction methods
+1229	Another study on the role of mitochon-
+1230	drial mutations in Parkinson’s disease again
+1231	shows that applying AAS prediction meth-
+1232	ods to rare variants can identify genes of in-
+1233	terest (61). Seven genes in the mitochondrial
+1234	genomes from normal individuals and patients
+1235	with Parkinson’s disease were sequenced.
+1236	The authors’ AAS prediction method could
+1237	72 Ng · Henikoff
+1238	ANRV285-GG07-03 ARI 8 August 2006 1:43
+1239	Table 2A significantly high fraction of rare variants in individuals at risk for coronary atherosclerosis are
+1240	predicted to be damaging by the amino acid substitution (AAS) prediction method PolyPhen (10) ∗
+1241	Number predicted to be possibly or
+1242	Cumlative p-value, assuming
+1243	probably damaging by PolyPhen
+1244	0.09 false positive rate
+1245	Gene Number of nsSNPs detected
+1246	9 ∗ 10 −13
+1247	0.09
+1248	0.0003
+1249	17
+1250	1
+1251	4
+1252	ABCA1
+1253	APOA1
+1254	LCAT
+1255	Low levels of HDL-C, at risk for coronary atherosclerosis
+1256	25
+1257	1
+1258	5
+1259	High levels of HDL-C
+1260	4
+1261	0
+1262	1
+1263	2
+1264	0
+1265	0
+1266	0.04
+1267	NA
+1268	0.91
+1269	ABCA1
+1270	APOA1
+1271	LCAT
+1272	∗ The list of nsSNPs and their predictions from Cohen et al. (10) was compiled. For clarity, the two populations studied (256 Dallas County
+1273	residents and 263 Canadians) were combined and duplicated SNPs were counted only once. The p-value was calculated from a binomial
+1274	distribution, with the probability that a nonsynonymous (nsSNP) would be predicted to be damaging set to 0.09, Polyphen’s false positive rate
+1275	on neutral substitutions (69).
+1276	OTHER APPLICATIONS OF AAS
+1277	PREDICTION METHODS
+1278	Interspecies Comparisons
+1279	AAS prediction methods are often applied to
+1280	polymorphisms within a species, but they can
+1281	also be used on the ﬁxed substitutions across
+1282	species. Because AAS prediction methods pre-
+1283	dict which amino acids are damaging to pro-
+1284	tein function, they can identify which genes
+1285	are under relaxed or neutral selection in a par-
+1286	ticular species.
+1287	distinguish patients from controls with 100%
+1288	accuracy and two genes were identiﬁed to
+1289	have more putative damaging missense vari-
+1290	ants compared with controls. In this case, all
+1291	genes had a similar proportion of missense
+1292	variants. Only by applying their AAS predic-
+1293	tion method were the authors able to identify
+1294	two genes that may be involved in Parkinson’s
+1295	disease. Because mutations in mitochondrial
+1296	DNA become more abundant with increasing
+1297	age, the role of rare missense variants may play
+1298	an important role in late-onset diseases such
+1299	as Parkinson’s disease and Alzheimer’s disease.
+1300	Because there already exists technology for
+1301	resequencing mitochondrial genomes (38),
+1302	one may be able to study the common dis-
+1303	ease/rare variant model in diseases suspected
+1304	to involve the mitochondria.
+1305	Interspecies comparisons show that do-
+1306	mesticated species have a higher number
+1307	of putative damaging SNPs than the wild
+1308	species. The Chicken Polymorphism Con-
+1309	sortium sequenced three domestic breeds of
+1310	chicken and compared these data to those
+1311	obtained from a wild line (79). For the non-
+1312	synonymous substitutions ﬁxed between the
+1313	domestic and wild lines, the alleles found
+1314	in domestic breeds were more than twice as
+1315	likely to be predicted as damaging by the
+1316	AAS prediction method SIFT compared with
+1317	those in the wild line. This result suggests that
+1318	domestic breeds are under relaxed selection,
+1319	perhaps because they live in a less harsh en-
+1320	vironment, which has allowed for damag-
+1321	ing substitutions to become ﬁxed in the do-
+1322	mesticated species. In another interspecies
+1323	If common diseases cannot be explained by
+1324	common variants, then there will be a strong
+1325	incentive to sequence coding regions to test
+1326	the common disease/rare variant hypothesis.
+1327	Preliminary studies show that AAS prediction
+1328	methods play an important role in predict-
+1329	ing which rare missense variants are delete-
+1330	rious. Moreover, as technologies for discov-
+1331	ering rare variants advance, AAS prediction
+1332	methods will become increasingly important
+1333	for identifying disease genes in genome-wide
+1334	studies.
+1335	www.annualreviews.org • Amino Acid Substitutions on Protein Function 73
+1336	ANRV285-GG07-03 ARI 8 August 2006 1:43
+1337	CONCLUSIONS
+1338	The presence of many AAS prediction meth-
+1339	ods and their broad use underscores their im-
+1340	portance. Prediction accuracy has gradually
+1341	improved, but few head-to-head comparisons
+1342	exist (29, 35, 71, 81). Moreover, as the number
+1343	of servers providing AAS prediction increases,
+1344	it will become increasingly difﬁcult for inves-
+1345	tigators to interpret the predictions.
+1346	comparison, the missense substitutions be-
+1347	tween two species of domesticated rice were
+1348	studied and a higher density of predicted dam-
+1349	aging substitutions occurred in regions un-
+1350	der positive selection (G.S.K. Wong, per-
+1351	sonal communication). Because gene loss may
+1352	sometimes be adaptive (48), the result sug-
+1353	gested reduced function of some genes in rice
+1354	could be an adaptive response to domestica-
+1355	tion.
+1356	These problems are similar to those faced
+1357	by the protein structure prediction commu-
+1358	nity 10 years ago. Critical Assessment of
+1359	Techniques for Protein Structure Prediction
+1360	(CASP) (43) was motivated by the need to
+1361	fairly assess structure prediction programs in
+1362	order to advance structure prediction meth-
+1363	ods; we propose a similar solution for AAS
+1364	prediction methods.
+1365	These studies suggest that AAS pre-
+1366	diction methods can provide insights into
+1367	phenotypic differences observed between
+1368	species. Because of false positive error, it
+1369	would be difﬁcult to study this on an in-
+1370	dividual gene basis. However, by grouping
+1371	genes within protein families or pathways,
+1372	it may be possible to identify pathways that
+1373	have undergone relaxed selection in certain
+1374	species.
+1375	Large-Scale Mutagenesis
+1376	Every two years, CASP releases the
+1377	sequences of proteins for which structure is
+1378	known, but not yet available to the public.
+1379	Researchers return predictions which are
+1380	then compared with known structure, and
+1381	the efﬁcacy of each prediction method is
+1382	assessed. Because investigators in the CASP
+1383	program work on the same proteins during a
+1384	speciﬁed period of time, the CASP program
+1385	offers a valuable way to summarize which
+1386	methods improve structure prediction and
+1387	this ultimately advances the ﬁeld. As auto-
+1388	mated structure prediction methods have
+1389	become increasingly successful, there is now a
+1390	server competition that runs continuously as
+1391	structures are released, with results assessed
+1392	automatically (57).
+1393	AAS prediction methods can be applied to
+1394	large-scale, reverse genetics projects, in which
+1395	mutations are introduced randomly in the
+1396	genome of an experimental organism, and to
+1397	random mutagenesis projects, when a gene
+1398	of interest is saturated with mutations (4, 22,
+1399	26, 36, 49, 51, 52, 54, 80, 85). When there
+1400	are many missense mutations in the gene(s)
+1401	of interest, assaying all missense mutations
+1402	can be expensive and time-consuming. AAS
+1403	prediction methods can be used to priori-
+1404	tize missense mutations that are most likely
+1405	to affect protein function and alter pheno-
+1406	type. TILLING is one example of a large-
+1407	scale reverse genetic strategy that uses an AAS
+1408	prediction method (SIFT) to prioritize which
+1409	missense mutations are likely to reveal a phe-
+1410	notype (26). TILLING has been applied to
+1411	a wide range of organisms: Arabidopsis, ze-
+1412	braﬁsh, maize, Drosophila, and Lotus. Because
+1413	AAS prediction methods are automated and
+1414	general, they can be widely applied to help
+1415	researchers prioritize which AAS to charac-
+1416	terize in genes of interest.
+1417	A similar server competition could be
+1418	implemented for AAS prediction. Once a
+1419	disease-associated variant is mapped, the re-
+1420	sponsible nsSNP and benign control nsSNPs
+1421	could be sent to participating servers and
+1422	the results immediately evaluated. Obtain-
+1423	ing suitable data sets is difﬁcult because each
+1424	data set has its own advantages and disadvan-
+1425	tages. For example, some of the AASs ob-
+1426	tained from patients in the OMIM database
+1427	may not necessarily be the causative vari-
+1428	ant, which will artifactually inﬂate the false
+1429	74 Ng · Henikoff
+1430	ANRV285-GG07-03 ARI 8 August 2006 1:43
+1431	function, affects structure, or which domain
+1432	or function is affected for multifunctional
+1433	enzymes.
+1434	negative error. But if one method has a higher
+1435	accuracy on both neutral and damaging data
+1436	sets, then, despite the inaccuracies of the test
+1437	sets, the prediction method can be assessed
+1438	to be better. Moreover, as genome-wide mu-
+1439	tagenesis projects generate phenotypic data
+1440	(26), more accurate data can be obtained and
+1441	tested.
+1442	Finally, the main beneﬁt of such a com-
+1443	petition is that investigators would have ac-
+1444	cess to uniﬁed prediction. Currently, CASP
+1445	manages a metaserver that collects predictions
+1446	from other servers to obtain a consensus struc-
+1447	ture. A metaserver for AAS prediction could
+1448	do the same, so that researchers studying pro-
+1449	tein variation could easily obtain a consensus
+1450	prediction, with the best accuracy available.
+1451	In addition to accuracy, AAS prediction
+1452	methods can be evaluated based on coverage.
+1453	Coverage depends on the source and version
+1454	of structure and sequence databases used. The
+1455	number of sequences and structures increase
+1456	every year so coverage is expected to increase
+1457	simply because more information is available.
+1458	The progress that has been made over the
+1459	past few years with AAS prediction meth-
+1460	ods is promising: methodology has improved
+1461	and applications have proliferated. AAS pre-
+1462	diction methods have proven successful for
+1463	Mendelian traits and may eventually play an
+1464	important role in identifying complex disease
+1465	variants. Because AASs are a source of funda-
+1466	mental changes between and within species,
+1467	AAS prediction methods will continue to be of
+1468	major importance in the future. These meth-
+1469	ods, in conjunction with those that predict
+1470	gene regulatory and splicing variants (12, 13,
+1471	15, 20, 66, 76), will guide us to a better under-
+1472	standing of functional diversity in genomes.
+1473	Most methods today offer conﬁdence
+1474	scores or an estimate of the degree to which
+1475	a substitution is damaging. One could also
+1476	test how well an AAS prediction method’s
+1477	score correlates with phenotypic severity; the
+1478	MAPP method and the method by Mooney
+1479	et al. (42, 67) have already demonstrated
+1480	promising results as their scores correlate with
+1481	phenotypic severity. AAS prediction meth-
+1482	ods could also be assessed according to their
+1483	ability to predict how the substitution affects
+1484	the protein: whether it increases or decreases
+1485	SUMMARY POINTS
+1486	1. Approximately half of the known disease-causing mutations result from amino acid
+1487	substitutions (AASs).
+1488	2. AAS prediction methods can successfully distinguish between AASs that cause
+1489	Mendelian disease and functionally neutral AASs.
+1490	3. Automated AAS prediction methods have been applied on a genome-wide scale.
+1491	4. Nonsynonymous SNPs (nsSNPs) predicted to be damaging tend to have low minor
+1492	allele frequencies, which indicates purifying selection and validates AAS prediction
+1493	methods.
+1494	5. AAS prediction methods have been applied to individual genes and predictions have
+1495	been experimentally conﬁrmed.
+1496	6. Currently, AAS prediction methods cannot distinguish between common variants
+1497	involved in common disease and normal variation.
+1498	7. AAS prediction methods can identify rare variants involved in common disease. When
+1499	putative damaging rare variants are classiﬁed by gene, disease genes can be identiﬁed.
+1500	www.annualreviews.org • Amino Acid Substitutions on Protein Function 75
+1501	ANRV285-GG07-03 ARI 8 August 2006 1:43
+1502	8. AAS prediction methods can be used on a wide range of problems, such as analysis of
+1503	interspecies differences and large-scale mutagenesis projects.
+1504	FUTURE DIRECTIONS
+1505	1. Because there are many new and improved amino acid substitution (AAS) predic-
+1506	tion methods with complementary strengths, better accuracy should be possible by
+1507	combining prediction methods. A competition similar to the Critical Assessment of
+1508	Techniques for Protein Structure Prediction (CASP) would help to evaluate progress
+1509	and identify strengths and weaknesses of prediction algorithms.
+1510	2. While the genetics community is actively engaged in discovering genetic variants
+1511	involved in complex disease, AAS prediction methods will need to be continually
+1512	reassessed and possibly redesigned for optimal prediction of complex disease-causing
+1513	variants.
+1514	3. Although AASs currently account for a large proportion of the genetic variation con-
+1515	tributing to human disease, new bioinformatics methods that evaluate gene regulatory
+1516	and splicing variants will broaden our understanding of functional variation.
+1517	ACKNOWLEDGMENTS
+1518	We thank Jorja Henikoff and Sarah Shaw Murray for manuscript comments.
+1519	LITERATURE CITED
+1520	1. Bairoch A, Apweiler R, Wu CH, Barker WC, Boeckmann B, et al. 2005. The Universal
+1521	Protein Resource (UniProt). Nucleic Acids Res. 33:D154–59
+1522	2. Deleted in proof
+1523	3. Beutler E, Vulliamy TJ. 2002. Hematologically important mutations: glucose-6-phosphate
+1524	dehydrogenase. Blood Cells Mol. Dis. 28:93–103
+1525	4. Botstein D, Risch N. 2003. Discovering genotypes underlying human phenotypes: past
+1526	successes for Mendelian disease, future approaches for complex disease. Nat. Genet.
+1527	33(Suppl.):228–37
+1528	5. Brickman TJ, Armstrong SK. 2002. Bordetella interspecies allelic variation in AlcR inducer
+1529	requirements: identiﬁcation of a critical determinant of AlcR inducer responsiveness and
+1530	construction of an alcR(Con) mutant allele. J. Bacteriol. 184:1530–39
+1531	6. Brooks-Wilson AR, Kaurah P, Suriano G, Leach S, Senz J, et al. 2004. Germline E-
+1532	cadherin mutations in hereditary diffuse gastric cancer: assessment of 42 new families and
+1533	review of genetic screening criteria. J. Med. Genet. 41:508–17
+1534	7. Cai Z, Tsung EF, Marinescu VD, Ramoni MF, Riva A, Kohane IS. 2004. Bayesian approach
+1535	to discovering pathogenic SNPs in conserved protein domains. Hum. Mutat. 24:178–84
+1536	8. Cargill M, Altshuler D, Ireland J, Sklar P, Ardlie K, et al. 1999. Characterization of single-
+1537	nucleotide polymorphisms in coding regions of human genes. Nat. Genet. 22:231–38
+1538	9. One of the first
+1539	papers to establish
+1540	structure-/
+1541	sequence-based
+1542	rules to predict
+1543	amino substitutions
+1544	that affect protein
+1545	function.
+1546	9. Chasman D, Adams RM. 2001. Predicting the functional consequences of non-
+1547	synonymous single nucleotide polymorphisms: structure-based assessment of
+1548	amino acid variation. J. Mol. Biol. 307:683–706
+1549	76 Ng · Henikoff
+1550	ANRV285-GG07-03 ARI 8 August 2006 1:43
+1551	10. An AAS
+1552	10. Cohen JC, Kiss RS, Pertsemlidis A, Marcel YL, McPherson R, Hobbs HH. 2004.
+1553	Multiple rare alleles contribute to low plasma levels of HDL cholesterol. Science
+1554	305:869–72
+1555	prediction method
+1556	predicts a
+1557	significant number
+1558	of the rare
+1559	nonsynonymous
+1560	variants found in
+1561	individuals at risk
+1562	for coronary
+1563	atherosclerosis to
+1564	be damaging. This
+1565	paper shows that
+1566	AAS prediction
+1567	methods can
+1568	distinguish the rare
+1569	variants likely to
+1570	cause common
+1571	disease from
+1572	neutral variants.
+1573	11. Collins FS, Guyer MS, Charkravarti A. 1997. Variations on a theme: cataloging human
+1574	DNA sequence variation. Science 278:1580–81
+1575	12. Conde L, Vaquerizas JM, Ferrer-Costa C, de la Cruz X, Orozco M, Dopazo J. 2005.
+1576	PupasView: a visual tool for selecting suitable SNPs, with putative pathological effect in
+1577	genes, for genotyping purposes. Nucleic Acids Res. 33:W501–5
+1578	13. Conde L, Vaquerizas JM, Santoyo J, Al-Shahrour F, Ruiz-Llorente S, et al. 2004. PupaSNP
+1579	Finder: a web tool for ﬁnding SNPs with putative effect at transcriptional level. Nucleic
+1580	Acids Res. 32:W242–48
+1581	14. del Sol Mesa A, Pazos F, Valencia A. 2003. Automatic methods for predicting functionally
+1582	important residues. J. Mol. Biol. 326:1289–302
+1583	15. Fairbrother WG, Holste D, Burge CB, Sharp PA. 2004. Single nucleotide polymorphism-
+1584	based validation of exonic splicing enhancers. PLoS Biol. 2:E268
+1585	16. Ferrer-Costa C, Gelpi JL, Zamakola L, Parraga I, de la Cruz X, Orozco M. 2005. PMUT:
+1586	a web-based tool for the annotation of pathological mutations on proteins. Bioinformatics
+1587	21:3176–78
+1588	17. Ferrer-Costa C, Orozco M, de la Cruz X. 2002. Characterization of disease-associated
+1589	single amino acid polymorphisms in terms of sequence and structure properties. J. Mol.
+1590	Biol. 315:771–86
+1591	18. Ferrer-Costa C, Orozco M, de la Cruz X. 2004. Sequence-based prediction of pathological
+1592	mutations. Proteins 57:811–19
+1593	19. Fleming MA, Potter JD, Ramirez CJ, Ostrander GK, Ostrander EA. 2003. Understanding
+1594	missense mutations in the BRCA1 gene: an evolutionary approach. Proc. Natl. Acad. Sci.
+1595	USA 100:1151–56
+1596	20. Freimuth RR, Stormo GD, McLeod HL. 2005. PolyMAPr: programs for polymorphism
+1597	database mining, annotation, and functional analysis. Hum. Mutat. 25:110–17
+1598	21. Gottlieb B, Lehvaslaiho H, Beitel LK, Lumbroso R, Pinsky L, Triﬁro M. 1998. The
+1599	Androgen Receptor Gene Mutations Database. Nucleic Acids Res. 26:234–38
+1600	22. Hainaut P, Hernandez T, Robinson A, Rodriguez-Tome P, Flores T, et al. 1998. IARC
+1601	Database of p53 gene mutations in human tumors and cell lines: updated compilation,
+1602	revised formats and new visualisation tools. Nucleic Acids Res. 26:205–13
+1603	23. Halushka MK, Fan JB, Bentley K, Hsie L, Shen N, et al. 1999. Patterns of single-nucleotide
+1604	polymorphisms in candidate genes for blood-pressure homeostasis. Nat. Genet. 22:239–47
+1605	24. Hamosh A, Scott AF, Amberger JS, Bocchini CA, McKusick VA. 2005. Online Mendelian
+1606	Inheritance in Man (OMIM), a knowledgebase of human genes and genetic disorders.
+1607	Nucleic Acids Res. 33:D514–17
+1608	25. Hardison RC, Chui DH, Giardine B, Riemer C, Patrinos GP, et al. 2002. HbVar: a
+1609	relational database of human hemoglobin variants and thalassemia mutations at the globin
+1610	gene server. Hum. Mutat. 19:225–33
+1611	26. Henikoff S, Comai L. 2003. Single-nucleotide mutations for plant functional genomics.
+1612	Annu. Rev. Plant Biol. 54:375–401
+1613	27. Herrgard S, Cammer SA, Hoffman BT, Knutson S, Gallina M, et al. 2003. Prediction of
+1614	deleterious functional effects of amino acid mutations using a library of structure-based
+1615	function descriptors. Proteins 53:806–16
+1616	28. Hirschhorn JN, Lohmueller K, Byrne E, Hirschhorn K. 2002. A comprehensive review of
+1617	genetic association studies. Genet. Med. 4:45–61
+1618	www.annualreviews.org • Amino Acid Substitutions on Protein Function 77
+1619	ANRV285-GG07-03 ARI 8 August 2006 1:43
+1620	29. Johnson MM, Houck J, Chen C. 2005. Screening for deleterious nonsynonymous single-
+1621	nucleotide polymorphisms in genes involved in steroid hormone metabolism and response.
+1622	Cancer Epidemiol. Biomarkers Prev. 14:1326–29
+1623	30. Kanetsky PA, Ge F, Najarian D, Swoyer J, Panossian S, et al. 2004. Assessment of poly-
+1624	morphic variants in the melanocortin-1 receptor gene with cutaneous pigmentation using
+1625	an evolutionary approach. Cancer Epidemiol. Biomarkers Prev. 13:808–19
+1626	31. Krishnan VG, Westhead DR. 2003. A comparative study of machine-learning methods to
+1627	predict the effects of single nucleotide polymorphisms on protein function. Bioinformatics
+1628	19:2199–209
+1629	32. Kwok CJ, Martin AC, Au SW, Lam VM. 2002. G6PDdb, an integrated database of glucose-
+1630	6-phosphate dehydrogenase (G6PD) mutations. Hum. Mutat. 19:217–24
+1631	33. Lau AY, Chasman DI. 2004. Functional classiﬁcation of proteins and protein variants. Proc.
+1632	Natl. Acad. Sci. USA 101:6576–81
+1633	34. Leabman MK, Huang CC, DeYoung J, Carlson EJ, Taylor TR, et al. 2003. Natural varia-
+1634	tion in human membrane transporter genes reveals evolutionary and functional constraints.
+1635	Proc. Natl. Acad. Sci. 100:5896–901
+1636	35. Livingston RJ, von Niederhausern A, Jegga AG, Crawford DC, Carlson CS, et al. 2004.
+1637	Pattern of sequence variation across 213 environmental response genes. Genome Res.
+1638	14:1821–31
+1639	36. Loeb DD, Swanstrom R, Everitt L, Manchester M, Stamper SE, Hutchison CA 3rd. 1989.
+1640	Complete mutagenesis of the HIV-1 protease. Nature 340:397–400
+1641	39. An early paper
+1642	that analyzed seven
+1643	disease genes and
+1644	recognized that
+1645	disease mutations
+1646	appear at positions
+1647	conserved
+1648	throughout
+1649	evolution,
+1650	indicating that
+1651	sequence-based
+1652	37. Lohmueller KE, Pearce CL, Pike M, Lander ES, Hirschhorn JN. 2003. Meta-analysis of
+1653	genetic association studies supports a contribution of common variants to susceptibility to
+1654	common disease. Nat. Genet. 33:177–82
+1655	38. Maitra A, Cohen Y, Gillespie SE, Mambo E, Fukushima N, et al. 2004. The Human Mi-
+1656	toChip: a high-throughput sequencing microarray for mitochondrial mutation detection.
+1657	Genome Res. 14:812–19
+1658	prediction possible. was 39. Miller MP, Kumar S. 2001. Understanding human disease mutations through the
+1659	use of interspecific genetic variation. Hum. Mol. Genet. 10:2319–28
+1660	45. The first AAS
+1661	prediction method
+1662	implemented on a
+1663	Web server.
+1664	40. Mooney S. 2005. Bioinformatics approaches and resources for single nucleotide polymor-
+1665	phism functional analysis. Brief. Bioinform. 6:44–56
+1666	41. Mooney SD, Altman RB. 2003. MutDB: annotating human variation with functionally
+1667	relevant data. Bioinformatics 19:1858–60
+1668	42. Mooney SD, Klein TE, Altman RB, Triﬁro MA, Gottlieb B. 2003. A functional analysis
+1669	of disease-associated mutations in the androgen receptor gene. Nucl. Acids Res. 31:e42
+1670	43. Moult J. 2005. A decade of CASP: progress, bottlenecks and prognosis in protein structure
+1671	prediction. Curr. Opin. Struct. Biol. 15:285–89
+1672	44. Mouse Genome Sequencing Consortium. 2002. Initial sequencing and comparative anal-
+1673	ysis of the mouse genome. Nature 420:520–62
+1674	45. Ng PC, Henikoff S. 2001. Predicting deleterious amino acid substitutions. Genome
+1675	Res. 11:863–74
+1676	46. Ng PC, Henikoff S. 2002. Accounting for human polymorphisms predicted to affect
+1677	protein function. Genome Res. 12:436–46
+1678	46. A
+1679	sequence-based
+1680	AAS prediction
+1681	method that
+1682	successfully
+1683	predicted
+1684	disease-causing
+1685	mutations. Because
+1686	this method does
+1687	not require protein
+1688	structure,
+1689	predictions were
+1690	obtained for a
+1691	majority of the
+1692	nsSNPs in dbSNP.
+1693	47. Ng PC, Henikoff S. 2003. SIFT: predicting amino acid changes that affect protein function.
+1694	Nucleic Acids Res. 31:3812–14
+1695	48. Olson MV. 1999. When less is more: gene loss as an engine of evolutionary change. Am.
+1696	J. Hum. Genet. 64:18–23
+1697	49. Pace HC, Kercher MA, Lu P, Markiewicz P, Miller JH, et al. 1997. Lac repressor genetic
+1698	map in real space. Trends Biochem. Sci. 22:334–39
+1699	78 Ng · Henikoff
+1700	ANRV285-GG07-03 ARI 8 August 2006 1:43
+1701	50. Patrinos GP, Giardine B, Riemer C, Miller W, Chui DH, et al. 2004. Improvements in the
+1702	HbVar database of human hemoglobin variants and thalassemia mutations for population
+1703	and sequence variation studies. Nucleic Acids Res. 32:D537–41
+1704	51. Ponting CP, Goodstadt L. 2005. Statistical genetics: usual suspects in complex disease.
+1705	Eur. J. Hum. Genet. 13:269–70
+1706	52. Pritchard JK. 2001. Are rare variants responsible for susceptibility to complex diseases?
+1707	Am. J. Hum. Genet. 69:124–37
+1708	53. Ramensky V, Bork P, Sunyaev S. 2002. Human non-synonymous SNPs: server and survey.
+1709	Nucleic Acids Res. 30:3894–900
+1710	54. Rennell D, Bouvier SE, Hardy LW, Poteete AR. 1991. Systematic mutation of bacterio-
+1711	phage T4 lysozyme. J. Mol. Biol. 222:67–88
+1712	55. Rhee SY, Gonzales MJ, Kantor R, Betts BJ, Ravela J, Shafer RW. 2003. Human immun-
+1713	odeﬁciency virus reverse transcriptase and protease sequence database. Nucleic Acids Res.
+1714	31:298–303
+1715	56. Risch N, Merikangas K. 1996. The future of genetic studies of complex human diseases.
+1716	Science 273:1516–17
+1717	57. Rychlewski L, Fischer D. 2005. LiveBench-8: the large-scale, continuous assessment of
+1718	automated protein structure prediction. Protein Sci. 14:240–45
+1719	58. Santibanez Koref MF, Gangeswaran R, Santibanez Koref IP, Shanahan N, Hancock JM.
+1720	2003. A phylogenetic approach to assessing the signiﬁcance of missense mutations in disease
+1721	genes. Hum. Mutat. 22:51–58
+1722	59. Carefully
+1723	examines the
+1724	contribution of
+1725	structure and
+1726	sequence to
+1727	prediction.
+1728	59. Saunders CT, Baker D. 2002. Evaluation of structural and evolutionary contribu-
+1729	tions to deleterious mutation prediction. J. Mol. Biol. 322:891–901
+1730	60. Sherry ST, Ward MH, Kholodov M, Baker J, Phan L, et al. 2001. dbSNP: the NCBI
+1731	database of genetic variation. Nucleic Acids Res. 29:308–11
+1732	61. Smigrodzki R, Parks J, Parker WD. 2004. High frequency of mitochondrial complex
+1733	I mutations in Parkinson’s disease and aging. Neurobiol. Aging 25:1273–81
+1734	61. Shows that AAS
+1735	prediction methods
+1736	can predict the rare
+1737	variants involved in
+1738	common disease
+1739	and the
+1740	aggregation of
+1741	these results can be
+1742	used to identify the
+1743	genes involved in
+1744	disease.
+1745	62. Stenson PD, Ball EV, Mort M, Phillips AD, Shiel JA, et al. 2003. Human Gene Mutation
+1746	Database (HGMD): 2003 update. Hum. Mutat. 21:577–81
+1747	63. Stephens JC, Schneider JA, Tanguay DA, Choi J, Acharya T, et al. 2001. Haplotype vari-
+1748	ation and linkage disequilibrium in 313 human genes. Science 293:489–93
+1749	64. Stitziel NO, Binkowski TA, Tseng YY, Kasif S, Liang J. 2004. topoSNP: a topographic
+1750	database of non-synonymous single nucleotide polymorphisms with and without known
+1751	disease association. Nucleic Acids Res. 32:D520–22
+1752	65. Stitziel NO, Tseng YY, Pervouchine D, Goddeau D, Kasif S, Liang J. 2003. Structural
+1753	location of disease-associated single-nucleotide polymorphisms. J. Mol. Biol. 327:1021–30
+1754	66. Stone EA, Cooper GM, Sidow A. 2005. Trade-offs in detecting evolutionarily constrained
+1755	sequence by comparative genomics. Annu. Rev. Genomics Hum. Genet. 6:143–64
+1756	67. Stone EA, Sidow A. 2005. Physicochemical constraint violation by missense substitutions
+1757	mediates impairment of protein function and disease severity. Genome Res. 15:978–86
+1758	68. Sunyaev S, Ramensky V, Bork P. 2000. Towards a structural basis of human non-
+1759	synonymous single nucleotide polymorphisms. Trends Genet. 16:198–200
+1760	68. One of the first
+1761	papers to establish
+1762	structure-/
+1763	sequence-based
+1764	rules to distinguish
+1765	disease mutations
+1766	from neutral amino
+1767	acid substitutions.
+1768	69. Sunyaev S, Ramensky V, Koch I, Lathe W 3rd, Kondrashov AS, Bork P. 2001. Prediction
+1769	of deleterious human alleles. Hum. Mol. Genet. 10:591–97
+1770	70. Szabo C, Masiello A, Ryan JF, Brody LC. 2000. The breast cancer information core:
+1771	database design, structure, and scope. Hum. Mutat. 16:123–31
+1772	71. Tchernitchko D, Goossens M, Wajcman H. 2004. In silico prediction of the deleterious
+1773	effect of a mutation: proceed with caution in clinical genetics. Clin. Chem. 50:1974–78
+1774	www.annualreviews.org • Amino Acid Substitutions on Protein Function 79
+1775	ANRV285-GG07-03 ARI 8 August 2006 1:43
+1776	74. An AAS
+1777	72. Terp BN, Cooper DN, Christensen IT, Jorgensen FS, Bross P, et al. 2002. Assessing the
+1778	relative importance of the biophysical properties of amino acid substitutions associated
+1779	with human genetic disease. Hum. Mutat. 20:98–109
+1780	73. Thomas PD, Campbell MJ, Kejariwal A, Mi H, Karlak B, et al. 2003. PANTHER: a library
+1781	of protein families and subfamilies indexed by function. Genome Res. 13:2129–41
+1782	74. Thomas PD, Kejariwal A. 2004. Coding single-nucleotide polymorphisms associ-
+1783	ated with complex vs. Mendelian disease: evolutionary evidence for differences in
+1784	molecular effects. Proc. Natl. Acad. Sci. USA 101:15398–403
+1785	prediction method
+1786	is applied to
+1787	common variants
+1788	implicated in
+1789	common disease
+1790	and the prediction
+1791	scores are no
+1792	different from that
+1793	of neutral variation.
+1794	The authors
+1795	conclude that
+1796	current AAS
+1797	prediction methods
+1798	may not be useful
+1799	for finding
+1800	common variants
+1801	involved in
+1802	common disease.
+1803	75. Vitkup D, Sander C, Church GM. 2003. The amino-acid mutational spectrum of human
+1804	genetic disease. Genome Biol. 4:R72
+1805	76. Wang X, Tomso DJ, Liu X, Bell DA. 2005. Single nucleotide polymorphism in transcrip-
+1806	tional regulatory regions and expression of environmentally responsive genes. Toxicol. Appl.
+1807	Pharmacol. 207:84–90
+1808	77. Wang Z, Moult J. 2001. SNPs, protein structure, and disease. Hum. Mutat. 17:263–
+1809	70
+1810	78. Wong GK-S, Yang Z, Passey DA, Kibukawa M, Paddock M, et al. 2003. A population
+1811	threshold for functional polymorphisms. Genome Res. 13:1873–79
+1812	79. Wong GK, Liu B, Wang J, Zhang Y, Yang X, et al. 2004. A genetic variation map for
+1813	chicken with 2.8 million single-nucleotide polymorphisms. Nature 432:717–22
+1814	80. Wrobel JA, Chao SF, Conrad MJ, Merker JD, Swanstrom R, et al. 1998. A genetic approach
+1815	for identifying critical residues in the ﬁngers and palm subdomains of HIV-1 reverse
+1816	transcriptase. Proc. Natl. Acad. Sci. USA 95:638–45
+1817	81. Xi T, Jones IM, Mohrenweiser HW. 2004. Many amino acid substitution variants identiﬁed
+1818	in DNA repair genes during human population screenings are predicted to impact protein
+1819	function. Genomics 83:970–79
+1820	82. Yue P, Li Z, Moult J. 2005. Loss of protein structure stability as a major causative factor
+1821	in monogenic disease. J. Mol. Biol. 353:459–73
+1822	83. Yue P, Moult J. 2005. Identiﬁcation and analysis of deleterious human SNPs. J. Mol. Biol.
+1823	356:1263–74
+1824	84. Zhang EY, Fu D-J, Pak YA, Stewart T, Mukhopadhyay N, et al. 2004. Genetic polymor-
+1825	phisms in human proton-dependent dipeptide transporter PEPT1: implications for the
+1826	functional role of Pro586. J. Pharmacol. Exp. Ther. 310:437–45
+1827	85. Zwick ME, Cutler DJ, Chakravarti A. 2000. Patterns of genetic variation in Mendelian
+1828	and complex traits. Annu. Rev. Genomics Hum. Genet. 1:387–407
+1829	77. One of the first
+1830	papers to observe
+1831	that a majority of
+1832	disease mutations
+1833	affect protein
+1834	stability and
+1835	establish
+1836	structure-based
+1837	rules that
+1838	distinguished
+1839	disease mutations
+1840	from
+1841	nonsynonymous
+1842	SNPs.
+1843	80 Ng · Henikoff
+1844	Contents ARI 8 August 2006 1:10
+1845	Annual Review of
+1846	Genomics and
+1847	Human Genetics
+1848	Volume 7, 2006
+1849	Contents
+1850	A 60-Year Tale of Spots, Maps, and Genes
+1851	1
+1852	Victor A. McKusick
+1853	Transcriptional Regulatory Elements in the Human Genome
+1854	29
+1855	Glenn A. Maston, Sara K. Evans, and Michael R. Green
+1856	Predicting the Effects of Amino Acid Substitutions on Protein
+1857	Function
+1858	61
+1859	Pauline C. Ng and Steven Henikoff
+1860	Genome-Wide Analysis of Protein-DNA Interactions
+1861	81
+1862	Tae Hoon Kim and Bing Ren
+1863	Protein Misfolding and Human Disease
+1864	103
+1865	Niels Gregersen, Peter Bross, Søren Vang, and Jane H. Christensen
+1866	The Ciliopathies: An Emerging Class of Human Genetic Disorders
+1867	125
+1868	Jose L. Badano, Norimasa Mitsuma, Phil L. Beales, and Nicholas Katsanis
+1869	The Evolutionary Dynamics of Human Endogenous Retroviral
+1870	Families
+1871	149
+1872	Norbert Bannert and Reinhard Kurth
+1873	Genetic Disorders of Adipose Tissue Development, Differentiation,
+1874	and Death
+1875	175
+1876	Anil K. Agarwal and Abhimanyu Garg
+1877	Preimplantation Genetic Diagnosis: An Overview of Socio-Ethical
+1878	and Legal Considerations
+1879	201
+1880	Bartha M. Knoppers, Sylvie Bordet, and Rosario M. Isasi
+1881	Pharmacogenetics and Pharmacogenomics: Development, Science,
+1882	and Translation
+1883	223
+1884	Richard M. Weinshilboum and Liewei Wang
+1885	Mouse Chromosome Engineering for Modeling Human Disease
+1886	247
+1887	Louise van der Weyden and Allan Bradley
+1888	v
+1889	Contents ARI 8 August 2006 1:10
+1890	The Killer Immunoglobulin-Like Receptor Gene Cluster: Tuning the
+1891	Genome for Defense
+1892	Arman A. Bashirova, Maureen P. Martin, Daniel W. McVicar,
+1893	and Mary Carrington
+1894	277
+1895	Structural and Functional Dynamics of Human Centromeric
+1896	Chromatin
+1897	301
+1898	Mary G. Schueler and Beth A. Sullivan
+1899	Prediction of Genomic Functional Elements
+1900	315
+1901	Steven J.M. Jones
+1902	Of Flies and Man: Drosophila as a Model for Human Complex Traits
+1903	339
+1904	Trudy F.C. Mackay and Robert R.H. Anholt
+1905	The Laminopathies: The Functional Architecture of the Nucleus and
+1906	Its Contribution to Disease
+1907	369
+1908	Brian Burke and Colin L. Stewart
+1909	Structural Variation of the Human Genome
+1910	407
+1911	Andrew J. Sharp, Ze Cheng, and Evan E. Eichler
+1912	Resources for Genetic Variation Studies
+1913	443
+1914	David Serre and Thomas J. Hudson
+1915	Indexes
+1916	Subject Index
+1917	Cumulative Index of Contributing Authors, Volumes 1–7
+1918	Cumulative Index of Chapter Titles, Volumes 1–7
+1919	459
+1920	477
+1921	480
+1922	Errata
+1923	An online log of corrections to Annual Review of Genomics and Human Genetics chapters
+1924	may be found at http://genom.annualreviews.org/
+1925	vi Contents

@@ -52,9 +52,41 @@ import utility.Utility;
 public class Main {
 	
 	public static void main(String[]  args) {
-		int error = runFactify(args);
+		
+//		/* sample pdf file 1 */
+//		String input_folder = "pdf\\";
+//		String pdf_file = "DOI10.1093nargkg509_SIFT.pdf";
+	//	
+//		/* sample pdf file 2 */
+//		String input_folder = "pdf\\";
+//		String pdf_file = "DOI10.1146annurev.genom.7.080505.115630_PredictingTheEffects.pdf";
+	//
+
+//		/* sample pdf file 3 */
+//		String input_folder = "pdf" + File.separator + "incorrectDOI" + File.separator;
+//		String pdf_file = "DOI(10.1126science.1240729)_BetaCaMKII_wrong_is_(10.1126science.1236501).pdf";
+		
+		/* sample pdf file 4 */
+		String input_folder = "pdf\\incorrectDOI\\";
+		String pdf_file = "DOI(10.1053j.gastro.2009.04.032)_EvidenceForTheRole_wrong_is_(10.1053j.gastro.2009.04.022).pdf";
+		
+		String[] parameters = new String[6];
+		parameters[0] = input_folder + pdf_file;
+		parameters[1] = input_folder;
+		parameters[2] = input_folder;
+		parameters[3] = "Rule_INPUT" + File.separator + "RuleMatcher.json";
+		parameters[4] = "";
+		parameters[5] = "MD5";
+		
+		System.out.println(parameters[0]);
+		System.out.println(parameters[1]);
+		System.out.println(parameters[2]);
+		System.out.println(parameters[3]);
+		System.out.println(parameters[4]);
+		System.out.println(parameters[5]);
+		
+		int error = runFactify(parameters);
 		Debug.println("Finished with errorcode " + error, DEBUG_CONFIG.debug_error);
-		//System.exit(error);//The system has to exit with code 0, otherwise zotero would see it as failed.
 	}
 	
 	/**

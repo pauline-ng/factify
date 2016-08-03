@@ -34,7 +34,7 @@ import at.knowcenter.code.pdf.PdfExtractionPipeline.PdfExtractionResult;
 public class PDFConverter {
 	
 	//private static String input_folder = "pdf\\";
-	private static String input_folder = "pdf\\incorrectDOI\\";
+	private static String input_folder = ".\\pdf\\incorrectDOI\\";
 	
 	private static String pdf_file = "DOI10.1053j.gastro.2009.04.032_EvidenceForTheRole.pdf";
 	//private static String pdf_file = "DOI10.1093nargkg509_SIFT.pdf";
