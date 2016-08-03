@@ -37,6 +37,5 @@
 	<classpathentry kind="lib" path="lib/stanford-corenlp-3.5.1-models.jar"/>
 	<classpathentry kind="lib" path="lib/stanford-corenlp-3.5.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/utility"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
