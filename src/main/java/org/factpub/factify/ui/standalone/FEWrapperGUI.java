@@ -22,7 +22,6 @@ package org.factpub.factify.ui.standalone;
 import java.io.File;
 
 import org.factpub.factify.Factify;
-import org.factpub.factify.ui.standalone.utility.FEConstants;
 import org.factpub.factify.utility.Utility;
 
 public class FEWrapperGUI implements FEConstants{

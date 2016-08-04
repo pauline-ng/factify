@@ -28,7 +28,6 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.factpub.factify.ui.standalone.gui.MainFrame;
 import org.factpub.factify.ui.standalone.network.AuthMediaWikiIdHTTP;
-import org.factpub.factify.ui.standalone.utility.FEConstants;
 
 
 public class StandaloneMain implements FEConstants {

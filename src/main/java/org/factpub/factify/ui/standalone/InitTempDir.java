@@ -31,8 +31,6 @@ import java.net.URLConnection;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.factpub.factify.ui.standalone.utility.FEConstants;
-
 public class InitTempDir implements FEConstants {
 
 	public static String makeTempDir() {
@@ -123,7 +121,7 @@ public class InitTempDir implements FEConstants {
 	                try{
 	                    fileOut.close();
 	                }catch( Exception e){}
-	            }            
+	            } 
 	        }
 			
 		} catch (MalformedURLException e) {

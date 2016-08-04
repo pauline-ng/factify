@@ -33,7 +33,7 @@ import java.util.concurrent.Semaphore;
 
 import javax.swing.table.DefaultTableModel;
 
-import org.factpub.factify.ui.standalone.utility.FEConstants;
+import org.factpub.factify.ui.standalone.FEConstants;
 import org.factpub.factify.utility.Utility;
 
 public class DNDListener implements DropTargetListener{

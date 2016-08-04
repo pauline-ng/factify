@@ -21,14 +21,18 @@ package org.factpub.factify.ui.standalone.gui;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.EventQueue;
+import java.awt.Image;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.ImageProducer;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -46,8 +50,8 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import org.factpub.factify.ui.standalone.FEConstants;
 import org.factpub.factify.ui.standalone.network.AuthMediaWikiIdHTTP;
-import org.factpub.factify.ui.standalone.utility.FEConstants;
 import org.factpub.factify.utility.Utility;
 
 public class MainFrame implements FEConstants {
@@ -110,6 +114,9 @@ public class MainFrame implements FEConstants {
 
 		ImageIcon MainIcon = new ImageIcon(getClass().getClassLoader().getResource(iconMainPath));
 		ImageIcon DropIcon = new ImageIcon(getClass().getClassLoader().getResource(iconDropPath));
+
+//		ImageIcon MainIcon = new ImageIcon(getClass().getResource("rsc" + File.separator + iconMainPath));
+//		ImageIcon DropIcon = new ImageIcon(getClass().getResource("rsc" + File.separator + iconDropPath));
 
 		frameMain.setIconImage(MainIcon.getImage());
 		frameMain.setResizable(false);

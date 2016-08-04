@@ -17,7 +17,7 @@
  */
 
 
-package org.factpub.factify.ui.standalone.utility;
+package org.factpub.factify.ui.standalone;
 
 import java.io.File;
 
@@ -42,7 +42,9 @@ public interface FEConstants {
 	static final String SERVER_RES_TITLE_BEGIN = "BEGINOFPAGETITLE:";
 	static final String SERVER_RES_TITLE_END = ":ENDOFPAGETITLE";
 	
-	static final String DIR_FE_HOME = System.getProperty("java.io.tmpdir") + "factpub";
+	//static final String DIR_FE_HOME = System.getProperty("java.io.tmpdir") + "factpub";
+	static final String DIR_FE_HOME = "factpub_uploader" + File.separator;
+
 	static final String DIR_RULE_INPUT =  DIR_FE_HOME + File.separator + "Rule_INPUT";
 	static final String DIR_JSON_OUTPUT =  DIR_FE_HOME + File.separator + "JSON";
 	

@@ -22,11 +22,11 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.util.List;
 
+import org.factpub.factify.ui.standalone.FEConstants;
 import org.factpub.factify.ui.standalone.FEWrapperGUI;
 import org.factpub.factify.ui.standalone.InitTempDir;
 import org.factpub.factify.ui.standalone.network.AuthMediaWikiIdHTTP;
 import org.factpub.factify.ui.standalone.network.PostFile;
-import org.factpub.factify.ui.standalone.utility.FEConstants;
 import org.factpub.factify.utility.Utility;
 import org.junit.Test;
 

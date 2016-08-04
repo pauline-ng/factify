@@ -48,7 +48,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.factpub.factify.ui.standalone.utility.FEConstants;
+import org.factpub.factify.ui.standalone.FEConstants;
 import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;

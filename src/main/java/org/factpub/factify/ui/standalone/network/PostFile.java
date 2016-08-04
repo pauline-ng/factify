@@ -33,7 +33,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
-import org.factpub.factify.ui.standalone.utility.FEConstants;
+import org.factpub.factify.ui.standalone.FEConstants;
 
 public class PostFile {
   public static List<String> uploadToFactpub(File file) throws Exception {

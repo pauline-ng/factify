@@ -23,9 +23,9 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
+import org.factpub.factify.ui.standalone.FEConstants;
 import org.factpub.factify.ui.standalone.FEWrapperGUI;
 import org.factpub.factify.ui.standalone.network.PostFile;
-import org.factpub.factify.ui.standalone.utility.FEConstants;
 import org.factpub.factify.utility.Utility;
 
 public class FEThread implements Runnable {

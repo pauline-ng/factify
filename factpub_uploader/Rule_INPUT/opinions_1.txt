@@ -1,0 +1,13 @@
+--version:1.0.1
+//opinions
+enjoy
+believe
+suggest
+recommend
+prefer
+favor	
+encourage
+hypothesize
+approve
+insist
+know

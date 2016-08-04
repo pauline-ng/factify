@@ -25,8 +25,8 @@ import java.net.URL;
 
 import javax.swing.JOptionPane;
 
+import org.factpub.factify.ui.standalone.FEConstants;
 import org.factpub.factify.ui.standalone.gui.MainFrame;
-import org.factpub.factify.ui.standalone.utility.FEConstants;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

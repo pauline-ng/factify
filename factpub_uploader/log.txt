@@ -1,0 +1,3 @@
+If you want to run in console, please give me arguments.
+Run in GUI mode
+java.awt.Rectangle[x=0,y=23,width=415,height=339]

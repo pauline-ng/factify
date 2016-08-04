@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.factpub.factify.Factify;
 import org.factpub.factify.ui.standalone.network.PostFile;
-import org.factpub.factify.ui.standalone.utility.FEConstants;
 import org.factpub.factify.utility.Utility;
 
 public class FEWrapperCUI implements FEConstants {
