@@ -262,6 +262,7 @@ public class Factify {
 			 JSONObject obj=new JSONObject();
 			 obj.put("type", "paper");
 			 obj.put("path", path);
+			 
 			 obj.put("doi", (pdf.doi == null ? "NULL" : pdf.doi));
 			 factsToOutput.add(obj);
 			 {

@@ -64,10 +64,8 @@ public class FactifyChromeMain{
 		String DIR_TMP = "factify";
 
 		if(productionMode == true){
-			
 			FILE_LOG = true;
 			setLog(FILE_LOG);
-				
 		}
 		
 		showGUI();

@@ -1,2 +1,7 @@
 eclipse.preferences.version=1
 encoding//src/main/java/org/factpub/factify/ui/extension/chrome/FactifyChromeMain.java=UTF-8
+encoding//src/main/java/org/factpub/factify/ui/standalone/InitTempDir.java=UTF-8
+encoding//src/main/java/org/factpub/factify/ui/standalone/StandaloneMain.java=UTF-8
+encoding//src/main/java/org/factpub/factify/ui/standalone/gui/DNDListener.java=UTF-8
+encoding//src/main/java/org/factpub/factify/ui/standalone/gui/FEThread.java=UTF-8
+encoding//src/main/java/org/factpub/factify/ui/standalone/gui/MainFrame.java=UTF-8
