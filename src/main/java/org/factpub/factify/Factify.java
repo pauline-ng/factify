@@ -114,7 +114,6 @@ public class Factify {
 	
 	public static int runFactify(String...args) {
 		
-
 		/*
 		 * Step0-0: Check JRE version
 		 */
@@ -192,7 +191,6 @@ public class Factify {
 			}
 			else fact_file = args[5];
 		}
-		JSONArray factsToOutput = new JSONArray();
 		
 		
 		/*
@@ -259,6 +257,7 @@ public class Factify {
 		/*
 		 * Step4: Create JSON object as an output. 
 		 */
+		JSONArray factsToOutput = new JSONArray();
 		{
 			 JSONObject obj=new JSONObject();
 			 obj.put("type", "paper");

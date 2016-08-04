@@ -388,4 +388,26 @@ public class Utility {
 		    	return null;
 			}
 	}
+	
+	public static String getSuffix(String fileName) {
+	    if (fileName == null)
+	        return null;
+	    int point = fileName.lastIndexOf(".");
+	    if (point != -1) {
+	        return fileName.substring(point + 1);
+	    }
+	    return fileName;
+	}
+	
+	public static String getFileNameMD5(String file_path) {
+		File file = new File(file_path);
+		String fileNameMD5 = getFileNameMD5(file);
+		return fileNameMD5;
+	}
+	
+	public static String getFileNameMD5(File file){
+		Utility util = new Utility();
+		String fileNameMD5 = util.MD5(file.getPath()) + "_facts.json";
+		return fileNameMD5;
+	}
 }
