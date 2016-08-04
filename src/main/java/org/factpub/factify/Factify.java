@@ -38,8 +38,8 @@ import org.factpub.factify.pattern.NGrams;
 import org.factpub.factify.pattern.RootMatcher;
 import org.factpub.factify.pdf.converter.PDFConverter;
 import org.factpub.factify.utility.Debug;
-import org.factpub.factify.utility.Utility;
 import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
+import org.factpub.factify.utility.Utility;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -262,8 +262,18 @@ public class Factify {
 			 JSONObject obj=new JSONObject();
 			 obj.put("type", "paper");
 			 obj.put("path", path);
+			 			 
 			 
-			 obj.put("doi", (pdf.doi == null ? "NULL" : pdf.doi));
+			 /*
+			  * Modified by Sun SAGONG on 04AUG2016
+			  * Print ArrayList<String> doi without the brackets [ ], which are printed by default.  
+			  * 
+			  */
+			 
+			 //obj.put("doi", (pdf.doi == null ? "NULL" : pdf.doi));
+			 obj.put("doi", (pdf.doi == null ? "NULL" : pdf.doi.toString().substring(1, pdf.doi.toString().length() - 1)));
+			 
+			 
 			 factsToOutput.add(obj);
 			 {
 				 HashMap<String, String> acronyms_string = new HashMap<String,String>();
