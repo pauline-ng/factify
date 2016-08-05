@@ -63,8 +63,8 @@ public class Factify {
 //		String pdf_file = "DOI10.1093nargkg509_SIFT.pdf";
 	//	
 //		/* sample pdf file 2 */
-//		String input_folder = "pdf\\";
-//		String pdf_file = "DOI10.1146annurev.genom.7.080505.115630_PredictingTheEffects.pdf";
+		String input_folder = "pdf\\";
+		String pdf_file = "DOI10.1146annurev.genom.7.080505.115630_PredictingTheEffects.pdf";
 	//
 
 //		/* sample pdf file 3 */
@@ -72,8 +72,8 @@ public class Factify {
 //		String pdf_file = "DOI(10.1126science.1240729)_BetaCaMKII_wrong_is_(10.1126science.1236501).pdf";
 		
 		/* sample pdf file 4 */
-		String input_folder = "pdf" + File.separator + "incorrectDOI" + File.separator;
-		String pdf_file = "DOI(10.1053j.gastro.2009.04.032)_EvidenceForTheRole_wrong_is_(10.1053j.gastro.2009.04.022).pdf";
+//		String input_folder = "pdf" + File.separator + "incorrectDOI" + File.separator;
+//		String pdf_file = "DOI(10.1053j.gastro.2009.04.032)_EvidenceForTheRole_wrong_is_(10.1053j.gastro.2009.04.022).pdf";
 		
 		String[] parameters = new String[6];
 		parameters[0] = input_folder + pdf_file;
@@ -270,8 +270,9 @@ public class Factify {
 			  * 
 			  */
 			 
-			 //obj.put("doi", (pdf.doi == null ? "NULL" : pdf.doi));
-			 obj.put("doi", (pdf.doi == null ? "NULL" : pdf.doi.toString().substring(1, pdf.doi.toString().length() - 1)));
+			 System.out.println(pdf.doi);
+			 obj.put("doi", (pdf.doi == null ? "NULL" : pdf.doi));
+			 //obj.put("doi", (pdf.doi == null ? "NULL" : pdf.doi.toString().substring(1, pdf.doi.toString().length() - 1)));
 			 
 			 
 			 factsToOutput.add(obj);
