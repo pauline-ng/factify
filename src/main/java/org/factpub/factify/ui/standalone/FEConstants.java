@@ -34,7 +34,7 @@ public interface FEConstants {
 	
 	static final int MAX_THREADS = 2;
 	
-	static final String STATUS_UPLOADING = "Uploading...";
+	static final String STATUS_UPLOADING = "Sending facts to factpub.org...";
 	static final String STATUS_UPLOAD_DONE = "Upload Success!";
 	static final String STATUS_UPLOAD_FAILED = "Failed to upload.";
 	
