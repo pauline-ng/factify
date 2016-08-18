@@ -22,34 +22,38 @@ import java.io.IOException;
 
 import org.apache.commons.cli.ParseException;
 import org.factpub.factify.Factify;
-import org.factpub.factify.ui.extension.chrome.FactifyChromeMain;
+//import org.factpub.factify.ui.extension.chrome.FactifyChromeMain;
 //import org.factpub.factify.ui.extension.chrome.FactifyFirefoxMain;
-import org.factpub.factify.ui.standalone.StandaloneMain;
 
 public class Main {
 	public static void main(String[] args) throws IOException, ParseException{
 		
-		if(args.length > 0){
-			switch(args[0]){
-				case "chrome": FactifyChromeMain.main(args);
-					break;
-					
-				/*
-				 * Added on 04Aug2016
-				 * This launch the FactifyFirefoxMain, which will be implemented with Firefox extension.
-				 */
-//				case "firefox": FactifyFirefoxMain.main(args);
-
-				case "firefox": FactifyChromeMain.main(args);
-					break;
-			}
-		}else{
-			
-//			if(!(Factify.runFactify(args) == 1)){
-//				
+		
+		Factify.runFactify(args);
+				
+//		if(args.length > 0){
+//			switch(args[0]){			
+//				case "chrome": FactifyChromeMain.main(args);
+//					break;
+//					
+//				/*
+//				 * Added on 04Aug2016
+//				 * This launch the FactifyFirefoxMain, which will be implemented with Firefox extension.
+//				 */
+////				case "firefox": FactifyFirefoxMain.main(args);
+//
+//				case "firefox": FactifyChromeMain.main(args);
+//					break;
 //			}
-			
-			StandaloneMain.main(args);
-		}
+//		}else{
+//			
+////			if(!(Factify.runFactify(args) == 1)){
+////				
+////			}
+//			
+//			//Separate GUI stand alone codes on 18Aug2016
+//			//StandaloneMain.main(args);
+//		}
+		
 	}
 }

@@ -48,7 +48,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.factpub.factify.ui.standalone.FEConstants;
 import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -413,29 +412,4 @@ public class Utility {
 		return fileNameMD5;
 	}
 	
-	public static String getAnnouncement(){
-		
-		// Announcement check
-		ArrayList<String> contentList = null;
-		String content = null;
-		// Check if Announcement is available.
-		try {
-			URL url = new URL(FEConstants.SERVER_ANNOUNCEMENT);
-			BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-			String line;
-			contentList = new ArrayList<String>();
-			while ((line = in.readLine()) != null) {
-				contentList.add(line);
-			}
-			in.close();
-			content = StringUtils.join(contentList, " ");
-		} catch (MalformedURLException e) {
-			content = "NA";
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			content = "Cannot connect to the factpub server.";
-		}
-
-		return content;		
-	}
 }
