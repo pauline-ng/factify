@@ -47,7 +47,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -407,8 +406,7 @@ public class Utility {
 	}
 	
 	public static String getFileNameMD5(File file){
-		Utility util = new Utility();
-		String fileNameMD5 = util.MD5(file.getPath()) + "_facts.json";
+		String fileNameMD5 = getFileNameMD5(file.getPath()) + "_facts.json";
 		return fileNameMD5;
 	}
 	
