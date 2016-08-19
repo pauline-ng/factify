@@ -406,7 +406,7 @@ public class Utility {
 	}
 	
 	public static String getFileNameMD5(File file){
-		String fileNameMD5 = getFileNameMD5(file.getPath()) + "_facts.json";
+		String fileNameMD5 = MD5(file.getPath()) + "_facts.json";
 		return fileNameMD5;
 	}
 	
