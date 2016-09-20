@@ -1,6 +1,34 @@
-# Source code of the following paper:
+# Factify
 
-Enabling Public Access to Non-Open Access Biomedical Literature via Idea-Expression Dichotomy and Fact Extraction 
-Xiaocheng Huang, Pauline Ng* 
+Factify is the Java core fact extraction module as a part of [FactPub project](http://factpub.org/).
 
-AAAI on Artificial Intelligence: Scholarly Big Data: AI Perspectives, Challenges, and Ideas, 2016
+Requirement
+-----------
+
+[Java Version 1.8+](java.com/download/)
+
+Build (eclipse)
+---------------
+
+*  git clone https://github.com/happybelly/factify.git
+*  (or download ZIP from the green button above right on this page and expand somewhere on your machine.)
+*  eclipse: [file] -> [import] -> [Existing Projects into Workspace] -> [Select root directory: the downloaded folder] -> [Run]
+
+About FactPub
+-------------
+
+![FactPub](http://factpub.org/img/logo_factpub.png)
+
+[FactPub](http://factpub.org/) is the project help scientific facts accessible to general public in legal manner.
+
+Publications
+------------
+
+* [Breaking Down Paywalls for Online Health(Pauline Ng, Xiaocheng Huang, Sun Sagong and Lucas Tan: Healthcare Data Science , ODSC East 2016)](https://www.opendatascience.com/conferences/pauline-ng-breaking-down-paywalls-for-online-health/)
+
+* [Enabling Public Access to Non-Open Access Biomedical Literature via Idea-Expression Dichotomy and Fact Extraction (Huang Xiaocheng & Pauline Ng - AAAI on Artificial Intelligence: Scholarly Big Data: AI Perspectives, Challenges, and Ideas, 2016)](http://www.aaai.org/ocs/index.php/WS/AAAIW16/paper/viewPaper/12557)
+
+License
+-------
+
+The content of this repository is licensed under [GNU GPLv3](http://choosealicense.com/licenses/gpl-3.0/)
