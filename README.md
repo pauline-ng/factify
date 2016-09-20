@@ -19,7 +19,7 @@ About FactPub
 
 ![FactPub](http://factpub.org/img/logo_factpub.png)
 
-[FactPub](http://factpub.org/) is the project help scientific facts accessible to general public in legal manner.
+[FactPub](http://factpub.org/) is the project that helps scientific facts accessible to general public in legal manner.
 
 Publications
 ------------
