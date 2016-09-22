@@ -23,6 +23,7 @@ About FactPub
 
 Publications
 ------------
+* [FactPub: the open-access web platform for academic paper contents (Sun Sagong, Xiaocheng Huang, Lucas Tan and Pauline Ng, International Conference on Bioinformatics 2016)](http://incob16.apbionet.org/index.php/conference-schedule/)
 
 * [Breaking Down Paywalls for Online Health(Pauline Ng, Xiaocheng Huang, Sun Sagong and Lucas Tan: Healthcare Data Science , ODSC East 2016)](https://www.opendatascience.com/conferences/pauline-ng-breaking-down-paywalls-for-online-health/)
 
