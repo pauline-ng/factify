@@ -63,11 +63,4 @@ public interface FEConstants {
 	static final String PAGE_CREATED = "http://" + IP_ADDRESS + "/wiki/index.php/";
 	static final String PAGE_REGISTER = "http:/" + IP_ADDRESS + "/wiki/index.php?title=Special:UserLogin&returnto=FactPub&type=signup";
 
-//	static final String FE_STATUS_CODE_MINUS_1 = "Input parameter error";
-//	static final String FE_STATUS_CODE_0 = "Input file not exist";
-//	static final String FE_STATUS_CODE_1 = "Uploading...";
-//	static final String FE_STATUS_CODE_2 = "PDF Converter Failed";
-//	static final String FE_STATUS_CODE_3 = "PDF Converter Succeeded, but no body text (or section heading";
-//	static final String FE_STATUS_CODE_4 = "Facts Exists";
-		
 }

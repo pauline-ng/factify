@@ -71,45 +71,154 @@ public class FactifyChromeMain{
 		showGUI();
 		
 		/*
-		 * Step1: Get PDF URL from extension.
+		 * Step1: receiveMsgFromChrome: get saved PDF path.
 		 */
 		
-		String savedPDFPath = step1();
-				
+		String msgJson = null;
+		if(productionMode == true){
+			
+			try{
+				while(true){
+							msgJson = receiveMessage();
+							if(!msgJson.isEmpty()) break;					
+				}
+				showDebug("Received Message from Chrome");
+			}catch(Exception e){
+				showDebug("[Error] Receiving Message Failed.");
+			}
+			
+		}else{
+//		msgJson = "{\"size\":3 ,\"pdf\":{\"0\":37,\"1\":80,\"2\":68}}";
+//		
+		msgJson = "{\"pdf\":\"https://faculty.washington.edu/wjs18/cSNPs/SIFT1.pdf\"}";
+		}		
+		
+		String savedPDFPath = null;
+		String pdfObjData = null;
+		int pdfObjSize = 0;
+		
+		String factpubId = "anonymous";
+		try{
+			// pre-processing to extract valuables
+			System.out.println("msgJson: " + msgJson);
+			
+			JsonElement msgElm = new JsonParser().parse(msgJson);
+			System.out.println("msgElm: " + msgElm.toString());
+			
+			JsonObject msgObj = msgElm.getAsJsonObject();
+		    System.out.println("msgObj: " + msgObj.toString());
+		    
+		    // pdfUrl
+		    JsonElement urlElm = msgObj.get("pdfUrl");
+		    String urlStr = urlElm.toString().replace('"',' ');
+		    String pdfName = urlStr.toString().replace(':','_').replace('/','_').replace('?', '_').replace(' ', '_') + ".pdf";
+		    savedPDFPath = pdfName;
+		    showDebug("The PDF file name: " + pdfName);
+		    
+		    // pdfSize
+		    pdfObjSize = msgObj.get("pdfSize").getAsInt();
+		    showDebug("The PDF file size: " + pdfObjSize + " Bytes");
+		    
+		    // pdfData
+		    JsonElement pdfElm = msgObj.get("pdfData");
+		    pdfObjData = pdfElm.toString().replace('"',' ');
+	   		
+		    // factpubId
+		    factpubId = msgObj.get("factpubId").getAsString();
+		    showDebug("The factpub ID: " + factpubId.toString());
+		    
+		    // notifId
+		    String notifId = msgObj.get("notifId").getAsString();
+		    showDebug("The notifId: " + notifId.toString());
+		    
+		    
+		    Gson gson = new Gson();
+		    Type type = new TypeToken<Map<String, Byte>>(){}.getType();
+		    Map<String, Byte> pdfByteMap = gson.fromJson(pdfObjData, type);
+		    
+			
+			byte[] bufferedArray = new byte[pdfObjSize];
+			
+			int i = 0;
+			for (String key : pdfByteMap.keySet()) {
+			  bufferedArray[i] = pdfByteMap.get(key);
+			  i++;
+	        }
+			
+			ByteArrayInputStream in = new ByteArrayInputStream(bufferedArray);
+					
+			// start forming PDF from the binary.			
+			FileOutputStream fileOutStm = null;
+			try {
+				fileOutStm = new FileOutputStream(savedPDFPath);
+			} catch (FileNotFoundException e1) {
+				System.err.println("[Error] File does not exist");
+				showDebug("[Error] File does not exist");
+			}
+			try {
+				fileOutStm.write(bufferedArray);
+			} catch (IOException e) {
+				System.err.println("[Error] Stream error");
+				showDebug("[Error] Stream error");
+			}
+		   
+		    		    
+		}catch(Exception e){
+			showDebug("[Error] Message extraction failed.");
+		}
+		
+		
 		/*
 		 * Step2: Creating temporal folder in the same directory to this program.
 		 */
 		
-		String dirTmp = step2(DIR_TMP);
-		
-		/*
-		 * Step2_1: Download Rule_INPUT files and save under the temporal folder.
-		 */
-		
-		String dirRuleInput = step2_1(DIR_TMP);
-		
-		/*
-		 * Step3: Retrieve PDF file from the URL and save into the folder created.
-		 */
-		
-		sendMessage("Step3 is dummy");
-		//String savedPDFPath = step3(pdf);
-		
-		// get saved PDF that is saved by the extension in tmp folder
-		//String savedPDFPath = step3_1(url);
-		
-		/*
-		 * Step4: Perform Factify and save JSON output.
-		 */
-		
-		String savedJSONPath = step4(savedPDFPath, DIR_TMP);
+		try{			
+			
+			File tmpDir = new File(DIR_TMP);
+			deleteFiles(tmpDir);
+			if(!tmpDir.exists()){
+				tmpDir.mkdirs();
+			}
+			
+			showDebug("Working folder: " + tmpDir.getCanonicalPath() + " is created.");
 
+			if(RuleInput.downloadRuleInputZip(DIR_TMP)){
+				showDebug("RuleInput.zip is downloaded");
+			}else{
+				showDebug("[Error] failed to download RuleInput.zip");
+			}
+
+		}catch(Exception e){
+			showDebug("[Error] Failed to create tmp folder");
+		}
+		
+		
 		/*
+		 * Step3: runFactify: Perform Factify and save JSON output.
+		 */
+		
+		File savedPDF = new File(savedPDFPath);
+		showDebug("Start running Factify...");
+		String savedJSONPath = FactifyWrapper.runFactify(savedPDF, DIR_TMP);		
+		showDebug("Factify outputs: " + new File(savedJSONPath).getAbsolutePath());
+
+		/*io]90i
 		 * Step5: Upload JSON file to factpub.org - serverRequestHandler.go
 		 */
 		
-		step5(savedJSONPath);
+		try{
+
+			File savedJSON = new File(savedJSONPath);
+			showDebug("Sending facts: " + savedJSON.getCanonicalPath());
+			
+			String pageURL = "null";
 		
+			pageURL = PostFile.uploadToFactpub(savedJSON, factpubId);
+			showDebug(pageURL);
+			
+		}catch(Exception e){
+			showDebug("[Error] Failed to upload JSON");
+		}
 	}
 
 	private static void setLog(boolean flag) {
@@ -131,186 +240,23 @@ public class FactifyChromeMain{
 		}
 		
 	}
-
-	private static String step1() throws IOException {
-		// TODO Auto-generated method stub
-		sendMessage("Step1 has started! - Get serialized PDF from extension.");
-
-		String msgJson = null;
-		if(productionMode == true){
-			while(true){
-						msgJson = receiveMessage();
-						if(!msgJson.isEmpty()) break;					
-			}
-		}else{
-//		msgJson = "{\"size\":3 ,\"pdf\":{\"0\":37,\"1\":80,\"2\":68}}";
-//		
-		msgJson = "{\"pdf\":\"https://faculty.washington.edu/wjs18/cSNPs/SIFT1.pdf\"}";
-		}		
-
-		//sendMessage(msgJson);
-		sendMessage("pdfObject extraction start!");
-		System.out.println("msgJson: " + msgJson);
-		
-		JsonElement msgElm = new JsonParser().parse(msgJson);
-		System.out.println("msgElm: " + msgElm.toString());
-		
-		JsonObject msgObj = msgElm.getAsJsonObject();
-	    System.out.println("msgObj: " + msgObj.toString());
-	    
-
-	    /*
-	     *  For Name of PDF File.
-	     */
-	    JsonElement urlElm = msgObj.get("responseURL");
-	    String urlStr = urlElm.toString().replace('"',' ');
-	    String pdfName = urlStr.toString().replace(':','_').replace('/','_').replace('?', '_').replace(' ', '_') + ".pdf";
-	    String pdfSavedPath = pdfName;
-	    sendMessage("The PDF file name: " + pdfName);
-	    
-	    
-	    /*
-	     *  For Size of PDF File.
-	     */
-	    int pdfObjSize = msgObj.get("size").getAsInt();
-	    sendMessage("The PDF file size: " + pdfObjSize + " Bytes");
-	    
-	    
-	    
-	    /*
-	     *  For Data of PDF File. 
-	     */
-	    JsonElement pdfElm = msgObj.get("pdf");
-	    String pdfObjData = pdfElm.toString().replace('"',' ');
-   		
-	    //System.out.println(pdfObjData);
-	    
-	    sendMessage("pdfObject extraction done!");
-	    
-	    
-	    Gson gson = new Gson();
-	    Type type = new TypeToken<Map<String, Byte>>(){}.getType();
-	    Map<String, Byte> pdfByteMap = gson.fromJson(pdfObjData, type);
-	    
-		sendMessage("pdf: is extracted!");
-		
-		byte[] bufferedArray = new byte[pdfObjSize];
-		
-		int i = 0;
-		for (String key : pdfByteMap.keySet()) {
-		  bufferedArray[i] = pdfByteMap.get(key);
-		  i++;
-        }
-		
-		ByteArrayInputStream in = new ByteArrayInputStream(bufferedArray);
-				
-		sendMessage("start forming PDF from the binary.");
-		
-		FileOutputStream fileOutStm = null;
-		try {
-			fileOutStm = new FileOutputStream(pdfSavedPath);
-		} catch (FileNotFoundException e1) {
-			System.out.println("File does not exist!");
-		}
-		try {
-			fileOutStm.write(bufferedArray);
-		} catch (IOException e) {
-			System.out.println("stream error!");
-		}
-		
-		//Files.write(Paths.get("C:\\Users\\suns1\\Desktop\\127.0.0.1\\extensions_dev\\factify_chrome_extension\\host\\java\\factifyLog.pdf"), pdf);
-		
-		sendMessage("Step1 is done!");
-
-		return pdfSavedPath;		
-	}
 	
-	private static String step2(String dirTmp) throws IOException {
-		// TODO Auto-generated method stub
-		sendMessage("Step2 has started! - Creating temporal folder in the same directory to this program.");
-		sendMessage("Working Folder: " + dirTmp);
-		
-		String result = null;
-	
-		File tmpDir = new File(dirTmp);
-		deleteFiles(tmpDir);
-		if(!tmpDir.exists()){
-			tmpDir.mkdirs();
-		}
-		result = tmpDir.getAbsolutePath();
-		
-		//sendMessage(path);
-		
-		sendMessage("Step2 is done!");
-		return result;
-	}
-
-	private static String step2_1(String dirTmp) throws IOException {
-		// TODO Auto-generated method stub
-		
-		String result = null;
-		if(RuleInput.downloadRuleInputZip(dirTmp)){
-			sendMessage("downloading RuleInput.zip success!");
-		}else{
-			sendMessage("failed to download RuleInput.zip");
+	private static void sendMsgToExtension(int num_step, String msg){
+		try{
+			
+		    updateTextPane(msg);
+		    
+		    System.out.write(getBytes(msg.length()));
+		    updateTextPane(getBytes(msg.length()).toString());
+		    
+		    System.out.write(msg.getBytes("UTF-8"));
+		    updateTextPane(msg.getBytes("UTF-8").toString());
+		    
+		    System.out.flush();
+		}catch(IOException e){
+			showDebug("[Error] Sending Messages to Extention failed: " + e.toString());
 		}
 		
-		return result;
-	}
-	
-	private static String step3(String pdfUrl) throws IOException {
-		// TODO Auto-generated method stub
-		sendMessage("Step3 has started! - Retrieve PDF file from the URL and save into the folder created");
-
-		URL url = new URL(pdfUrl); // Download URL
-		URLConnection conn = url.openConnection();
-		InputStream in = conn.getInputStream();
-
-		Path path = Paths.get(url.getPath());
-
-		File file = new File(FEConstants.DIR_JSON_OUTPUT + File.separator + path.getFileName()); // Save Destination 
-		FileOutputStream out = new FileOutputStream(file, false);
-		int b;
-		while((b = in.read()) != -1){
-		    out.write(b);
-		}
-
-		out.close();
-		in.close();
-		
-		sendMessage("Step3 is done!");
-		
-		return file.getAbsolutePath();
-
-	}
-	
-	private static String step4(String savedPDFPath, String dirTmp) throws IOException {
-		// TODO Auto-generated method stub
-		sendMessage("Step4 has started! - Perform Factify and save JSON output.");
-		
-		File savedPDF = new File(savedPDFPath);
-		String savedJSONPath = FactifyWrapper.runFactify(savedPDF, dirTmp);
-		
-		sendMessage("Step4 is done!");
-		
-		return savedJSONPath;
-	}
-
-	private static void step5(String savedJSONPath) throws IOException {
-		// TODO Auto-generated method stub
-		sendMessage("Step5 has started! - Upload JSON file to factpub.org - serverRequestHandler.go");
-		
-		File savedJSON = new File(savedJSONPath);
-		
-		try {
-			String pageURL = PostFile.uploadToFactpub(savedJSON);
-			sendMessage(pageURL);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		sendMessage("Step5 is done!");
 	}
 
 	static public String receiveMessage(){
@@ -339,15 +285,8 @@ public class FactifyChromeMain{
 		
 	}
 		
-	static public void sendMessage(String text) throws IOException {
-		// TODO Auto-generated method stub
-		
-	    JsonObject  msgObj =  new JsonParser().parse("{\"native\": \"" + text + "\"}").getAsJsonObject();
-	    updateTextPane(msgObj.toString());
-	    
-	    System.out.write(getBytes(msgObj.toString().length()));
-	    System.out.write(msgObj.toString().getBytes("UTF-8"));
-	    System.out.flush();
+	static public void showDebug(String text){
+		updateTextPane(text);
 	}
 	
 	public static int getInt(byte[] bytes) {
@@ -411,7 +350,7 @@ public class FactifyChromeMain{
 		frameMain = new JFrame();
 		frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameMain.setBounds(100, 100, 987, 456);
-		frameMain.setTitle("PoC for extension");
+		frameMain.setTitle("Factify Chrome Host Program [Debug Window]");
 		frameMain.getContentPane().setLayout(null);
 		
 		textField = new JTextField();
@@ -427,12 +366,7 @@ public class FactifyChromeMain{
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				try {
-					sendMessage("{\"text\":\"" + textField.getText() + "\"}");
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}      
+				sendMsgToExtension(123, textField.getText());
 			}
 		});
 		btnNewButton.setBounds(838, 386, 105, 23);

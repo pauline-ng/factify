@@ -35,9 +35,7 @@ import org.apache.http.util.EntityUtils;
 
 public class PostFile {
 	
-	public static String authorizedUserName = "anonymous";
-	
-	public static String uploadToFactpub(File file) throws Exception {
+	public static String uploadToFactpub(File file, String authorizedUserName) throws Exception {
 	List<String> status = new ArrayList<String>();
 	int i = 0;
 	
