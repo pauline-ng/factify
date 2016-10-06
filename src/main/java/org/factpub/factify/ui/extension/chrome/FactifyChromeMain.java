@@ -24,14 +24,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Type;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -63,13 +59,20 @@ public class FactifyChromeMain{
 		String DIR_JAR = "";
 		String DIR_TMP = "factify";
 
+
 		if(productionMode == true){
+
+			// After everything is done.
+			frameMain.setVisible(true);
 			FILE_LOG = true;
 			setLog(FILE_LOG);
 		}
 		
 		showGUI();
 		
+		
+		
+		sendMsgToExtension("url", "http://factpub.org");
 		/*
 		 * Step1: receiveMsgFromChrome: get saved PDF path.
 		 */
@@ -77,15 +80,11 @@ public class FactifyChromeMain{
 		String msgJson = null;
 		if(productionMode == true){
 			
-			try{
 				while(true){
 							msgJson = receiveMessage();
 							if(!msgJson.isEmpty()) break;					
 				}
 				showDebug("Received Message from Chrome");
-			}catch(Exception e){
-				showDebug("[Error] Receiving Message Failed.");
-			}
 			
 		}else{
 //		msgJson = "{\"size\":3 ,\"pdf\":{\"0\":37,\"1\":80,\"2\":68}}";
@@ -130,7 +129,7 @@ public class FactifyChromeMain{
 		    // notifId
 		    String notifId = msgObj.get("notifId").getAsString();
 		    showDebug("The notifId: " + notifId.toString());
-		    
+		    frameMain.setTitle("Factify Chrome Host Program [Debug Window] : " + notifId);
 		    
 		    Gson gson = new Gson();
 		    Type type = new TypeToken<Map<String, Byte>>(){}.getType();
@@ -165,6 +164,7 @@ public class FactifyChromeMain{
 		    		    
 		}catch(Exception e){
 			showDebug("[Error] Message extraction failed.");
+			sendMsgToExtension("error", "Message extraction failed.");
 		}
 		
 		
@@ -198,7 +198,7 @@ public class FactifyChromeMain{
 		 */
 		
 		File savedPDF = new File(savedPDFPath);
-		showDebug("Start running Factify...");
+		showDebug("Start running Factify. It will take for a while...");
 		String savedJSONPath = FactifyWrapper.runFactify(savedPDF, DIR_TMP);		
 		showDebug("Factify outputs: " + new File(savedJSONPath).getAbsolutePath());
 
@@ -214,7 +214,9 @@ public class FactifyChromeMain{
 			String pageURL = "null";
 		
 			pageURL = PostFile.uploadToFactpub(savedJSON, factpubId);
-			showDebug(pageURL);
+			showDebug("Generated Page URL: " + pageURL);
+			
+			sendMsgToExtension("url", pageURL);
 			
 		}catch(Exception e){
 			showDebug("[Error] Failed to upload JSON");
@@ -241,16 +243,67 @@ public class FactifyChromeMain{
 		
 	}
 	
-	private static void sendMsgToExtension(int num_step, String msg){
+	private static void sendMsgToExtension(String item, String msg){
 		try{
-			
-		    updateTextPane(msg);
 		    
-		    System.out.write(getBytes(msg.length()));
-		    updateTextPane(getBytes(msg.length()).toString());
+		    //JsonParser parser = new JsonParser();
+		    //String msgJson = parser.parse("{\"" + item + "\": \"" + msg + "\"}").getAsString();
 		    
-		    System.out.write(msg.getBytes("UTF-8"));
-		    updateTextPane(msg.getBytes("UTF-8").toString());
+			String msgJson = "{\"" + item + "\" : \"" + msg + "\"}";
+		    showDebug(msgJson);
+		    showDebug("Message Length:" + msgJson.length());
+		    
+//			[C implementation]
+//		    int main(int argc, char* argv[]) {
+//		        // Define our message
+//		        char message[] = "{\"text\": \"This is a response message\"}";
+//		        // Collect the length of the message
+//		        unsigned int len = strlen(message);
+//		        // We need to send the 4 bytes of length information
+//		        printf("%c%c%c%c", (char) (len & 0xff),
+//		                           (char) ((len>>8) & 0xFF),
+//		                           (char) ((len>>16) & 0xFF),
+//		                           (char) ((len>>24) & 0xFF));
+//		        // Now we can output our message
+//		        printf("%s", message);
+//		        return 0;
+//		    }
+		    
+//			[C++ implementation]		    
+//		    int main(int argc, char* argv[]) {
+//		        // Define our message
+//		        std::string message = "{\"text\": \"This is a response message\"}";
+//		        // Collect the length of the message
+//		        unsigned int len = message.length();
+		    
+		    // We need to send the 4 bytes of length information
+//		        std::cout << char(((len>>0) & 0xFF))
+//		                  << char(((len>>8) & 0xFF))
+//		                  << char(((len>>16) & 0xFF))
+//		                  << char(((len>>24) & 0xFF));
+//		        
+		    // Now we can output our message
+//		        std::cout << message;
+//		        return 0;
+//		    }
+		    
+
+		    // We need to send the 4 bytes of length information
+		    System.out.write((byte) msgJson.length());
+		    System.out.write((byte) 0);
+		    System.out.write((byte) 0);
+		    System.out.write((byte) 0);
+		    
+		    //updateTextPane(getBytes(msgJson.length()).toString());
+
+		    // We need to send the 4 bytes of length information
+		    //System.out.write(msgJson.getBytes("UTF-8"));
+		    for(int i = 0; i < msgJson.length() ; i++){
+		    	System.out.append(msgJson.charAt(i));
+		    }
+//		    System.out.write(msgJson.getBytes("UTF-8"));
+		    
+		    updateTextPane(msgJson.getBytes("UTF-8").toString());
 		    
 		    System.out.flush();
 		}catch(IOException e){
@@ -279,7 +332,7 @@ public class FactifyChromeMain{
 		}catch (IOException e){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			updateTextPane("error occured!");
+			updateTextPane("[Error] Unable to read message from Extension.");
 			return null;
 		}
 		
@@ -289,6 +342,7 @@ public class FactifyChromeMain{
 		updateTextPane(text);
 	}
 	
+	// Receive Message from Extension
 	public static int getInt(byte[] bytes) {
         return (bytes[3] << 24) & 0xff000000|
                 (bytes[2] << 16)& 0x00ff0000|
@@ -296,14 +350,15 @@ public class FactifyChromeMain{
                 (bytes[0] << 0) & 0x000000ff;
     }
 	
-	static public byte[] getBytes(int length) {
-	    byte[] bytes = new byte[4];
-	    bytes[0] = (byte) (length & 0xFF);
-	    bytes[1] = (byte) ((length >> 8) & 0xFF);
-	    bytes[2] = (byte) ((length >> 16) & 0xFF);
-	    bytes[3] = (byte) ((length >> 24) & 0xFF);
-	    return bytes;
-	  }
+	// Write Message to Extension
+	public static byte[] getBytes(int length) {
+        byte[] bytes = new byte[4];
+        bytes[3] = (byte) ((length>>24) & 0xFF);
+        bytes[2] = (byte) ((length>>16) & 0xFF);
+        bytes[1] = (byte) ((length>>8)  & 0xFF);
+        bytes[0] = (byte) ( length      & 0xFF);
+        return bytes;
+    }	
 	
 	static void updateTextPane(String text){
 		String tmpStr = textPane.getText();
@@ -366,7 +421,7 @@ public class FactifyChromeMain{
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				sendMsgToExtension(123, textField.getText());
+				sendMsgToExtension("textbox", textField.getText());
 			}
 		});
 		btnNewButton.setBounds(838, 386, 105, 23);
