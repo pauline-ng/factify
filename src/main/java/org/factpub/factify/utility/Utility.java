@@ -35,6 +35,7 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +51,8 @@ import org.apache.commons.io.IOUtils;
 import org.factpub.factify.utility.Debug.DEBUG_CONFIG;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
+import at.knowcenter.code.pdf.structure.Paragraph;
+
 
 /**
  * Utility class, noninstantiable
@@ -410,4 +413,65 @@ public class Utility {
 		return fileNameMD5;
 	}
 	
+	/*
+	 * Write by Xuenan Pi in 10/4/2015
+	 * Method to "sew" the paragraphs from knowcenter script output that are broken by the pages or columns 
+	 * The "sew" condition is the current paragraph does not end with "." and the next paragraph starts with a
+	 * lower case letter.
+	 * @param body_and_heading
+	 */
+	
+	public static void sewBrokenSentence(List<Paragraph> body_and_heading){
+		boolean flag = false;
+		Paragraph para_previous = null;
+
+		for (Iterator<Paragraph> para = body_and_heading.iterator(); para.hasNext();) {
+//			Stay at the previous paragraph if the previous paragraph has been sewed.
+//			In case of current paragraph also need to be sewed to the previous paragraph.
+//			Otherwise move to the current paragraph.
+			Paragraph para_current = flag ? para_previous : para.next();
+			
+			if (para_current.isHeading()) {
+				flag = false;
+				continue;
+			} else {
+//				check if "." is missing at the end of the current paragraph
+				if (!para_current.text.endsWith(".")) {
+					
+					Paragraph para_next = para.hasNext() ? para.next() : para_current;
+					
+//					check if the first letter of the next paragraph is lower case
+					String first_letter_next_para = para_next.text.substring(0, 1);
+					boolean first_letter_lowercase = first_letter_next_para
+							.equals(first_letter_next_para.toLowerCase());
+					if (first_letter_lowercase) {
+						
+//						sew the current paragraph and next paragraph together
+						StringBuilder stringbuilder = new StringBuilder();
+						
+						if (para_current.text.endsWith("-")) {
+							stringbuilder.append(para_current.text.substring(0, para_current.text.length()-1));
+						}
+						else{
+							stringbuilder.append(para_current.text);
+							stringbuilder.append(" ");
+						}
+						stringbuilder.append(para_next.text);
+						para_current.text = stringbuilder.toString();
+						
+						para.remove();
+						para_previous = para_current;
+						flag = true;
+					} else {
+						para_previous = para_next;
+						flag = true;
+					}
+				} else {
+					flag = false;
+				}
+			}
+
+		}
+		
+	}
 }

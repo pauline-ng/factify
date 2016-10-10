@@ -206,6 +206,12 @@ public class Factify {
 			return 2;
 		}
 		
+		/* Write by Xuenan Pi
+		 * Solve the unexpected sentence break by pages or columns problem.
+		 */
+		else{
+			Utility.sewBrokenSentence(pdf.body_and_heading);
+		}
 		
 		/*
 		 * Step2: Apply Stanford Core NLP to Paragraphs extracted in the previous stage.
