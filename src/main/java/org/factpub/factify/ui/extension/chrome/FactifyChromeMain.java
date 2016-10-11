@@ -35,6 +35,8 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.UIManager;
 
+import org.json.simple.JSONObject;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -60,6 +62,8 @@ public class FactifyChromeMain{
 		String DIR_TMP = "factify";
 
 
+		showGUI();
+		
 		if(productionMode == true){
 
 			// After everything is done.
@@ -68,11 +72,9 @@ public class FactifyChromeMain{
 			setLog(FILE_LOG);
 		}
 		
-		showGUI();
 		
 		
-		
-		sendMsgToExtension("url", "http://factpub.org");
+		sendMsgToExtension("url", java.nio.charset.Charset.defaultCharset().toString());
 		/*
 		 * Step1: receiveMsgFromChrome: get saved PDF path.
 		 */
@@ -249,8 +251,11 @@ public class FactifyChromeMain{
 		    //JsonParser parser = new JsonParser();
 		    //String msgJson = parser.parse("{\"" + item + "\": \"" + msg + "\"}").getAsString();
 		    
-			String msgJson = "{\"" + item + "\" : \"" + msg + "\"}";
-		    showDebug(msgJson);
+			JSONObject jsonMsg = new JSONObject();
+			jsonMsg.put(item, msg);
+			String msgJson = jsonMsg.toString();
+		    
+			showDebug(msgJson);
 		    showDebug("Message Length:" + msgJson.length());
 		    
 //			[C implementation]
@@ -287,20 +292,30 @@ public class FactifyChromeMain{
 //		        return 0;
 //		    }
 		    
-
-		    // We need to send the 4 bytes of length information
-		    System.out.write((byte) msgJson.length());
-		    System.out.write((byte) 0);
-		    System.out.write((byte) 0);
-		    System.out.write((byte) 0);
+		    try {
+		    	
+	            System.out.write(getBytes(msgJson.length()));
+	            System.out.write(msgJson.getBytes("UTF-8"));
+	            System.out.flush();
+	            
+	        } catch (IOException e) {
+	        	System.err.println("error in sending message to JS");
+	            showDebug("error in sending message to JS");
+	        }
 		    
-		    //updateTextPane(getBytes(msgJson.length()).toString());
-
 		    // We need to send the 4 bytes of length information
-		    //System.out.write(msgJson.getBytes("UTF-8"));
-		    for(int i = 0; i < msgJson.length() ; i++){
-		    	System.out.append(msgJson.charAt(i));
-		    }
+//		    System.out.write((byte) msgJson.length());
+//		    System.out.write((byte) 0);
+//		    System.out.write((byte) 0);
+//		    System.out.write((byte) 0);
+//		    
+//		    //updateTextPane(getBytes(msgJson.length()).toString());
+//
+//		    // We need to send the 4 bytes of length information
+//		    //System.out.write(msgJson.getBytes("UTF-8"));
+////		    for(int i = 0; i < msgJson.length() ; i++){
+////		    	System.out.append(msgJson.charAt(i));
+////		    }
 //		    System.out.write(msgJson.getBytes("UTF-8"));
 		    
 		    updateTextPane(msgJson.getBytes("UTF-8").toString());
@@ -352,12 +367,12 @@ public class FactifyChromeMain{
 	
 	// Write Message to Extension
 	public static byte[] getBytes(int length) {
-        byte[] bytes = new byte[4];
-        bytes[3] = (byte) ((length>>24) & 0xFF);
-        bytes[2] = (byte) ((length>>16) & 0xFF);
-        bytes[1] = (byte) ((length>>8)  & 0xFF);
-        bytes[0] = (byte) ( length      & 0xFF);
-        return bytes;
+		byte[] bytes = new byte[4];
+	    bytes[0] = (byte) (length & 0xFF);
+	    bytes[1] = (byte) ((length >> 8) & 0xFF);
+	    bytes[2] = (byte) ((length >> 16) & 0xFF);
+	    bytes[3] = (byte) ((length >> 24) & 0xFF);
+	    return bytes;
     }	
 	
 	static void updateTextPane(String text){
@@ -421,7 +436,7 @@ public class FactifyChromeMain{
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				sendMsgToExtension("textbox", textField.getText());
+				sendMsgToExtension("text", textField.getText());
 			}
 		});
 		btnNewButton.setBounds(838, 386, 105, 23);
