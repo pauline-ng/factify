@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.Type;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -52,12 +51,22 @@ public class FactifyChromeMain{
 	private static JTextField textField;
 	private static JTextPane textPane;
 	private static boolean FILE_LOG = false;
+
+	private static final String STEP_1_END = "Receiving PDF data from extension.";
+	private static final String STEP_2_END = "Initializing Rule_Matching files.";
+	private static final String STEP_3_END = "Running extraction.";
+	private static final String STEP_4_END = "Sending facts.";
+		
+	
+	private static PrintStream sysOut = null;
+	private static PrintStream logOut = null;
 	
 	public static void main(String[] args) throws IOException{
 				
 		//String DIR_JAR = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		//String DIR_JAR = URLDecoder.decode(jarPath, "UTF-8").substring(1);
 		
+		sysOut = System.out;
 		String DIR_JAR = "";
 		String DIR_TMP = "factify";
 
@@ -74,11 +83,12 @@ public class FactifyChromeMain{
 		
 		
 		
-		sendMsgToExtension("url", java.nio.charset.Charset.defaultCharset().toString());
+		//sendMsgToExtension("url", java.nio.charset.Charset.defaultCharset().toString());
 		/*
 		 * Step1: receiveMsgFromChrome: get saved PDF path.
 		 */
-		
+		sendMsgToExtension("step_1", STEP_1_END);
+
 		String msgJson = null;
 		if(productionMode == true){
 			
@@ -155,25 +165,29 @@ public class FactifyChromeMain{
 			} catch (FileNotFoundException e1) {
 				System.err.println("[Error] File does not exist");
 				showDebug("[Error] File does not exist");
+				System.exit(1);
 			}
 			try {
 				fileOutStm.write(bufferedArray);
 			} catch (IOException e) {
 				System.err.println("[Error] Stream error");
 				showDebug("[Error] Stream error");
+				System.exit(1);
 			}
 		   
 		    		    
 		}catch(Exception e){
 			showDebug("[Error] Message extraction failed.");
 			sendMsgToExtension("error", "Message extraction failed.");
+			System.exit(1);
 		}
 		
 		
 		/*
 		 * Step2: Creating temporal folder in the same directory to this program.
 		 */
-		
+
+		sendMsgToExtension("step_2", STEP_2_END);
 		try{			
 			
 			File tmpDir = new File(DIR_TMP);
@@ -188,28 +202,33 @@ public class FactifyChromeMain{
 				showDebug("RuleInput.zip is downloaded");
 			}else{
 				showDebug("[Error] failed to download RuleInput.zip");
+				System.exit(1);
+
 			}
 
 		}catch(Exception e){
 			showDebug("[Error] Failed to create tmp folder");
+			System.exit(1);
 		}
 		
 		
 		/*
 		 * Step3: runFactify: Perform Factify and save JSON output.
 		 */
+		sendMsgToExtension("step_3", STEP_3_END);
 		
 		File savedPDF = new File(savedPDFPath);
 		showDebug("Start running Factify. It will take for a while...");
 		String savedJSONPath = FactifyWrapper.runFactify(savedPDF, DIR_TMP);		
 		showDebug("Factify outputs: " + new File(savedJSONPath).getAbsolutePath());
 
-		/*io]90i
-		 * Step5: Upload JSON file to factpub.org - serverRequestHandler.go
+		/*
+		 * Step4: Upload JSON file to factpub.org - serverRequestHandler.go
 		 */
+		sendMsgToExtension("step_4", STEP_4_END);
 		
 		try{
-
+			
 			File savedJSON = new File(savedJSONPath);
 			showDebug("Sending facts: " + savedJSON.getCanonicalPath());
 			
@@ -219,9 +238,10 @@ public class FactifyChromeMain{
 			showDebug("Generated Page URL: " + pageURL);
 			
 			sendMsgToExtension("url", pageURL);
-			
+			System.exit(0);
 		}catch(Exception e){
-			showDebug("[Error] Failed to upload JSON");
+			showDebug("[Error] Failed to upload JSON");	
+			System.exit(1);
 		}
 	}
 
@@ -239,6 +259,7 @@ public class FactifyChromeMain{
 				e.printStackTrace();
 			}
 			PrintStream ps = new PrintStream(fos);
+			logOut = ps;
 			System.setOut(ps);
 			System.setErr(ps);
 		}
@@ -246,85 +267,38 @@ public class FactifyChromeMain{
 	}
 	
 	private static void sendMsgToExtension(String item, String msg){
-		try{
-		    
-		    //JsonParser parser = new JsonParser();
-		    //String msgJson = parser.parse("{\"" + item + "\": \"" + msg + "\"}").getAsString();
-		    
-			JSONObject jsonMsg = new JSONObject();
-			jsonMsg.put(item, msg);
-			String msgJson = jsonMsg.toString();
-		    
-			showDebug(msgJson);
-		    showDebug("Message Length:" + msgJson.length());
-		    
-//			[C implementation]
-//		    int main(int argc, char* argv[]) {
-//		        // Define our message
-//		        char message[] = "{\"text\": \"This is a response message\"}";
-//		        // Collect the length of the message
-//		        unsigned int len = strlen(message);
-//		        // We need to send the 4 bytes of length information
-//		        printf("%c%c%c%c", (char) (len & 0xff),
-//		                           (char) ((len>>8) & 0xFF),
-//		                           (char) ((len>>16) & 0xFF),
-//		                           (char) ((len>>24) & 0xFF));
-//		        // Now we can output our message
-//		        printf("%s", message);
-//		        return 0;
-//		    }
-		    
-//			[C++ implementation]		    
-//		    int main(int argc, char* argv[]) {
-//		        // Define our message
-//		        std::string message = "{\"text\": \"This is a response message\"}";
-//		        // Collect the length of the message
-//		        unsigned int len = message.length();
-		    
-		    // We need to send the 4 bytes of length information
-//		        std::cout << char(((len>>0) & 0xFF))
-//		                  << char(((len>>8) & 0xFF))
-//		                  << char(((len>>16) & 0xFF))
-//		                  << char(((len>>24) & 0xFF));
-//		        
-		    // Now we can output our message
-//		        std::cout << message;
-//		        return 0;
-//		    }
-		    
-		    try {
-		    	
-	            System.out.write(getBytes(msgJson.length()));
-	            System.out.write(msgJson.getBytes("UTF-8"));
-	            System.out.flush();
-	            
-	        } catch (IOException e) {
-	        	System.err.println("error in sending message to JS");
-	            showDebug("error in sending message to JS");
-	        }
-		    
-		    // We need to send the 4 bytes of length information
-//		    System.out.write((byte) msgJson.length());
-//		    System.out.write((byte) 0);
-//		    System.out.write((byte) 0);
-//		    System.out.write((byte) 0);
-//		    
-//		    //updateTextPane(getBytes(msgJson.length()).toString());
-//
-//		    // We need to send the 4 bytes of length information
-//		    //System.out.write(msgJson.getBytes("UTF-8"));
-////		    for(int i = 0; i < msgJson.length() ; i++){
-////		    	System.out.append(msgJson.charAt(i));
-////		    }
-//		    System.out.write(msgJson.getBytes("UTF-8"));
-		    
-		    updateTextPane(msgJson.getBytes("UTF-8").toString());
-		    
+		// Probably, this part is the most tricky part of this class.
+		// You must need to understand how Native Messaging Protocol works well.
+		// https://developer.chrome.com/extensions/nativeMessaging
+		// 
+		//
+		// Make sure to set stdio is the one when this host program is called by Chrome Extension.
+		// I spent crazy amount of time to identify this stdio redirection problem. by Sun SAGONG @ 12Oct2016
+		System.setOut(sysOut);
+		//
+		//
+		
+		JSONObject jsonMsg = new JSONObject();
+		jsonMsg.put(item, msg);
+		String msgJson = jsonMsg.toString();
+		
+		showDebug(msgJson);
+		
+		
+		try {
+			
+		    System.out.write(getBytes(msgJson.length()));
+		    System.out.write(msgJson.getBytes("UTF-8"));
 		    System.out.flush();
-		}catch(IOException e){
-			showDebug("[Error] Sending Messages to Extention failed: " + e.toString());
+		    
+		} catch (IOException e) {
+			System.err.println("error in sending message to JS");
+		    showDebug("error in sending message to JS");
 		}
 		
+		// Set stdio back to the stream before this method is called.
+		System.setOut(logOut);
+		//
 	}
 
 	static public String receiveMessage(){
