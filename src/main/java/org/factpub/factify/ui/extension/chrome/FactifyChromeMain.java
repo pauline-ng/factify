@@ -45,17 +45,18 @@ import com.google.gson.reflect.TypeToken;
 public class FactifyChromeMain{
 
 	/* set true for production */
-	private static boolean productionMode = true;
+	private static boolean productionMode = false;
 	
 	private static JFrame frameMain;
 	private static JTextField textField;
 	private static JTextPane textPane;
 	private static boolean FILE_LOG = false;
 
-	private static final String STEP_1_END = "Receiving PDF data from extension.";
-	private static final String STEP_2_END = "Initializing Rule_Matching files.";
-	private static final String STEP_3_END = "Running extraction.";
-	private static final String STEP_4_END = "Sending facts.";
+	private static final String STEP_1_END = "(1/5)Receiving PDF data from extension.";
+	private static final String STEP_2_END = "(2/5)Initializing Rule_Matching files.";
+	private static final String STEP_3_END = "(3/5)Running extraction process.";
+	private static final String STEP_4_END = "(4/5)Sending facts to factpub.org.";
+	private static final String STEP_5_END = "(5/5)Facts are donated";
 		
 	
 	private static PrintStream sysOut = null;
@@ -63,31 +64,21 @@ public class FactifyChromeMain{
 	
 	public static void main(String[] args) throws IOException{
 				
-		//String DIR_JAR = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		//String DIR_JAR = URLDecoder.decode(jarPath, "UTF-8").substring(1);
-		
 		sysOut = System.out;
 		String DIR_JAR = "";
 		String DIR_TMP = "factify";
 
-
 		showGUI();
 		
-		if(productionMode == true){
-
-			// After everything is done.
-			frameMain.setVisible(true);
-			FILE_LOG = true;
-			setLog(FILE_LOG);
+		if(productionMode == true){			
+			setLog("factify.log.txt");
 		}
 		
 		
-		
-		//sendMsgToExtension("url", java.nio.charset.Charset.defaultCharset().toString());
 		/*
 		 * Step1: receiveMsgFromChrome: get saved PDF path.
 		 */
-		sendMsgToExtension("step_1", STEP_1_END);
+		sendMsgToExtension("steps", STEP_1_END);
 
 		String msgJson = null;
 		if(productionMode == true){
@@ -177,8 +168,8 @@ public class FactifyChromeMain{
 		   
 		    		    
 		}catch(Exception e){
-			showDebug("[Error] Message extraction failed.");
-			sendMsgToExtension("error", "Message extraction failed.");
+			showDebug("[Error] Failed to serialize PDF.");
+			sendMsgToExtension("error", "Failed to serialize PDF.");
 			System.exit(1);
 		}
 		
@@ -186,8 +177,7 @@ public class FactifyChromeMain{
 		/*
 		 * Step2: Creating temporal folder in the same directory to this program.
 		 */
-
-		sendMsgToExtension("step_2", STEP_2_END);
+		sendMsgToExtension("steps", STEP_2_END);
 		try{			
 			
 			File tmpDir = new File(DIR_TMP);
@@ -196,6 +186,7 @@ public class FactifyChromeMain{
 				tmpDir.mkdirs();
 			}
 			
+			sendMsgToExtension("workdir", tmpDir.getCanonicalPath());
 			showDebug("Working folder: " + tmpDir.getCanonicalPath() + " is created.");
 
 			if(RuleInput.downloadRuleInputZip(DIR_TMP)){
@@ -203,7 +194,6 @@ public class FactifyChromeMain{
 			}else{
 				showDebug("[Error] failed to download RuleInput.zip");
 				System.exit(1);
-
 			}
 
 		}catch(Exception e){
@@ -215,7 +205,7 @@ public class FactifyChromeMain{
 		/*
 		 * Step3: runFactify: Perform Factify and save JSON output.
 		 */
-		sendMsgToExtension("step_3", STEP_3_END);
+		sendMsgToExtension("steps", STEP_3_END);
 		
 		File savedPDF = new File(savedPDFPath);
 		showDebug("Start running Factify. It will take for a while...");
@@ -225,11 +215,11 @@ public class FactifyChromeMain{
 		/*
 		 * Step4: Upload JSON file to factpub.org - serverRequestHandler.go
 		 */
-		sendMsgToExtension("step_4", STEP_4_END);
-		
+		sendMsgToExtension("steps", STEP_4_END);
 		try{
 			
 			File savedJSON = new File(savedJSONPath);
+			sendMsgToExtension("json", savedJSON.getCanonicalPath());
 			showDebug("Sending facts: " + savedJSON.getCanonicalPath());
 			
 			String pageURL = "null";
@@ -237,7 +227,13 @@ public class FactifyChromeMain{
 			pageURL = PostFile.uploadToFactpub(savedJSON, factpubId);
 			showDebug("Generated Page URL: " + pageURL);
 			
+			
+			/*
+			 * Step5: Show Page Link
+			 */
+			sendMsgToExtension("steps", STEP_5_END);			
 			sendMsgToExtension("url", pageURL);
+			
 			System.exit(0);
 		}catch(Exception e){
 			showDebug("[Error] Failed to upload JSON");	
@@ -245,24 +241,20 @@ public class FactifyChromeMain{
 		}
 	}
 
-	private static void setLog(boolean flag) {
-		// TODO Auto-generated method stub
-		if(flag){
-			String logFile = "factify.log.txt";
-			
-			// Set up log output stream
-			FileOutputStream fos = null;
-			try {
-				fos = new FileOutputStream(logFile);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			PrintStream ps = new PrintStream(fos);
-			logOut = ps;
-			System.setOut(ps);
-			System.setErr(ps);
+	private static void setLog(String logFile) {		
+		
+		// Set up log output stream
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(logFile);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		PrintStream ps = new PrintStream(fos);
+		logOut = ps;
+		System.setOut(ps);
+		System.setErr(ps);
 		
 	}
 	
@@ -272,8 +264,9 @@ public class FactifyChromeMain{
 		// https://developer.chrome.com/extensions/nativeMessaging
 		// 
 		//
-		// Make sure to set stdio is the one when this host program is called by Chrome Extension.
-		// I spent crazy amount of time to identify this stdio redirection problem. by Sun SAGONG @ 12Oct2016
+		// Make sure to set stdio is the same stream when this host program is called by Chrome Extension.
+		// I spent crazy amount of time to identify this stdio redirection problem.
+		// by Sun SAGONG @ 12Oct2016 around noon
 		System.setOut(sysOut);
 		//
 		//
@@ -350,8 +343,10 @@ public class FactifyChromeMain{
     }	
 	
 	static void updateTextPane(String text){
-		String tmpStr = textPane.getText();
-		textPane.setText(tmpStr + "\n" + text);
+		if(productionMode == false){
+			String tmpStr = textPane.getText();
+			textPane.setText(tmpStr + "\n" + text);
+		}
 	}
 	
 	// Delete file or directory
@@ -418,8 +413,11 @@ public class FactifyChromeMain{
 		
 		try {
 			FactifyChromeMain window = new FactifyChromeMain();
-			window.frameMain.setVisible(true);
-
+			if(productionMode == false){
+				window.frameMain.setVisible(true);
+			}else{
+				window.frameMain.setVisible(false);	
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
