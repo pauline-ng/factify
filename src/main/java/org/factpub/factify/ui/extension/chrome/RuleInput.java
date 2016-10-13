@@ -19,7 +19,7 @@ public class RuleInput {
 			url = new URL(FEConstants.SERVER_RULE_INPUT_ZIP);
 			URLConnection uc = url.openConnection(); 
 			ZipInputStream zipIn = new ZipInputStream(uc.getInputStream()); 
-			System.out.println("download success!");
+			//System.out.println("download success!");
 	    	try{
 	            File outDir = new File(dirRuleInput);
 	            

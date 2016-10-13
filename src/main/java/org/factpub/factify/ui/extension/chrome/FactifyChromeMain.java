@@ -45,12 +45,11 @@ import com.google.gson.reflect.TypeToken;
 public class FactifyChromeMain{
 
 	/* set true for production */
-	private static boolean productionMode = false;
+	private static boolean productionMode = true;
 	
 	private static JFrame frameMain;
 	private static JTextField textField;
 	private static JTextPane textPane;
-	private static boolean FILE_LOG = false;
 
 	private static final String STEP_1_END = "(1/5)Receiving PDF data from extension.";
 	private static final String STEP_2_END = "(2/5)Initializing Rule_Matching files.";
@@ -58,20 +57,32 @@ public class FactifyChromeMain{
 	private static final String STEP_4_END = "(4/5)Sending facts to factpub.org.";
 	private static final String STEP_5_END = "(5/5)Facts are donated";
 		
-	
-	private static PrintStream sysOut = null;
-	private static PrintStream logOut = null;
+	private static PrintStream defaultSysOut = null;
+	private static PrintStream logSysOut = null;
 	
 	public static void main(String[] args) throws IOException{
 				
-		sysOut = System.out;
-		String DIR_JAR = "";
+		defaultSysOut = System.out;
+		logSysOut = System.out;
+		
 		String DIR_TMP = "factify";
 
 		showGUI();
 		
-		if(productionMode == true){			
-			setLog("factify.log.txt");
+		if(productionMode == true){	
+			String logFile = "factify.log.txt";
+
+			FileOutputStream fos = null;
+
+			try {
+				fos = new FileOutputStream(logFile);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			
+			logSysOut = new PrintStream(fos);
+			System.setOut(logSysOut);
+			System.setErr(logSysOut);
 		}
 		
 		
@@ -81,58 +92,77 @@ public class FactifyChromeMain{
 		sendMsgToExtension("steps", STEP_1_END);
 
 		String msgJson = null;
-		if(productionMode == true){
-			
-				while(true){
-							msgJson = receiveMessage();
-							if(!msgJson.isEmpty()) break;					
-				}
-				showDebug("Received Message from Chrome");
-			
-		}else{
-//		msgJson = "{\"size\":3 ,\"pdf\":{\"0\":37,\"1\":80,\"2\":68}}";
-//		
-		msgJson = "{\"pdf\":\"https://faculty.washington.edu/wjs18/cSNPs/SIFT1.pdf\"}";
-		}		
+
+		while(true){
+					msgJson = receiveMessage();
+					if(!msgJson.isEmpty()) break;					
+		}
+		showDebug("Received Message from Chrome");			
 		
 		String savedPDFPath = null;
 		String pdfObjData = null;
 		int pdfObjSize = 0;
 		
-		String factpubId = "anonymous";
+		String factpubId = null;
 		try{
 			// pre-processing to extract valuables
-			System.out.println("msgJson: " + msgJson);
+			//System.out.println("msgJson: " + msgJson);
 			
 			JsonElement msgElm = new JsonParser().parse(msgJson);
-			System.out.println("msgElm: " + msgElm.toString());
+			//System.out.println("msgElm: " + msgElm.toString());
 			
 			JsonObject msgObj = msgElm.getAsJsonObject();
-		    System.out.println("msgObj: " + msgObj.toString());
+		    //System.out.println("msgObj: " + msgObj.toString());
 		    
 		    // pdfUrl
-		    JsonElement urlElm = msgObj.get("pdfUrl");
-		    String urlStr = urlElm.toString().replace('"',' ');
-		    String pdfName = urlStr.toString().replace(':','_').replace('/','_').replace('?', '_').replace(' ', '_') + ".pdf";
-		    savedPDFPath = pdfName;
-		    showDebug("The PDF file name: " + pdfName);
-		    
+			try{
+			    JsonElement urlElm = msgObj.get("pdfUrl");
+			    String urlStr = urlElm.toString().replace('"',' ');
+			    String pdfName = urlStr.toString().replace(':','_').replace('/','_').replace('?', '_').replace(' ', '_') + ".pdf";
+			    savedPDFPath = pdfName;
+			    showDebug("The PDF file name: " + pdfName);
+			}catch(Exception e){
+		    	sendMsgToExtension("error", "Failed to get PDF name.");
+		    	System.exit(1);
+			}
+			
 		    // pdfSize
-		    pdfObjSize = msgObj.get("pdfSize").getAsInt();
-		    showDebug("The PDF file size: " + pdfObjSize + " Bytes");
+		    try{
+			    pdfObjSize = msgObj.get("pdfSize").getAsInt();
+			    showDebug("The PDF file size: " + pdfObjSize + " Bytes");
+		    }catch(Exception e){
+		    	sendMsgToExtension("error", "Failed to get PDF size.");
+		    	System.exit(1);
+		    }
 		    
 		    // pdfData
-		    JsonElement pdfElm = msgObj.get("pdfData");
-		    pdfObjData = pdfElm.toString().replace('"',' ');
-	   		
+		    try{
+		    	JsonElement pdfElm = msgObj.get("pdfData");
+		    	pdfObjData = pdfElm.toString().replace('"',' ');
+		    }catch(Exception e){
+		    	sendMsgToExtension("error", "Failed to get PDF binary string.");
+		    	System.exit(1);
+		    }
+		    
 		    // factpubId
-		    factpubId = msgObj.get("factpubId").getAsString();
-		    showDebug("The factpub ID: " + factpubId.toString());
+		    // It must NOT be undefined in JavaScript by Sun SAGONG@13Oct2016
+		    try{
+			    factpubId = msgObj.get("factpubId").getAsString();
+			    showDebug("The factpub ID: " + factpubId.toString());
+		    }catch(Exception e){
+		    	//sendMsgToExtension("error", "Failed to get factpubId.");
+		    	factpubId = "anonymous";
+		    }
 		    
 		    // notifId
-		    String notifId = msgObj.get("notifId").getAsString();
-		    showDebug("The notifId: " + notifId.toString());
-		    frameMain.setTitle("Factify Chrome Host Program [Debug Window] : " + notifId);
+		    try{
+			    String notifId = msgObj.get("notifId").getAsString();
+			    showDebug("The notifId: " + notifId.toString());
+			    frameMain.setTitle("Factify Chrome Host Program [Debug Window] : " + notifId);
+		    }catch(Exception e){
+		    	sendMsgToExtension("error", "Failed to get notifId.");
+		    	System.exit(1);
+		    }
 		    
 		    Gson gson = new Gson();
 		    Type type = new TypeToken<Map<String, Byte>>(){}.getType();
@@ -188,18 +218,23 @@ public class FactifyChromeMain{
 			
 			sendMsgToExtension("workdir", tmpDir.getCanonicalPath());
 			showDebug("Working folder: " + tmpDir.getCanonicalPath() + " is created.");
-
-			if(RuleInput.downloadRuleInputZip(DIR_TMP)){
-				showDebug("RuleInput.zip is downloaded");
-			}else{
-				showDebug("[Error] failed to download RuleInput.zip");
-				System.exit(1);
-			}
-
+		
 		}catch(Exception e){
 			showDebug("[Error] Failed to create tmp folder");
+			sendMsgToExtension("error", "Failed to create tmp folder.");
 			System.exit(1);
 		}
+		
+		try{
+			RuleInput.downloadRuleInputZip(DIR_TMP);
+			showDebug("RuleInput.zip is downloaded");	
+
+		}catch(Exception e){
+			showDebug("[Error] Failed to download RuleInput.zip");
+			sendMsgToExtension("error", "Failed to download RuleInput.zip.");
+			System.exit(1);
+		}
+		
 		
 		
 		/*
@@ -241,24 +276,10 @@ public class FactifyChromeMain{
 		}
 	}
 
-	private static void setLog(String logFile) {		
-		
-		// Set up log output stream
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(logFile);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		PrintStream ps = new PrintStream(fos);
-		logOut = ps;
-		System.setOut(ps);
-		System.setErr(ps);
-		
-	}
-	
 	private static void sendMsgToExtension(String item, String msg){
+		// FIXME: this does not work in development mode because stdio switching fails.
+		// it works under production mode.
+		
 		// Probably, this part is the most tricky part of this class.
 		// You must need to understand how Native Messaging Protocol works well.
 		// https://developer.chrome.com/extensions/nativeMessaging
@@ -267,14 +288,17 @@ public class FactifyChromeMain{
 		// Make sure to set stdio is the same stream when this host program is called by Chrome Extension.
 		// I spent crazy amount of time to identify this stdio redirection problem.
 		// by Sun SAGONG @ 12Oct2016 around noon
-		System.setOut(sysOut);
-		//
-		//
+		System.setOut(defaultSysOut);
 		
-		JSONObject jsonMsg = new JSONObject();
-		jsonMsg.put(item, msg);
-		String msgJson = jsonMsg.toString();
-		
+		 //JsonParser parser = new JsonParser();
+		 //String msgJson = parser.parse("{\"" + item + "\": \"" + msg + "\"}").getAsString();
+		 
+		String msgJson = "{\"" + item + "\" : \"" + msg + "\"}";
+		 
+//		JSONObject jsonMsg = new JSONObject();
+//		jsonMsg.put(item, msg);
+//		String msgJson = jsonMsg.toString();
+//		
 		showDebug(msgJson);
 		
 		
@@ -290,8 +314,8 @@ public class FactifyChromeMain{
 		}
 		
 		// Set stdio back to the stream before this method is called.
-		System.setOut(logOut);
-		//
+		System.setOut(logSysOut);
+
 	}
 
 	static public String receiveMessage(){

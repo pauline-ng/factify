@@ -1,0 +1,73 @@
+{
+  "version":1.0,
+   "Rules":[
+    {
+    "type": "postag",
+    "inputFilePath":"Rule_POSTag_Nouns.txt",
+    "inputFileVersion":"1.0",
+    "description": "nouns"
+  },
+  {
+		"type": "postag",
+    "inputFilePath":"Rule_POSTag_Comparatives.txt",
+    "inputFileVersion": "1.0",
+    "description": "comparatives"
+  },
+  {
+    "type": "regExp",
+    "inputFilePath":"Rule_RegExp.txt",
+    "inputFileVersion": "1.0",
+    "description": "regularExpression"
+  },
+  {
+    "type": "preBuiltWordList",
+    "inputFilePath":"comparative_1.txt",
+    "inputFileVersion": "1.1.1",
+    "description": "preBuiltWordList"
+  },
+  {
+    "type": "preBuiltWordList",
+    "inputFilePath":"opinions_1.txt",
+    "inputFileVersion": "1.0.1",
+    "description": "preBuiltWordList"
+  },
+  {
+    "type": "preBuiltWordList",
+    "inputFilePath":"signal_1.txt",
+    "inputFileVersion": "1.0",
+    "description": "preBuiltWordList"
+  },
+  {
+    "type": "preBuiltWordList",
+    "inputFilePath":"rel_1.txt",
+    "inputFileVersion": "1.0",
+    "description": "preBuiltWordList"
+  },
+  {
+    "type": "preBuiltWordList",
+		"match": "contain",
+    "inputFilePath":"operator_1.txt",
+    "inputFileVersion": "1.0",
+    "description": "preBuiltWordList"
+  },
+  {
+    "type": "preBuiltWordList",
+    "inputFilePath":"prepositions.txt",
+    "inputFileVersion": "1.0",
+    "description": "preBuiltWordList"
+  },
+  {
+    "type": "preBuiltWordList",
+    "inputFilePath":"adverbs_common.txt",
+    "inputFileVersion": "1.0",
+    "description": "preBuiltWordList"
+  },
+  {
+    "type": "preBuiltWordList",
+    "inputFilePath":"negative_words.txt",
+    "inputFileVersion": "1.0",
+    "description": "preBuiltWordList"
+  }
+  ],
+  "readme": "The first line of each file should be in format --version:1.0"
+}
