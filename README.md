@@ -12,7 +12,8 @@ Build (eclipse)
 
 *  git clone https://github.com/happybelly/factify.git
 *  (or download ZIP from the green button above right on this page and expand somewhere on your machine.)
-*  eclipse: [file] -> [import] -> [Existing Projects into Workspace] -> [Select root directory: the downloaded folder] -> [Run]
+*  eclipse: [file] -> [import] -> General --> [Existing Projects into Workspace] -> [Select root directory: the downloaded folder] -> [Run]
+org.factpub.factify->Factify.java 
 
 About FactPub
 -------------
