@@ -1,0 +1,322 @@
+#from https://en.wikipedia.org/wiki/List_of_medical_journals
+Academic Medicine 
+ACIMED 
+Acta Anaesthesiologica Scandinavica 
+Acta Médica Portuguesa 
+Acta Neurologica Scandinavica 
+Acta Orthopaedica et Traumatologica Turcica 
+Acta Oto-Laryngologica 
+Acta Paediatrica 
+Acta Psychiatrica Scandinavica 
+Acta Radiologica 
+Advances in Therapy 
+African Journal of Paediatric Surgery 
+AIDS 
+Alimentary Pharmacology & Therapeutics 
+Alzheimer Disease and Associated Disorders 
+Alzheimer's Research & Therapy 
+American Family Physician 
+American Journal of Alzheimer's Disease & Other Dementias 
+American Journal of Emergency Medicine 
+American Journal of Gastroenterology 
+American Journal of Medical Genetics 
+American Journal of the Medical Sciences 
+American Journal of Obstetrics and Gynecology 
+American Journal of Public Health 
+American Journal of Respiratory and Critical Care Medicine 
+American Journal of Roentgenology 
+The American Journal of Surgical Pathology 
+American Journal of Translational Research 
+American Journal of Transplantation 
+American Journal of Tropical Medicine and Hygiene 
+Anaesthesia 
+Annals of Cardiac Anaesthesia 
+Annals of Emergency Medicine 
+Annals of Family Medicine 
+Annals of Human Biology 
+Annals of Human Genetics 
+Annals of Internal Medicine 
+Annals of Medicine 
+Annals of Pediatric Cardiology 
+The Annals of Pharmacotherapy 
+Annals of Physical and Rehabilitation Medicine 
+Annals of the Royal College of Surgeons of England 
+Annals of Surgery 
+Annual Review of Medicine 
+Archives of Disease in Childhood 
+Archives of Osteoporosis 
+Arteriosclerosis, Thrombosis, and Vascular Biology 
+Asian Cardiovascular and Thoracic Annals 
+Aviation, Space, and Environmental Medicine 
+British Dental Journal 
+Biological Research For Nursing 
+Biology of the Neonate 
+Biomedical Imaging and Intervention Journal 
+BJUI 
+Blood 
+Bone Marrow Transplantation 
+BMC Cancer 
+BMC Medicine 
+BMJ 
+Brain 
+Brazilian Journal of Medical and Biological Research 
+Breast Cancer Research and Treatment 
+British Columbia Medical Journal 
+British Journal of Anaesthesia 
+British Journal of Cancer 
+British Journal of Dermatology 
+British Journal of Diabetes and Vascular Disease 
+British Journal of Medical Practitioners 
+British Journal of Ophthalmology 
+British Journal of Sexual Medicine 
+British Journal of Surgery 
+Bulletin of the World Health Organization 
+CA – A Cancer Journal for Clinicians 
+Calcified Tissue International 
+Calicut Medical Journal 
+Canadian Journal of Gastroenterology & Hepatology 
+Canadian Journal of Infectious Diseases & Medical Microbiology 
+Canadian Medical Association Journal 
+Canadian Respiratory Journal 
+Cancer Medicine 
+Cardiology 
+Cardiovascular Diabetology 
+Cephalalgia 
+Chest 
+Child: Care, Health and Development 
+Chinese Medical Journal 
+Chronic Illness 
+Circulation 
+The Cleft Palate-Craniofacial Journal 
+Clinical Anatomy 
+Clinical and Experimental Gastroenterology 
+Clinical and Translational Science 
+Clinical Breast Cancer 
+Clinical Case Studies 
+Clinical Chemistry 
+Clinical Colorectal Cancer 
+Clinical Gastroenterology and Hepatology 
+Clinical Genitourinary Cancer 
+Clinical Infectious Diseases 
+The Clinical Journal of Pain 
+Clinical Lung Cancer 
+Clinical Lymphoma, Myeloma & Leukemia 
+Clinical Medicine: Oncology 
+Clinical Microbiology Reviews 
+Clinical Ovarian Cancer 
+Clinical Pharmacology: Advances and Applications 
+Clinical Pharmacology & Therapeutics 
+Clinical Science 
+Clinical Toxicology 
+Contemporary Clinical Trials 
+COPD: Journal of Chronic Obstructive Pulmonary Disease 
+Critical Care Medicine 
+Critical Reviews in Microbiology 
+Critical Reviews in Oncogenesis 
+Critical Reviews in Toxicology 
+Current Gene Therapy 
+Current Medical Research and Opinion 
+Current Pain and Headache Reports 
+Cutaneous and Ocular Toxicology 
+DARU Journal of Pharmaceutical Sciences 
+Deutsche Medizinische Wochenschrift 
+Developmental Neurorehabilitation 
+Diabetes 
+Diabetes and Vascular Disease Research 
+Diabetes Care 
+Diabetes, Metabolic Syndrome and Obesity: Targets and Therapy 
+Emergency Medicine Journal 
+Endocrinology 
+Epilepsy Currents 
+European Journal of Cancer Prevention 
+European Journal of General Practice 
+European Journal of Medical Research 
+European Journal of Palliative Care 
+European Journal of Physiotherapy 
+European Medical Journal 
+European Radiology 
+European Urology 
+Expert Opinion on Biological Therapy 
+Expert Opinion on Drug Delivery 
+Expert Opinion on Drug Discovery 
+Expert Opinion on Drug Metabolism & Toxicology 
+Expert Opinion on Drug Safety 
+Expert Opinion on Emerging Drugs 
+Expert Opinion on Investigational Drugs 
+Expert Opinion on Medical Diagnostics 
+Expert Opinion on Pharmacotherapy 
+Expert Opinion on Therapeutic Patents 
+Expert Opinion on Therapeutic Targets 
+Expert Review of Clinical Pharmacology 
+Family Practice (journal) 
+Future Oncology 
+Gastroenterology 
+Gynecologic Oncology 
+Hand Surgery 
+Harefuah 
+Heart 
+Hepatitis Monthly 
+Hormone Research 
+Hospital Practice 
+Human Pathology 
+Human Reproduction 
+Hypertension 
+Immunogenetics 
+Indian Journal of Anaesthesia 
+Indian Journal of Dermatology 
+Indian Journal of Dermatology, Venereology and Leprology 
+Indian Journal of Gastroenterology 
+Indian Journal of Medical Microbiology 
+Indian Journal of Medical Research 
+Indian Journal of Medical Sciences 
+Indian Journal of Ophthalmology 
+Indian Journal of Pharmacology 
+Indian Pacing and Electrophysiology Journal 
+International Archives of Medicine 
+International Journal of Geriatric Psychiatry 
+International Journal of Medical Sciences 
+International Journal of Obesity 
+International Journal of Psychoanalysis 
+International Journal of Speech-Language Pathology 
+International Journal of Surgery 
+Investigative Ophthalmology & Visual Science 
+The Israel Journal of Psychiatry and Related Sciences 
+Israel Medical Association Journal 
+JAMA: The Journal of the American Medical Association 
+JAMA Dermatology 
+JAMA Facial Plastic Surgery 
+JAMA Internal Medicine 
+JAMA Neurology 
+JAMA Ophthalmology 
+JAMA Otolaryngology–Head & Neck Surgery 
+JAMA Pediatrics 
+JAMA Psychiatry 
+JAMA Surgery 
+The Johns Hopkins Medical Journal 
+Journal of Acquired Immune Deficiency Syndromes 
+Journal of the American College of Cardiology 
+Journal of the American Geriatrics Society 
+Journal of the American Osteopathic Association 
+Journal of Ayurveda and Integrative Medicine 
+Journal of Bone and Joint Surgery 
+Journal of Cachexia, Sarcopenia and Muscle 
+Journal of Cancer 
+Journal of Cardiovascular Translational Research 
+Journal of Clinical Endocrinology and Metabolism 
+Journal of Clinical Investigation 
+Journal of Clinical Oncology 
+Journal of Clinical Psychopharmacology 
+Journal of Clinical Sleep Medicine 
+Journal of Experimental Medicine 
+Journals of Gerontology 
+Journal of Hypertension 
+Journal of Immunology 
+Journal of Infection in Developing Countries 
+Journal of Internal Medicine 
+Journal of Investigative Dermatology 
+Journal of Medical Biography 
+Journal of Medical Case Reports 
+Journal of Medical Economics 
+Journal of Medical Genetics 
+The Journal of Medical Practice Management 
+Journal of Medicine 
+Journal of Nervous and Mental Disease 
+Journal of Occupational and Environmental Medicine 
+Journal of Oncology Practice 
+Journal of Pain Research 
+Journal of Pakistan Medical Association 
+Journal of Pediatric Endocrinology and Metabolism 
+Journal of Pediatric Gastroenterology and Nutrition 
+Journal of Pediatric Health Care 
+Journal of Pediatric Orthopaedics B 
+The Journal of Pediatrics 
+Journal of Postgraduate Medicine 
+Journal of the Royal College of Physicians of Edinburgh 
+Journal of the Royal Society of Medicine 
+Journal of Studies on Alcohol and Drugs 
+Korean Journal of Anesthesiology 
+Läkartidningen 
+The Lancet 
+Langenbeck's Archives of Surgery 
+Macedonian Journal of Medical Sciences 
+Mayo Clinic Proceedings 
+The Medical Journal of Australia 
+Medical Law International 
+The Medical Letter on Drugs and Therapeutics 
+Medicine, Conflict and Survival 
+Melanoma Research 
+Menopause 
+Mens Sana Monographs 
+Middle East African Journal of Ophthalmology 
+Molecular Medicine 
+Mount Sinai Journal of Medicine 
+Movement Disorders 
+Myanmar Medical Journal 
+National Medical Journal of India 
+Nature Medicine 
+Nature Reviews Cancer 
+Nature Reviews Cardiology 
+Nature Reviews Clinical Oncology 
+Nature Reviews Disease Primers 
+Nature Reviews Gastroenterology & Hepatology 
+Nature Reviews Immunology 
+Nature Reviews Microbiology 
+Nature Reviews Nephrology 
+Nature Reviews Neurology 
+Nature Reviews Neuroscience 
+Nature Reviews Rheumatology 
+Nature Reviews Urology 
+Nederlands Tijdschrift voor Geneeskunde 
+Neural Regeneration Research 
+The Neurologist 
+Neurology 
+Neurology India 
+Neuropsychiatric Disease and Treatment 
+Neuropsychiatry 
+The New England Journal of Medicine 
+The New Zealand Medical Journal 
+Nursing Children and Young People 
+Obstetrics and Gynecology 
+Open Medicine 
+Orbit 
+Osteoporosis International 
+Ostomy Wound Management 
+Paediatrics & Child Health 
+Pain Research & Management 
+Pan American Journal of Public Health 
+Pathologica 
+Pediatric Research 
+Pediatrics 
+Personalized Medicine 
+Pharmacotherapy 
+The Physician and Sportsmedicine 
+Plastic Surgery 
+PLoS Medicine 
+PLoS Neglected Tropical Diseases 
+Postgraduate Medicine 
+Le Practicien en Anesthésie Réanimation 
+Preventive Medicine 
+Primary Dental Journal 
+Progress in Osteoporosis 
+Psychiatric Genetics 
+Psychosomatic Medicine 
+QJM: An International Journal of Medicine 
+Radiology 
+Rambam Maimonides Medical Journal 
+Rejuvenation Research 
+Research and Humanities in Medical Education 
+Revista Pediatría de Atención Primaria 
+Scandinavian Journal of Infectious Diseases 
+Scandinavian Journal of Occupational Therapy 
+Scandinavian Journal of Surgery 
+Scientia Pharmaceutica 
+Seminars in Ophthalmology 
+Spine 
+Statistics in Medicine 
+Stroke 
+Surgical Endoscopy 
+TAF Preventive Medicine Bulletin 
+Tehran University Medical Journal 
+Transactions of the Royal Society of Tropical Medicine and Hygiene 
+Trends in Molecular Medicine 
+Women's Health Issues 

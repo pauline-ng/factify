@@ -1,0 +1,163 @@
+#from https://en.wikipedia.org/wiki/List_of_chemistry_journals
+Accounts of Chemical Research
+Acta Chemica Scandinavica
+Acta Chimica Slovenica
+Advanced Functional Materials
+Aldrichimica Acta
+The Analyst
+Analytica Chimica Acta
+Analytical and Bioanalytical Chemistry
+Analytical Chemistry
+Angewandte Chemie International Edition
+Annual Reports Section A
+Annual Reports Section B
+Annual Reports Section C
+Annual Review of Physical Chemistry
+Applied Catalysis A: General
+Applied Organometallic Chemistry
+Applied Spectroscopy Reviews
+Arkivoc (Archive for Organic Chemistry)
+Australian Journal of Chemistry
+Australian Journal of Education in Chemistry
+Beilstein Journal of Organic Chemistry
+Biochemical Journal
+Bioconjugate Chemistry
+Biomacromolecules
+Biomedical Chromatography
+Bioorganic & Medicinal Chemistry
+Bioorganic & Medicinal Chemistry Letters
+Bulletin of the Chemical Society of Japan
+Canadian Journal of Chemistry
+Catalysis Science & Technology
+Catalysts and Catalysed Reactions
+Central European Journal of Chemistry
+ChemBioChem
+Chemical Communications
+Chemical News and Journal of Physical Science
+Chemical Physics Letters
+Chemical Science Review and Letters
+Chemical Reviews
+Chemical Science
+Chemical Society Reviews
+Chemische Berichte
+Chemistry Education Research and Practice
+Chemistry: A European Journal
+Chemistry Letters
+Chemistry of Materials
+ChemistrySelect
+ChemMedChem
+Chemometrics and Intelligent Laboratory Systems
+Chemosphere
+ChemPhysChem
+ChemPlusChem
+Chimica Oggi - Chemistry Today
+Chemik Polski
+Collection of Czechoslovak Chemical Communications
+CrystEngComm
+Dalton Transactions
+Education in Chemistry
+Energy and Environmental Science
+Energy & Fuels
+Environmental Chemistry
+European Journal of Inorganic Chemistry
+European Journal of Medicinal Chemistry
+European Journal of Organic Chemistry
+Faraday Discussions
+Faraday Transactions
+Geostandards and Geoanalytical Research
+Green Chemistry
+Helvetica Chimica Acta
+Inorganic Chemistry
+Inorganic Chemistry Frontiers
+International Journal of Hydrogen Energy
+International Journal of Quantum Chemistry
+Ion Exchange Letters
+JAAS Journal of Analytical Atomic Spectrometry
+Journal of Agricultural and Food Chemistry
+Journal of the American Chemical Society
+Journal of AOAC INTERNATIONAL
+Journal of Applied Polymer Science
+Journal of Biological Chemistry
+Journal of Biological Inorganic Chemistry
+Journal of the Brazilian Chemical Society
+Journal of Catalysis
+Journal of Chemical Education
+Journal of Chemical Information and Modeling
+Journal of Chemical Physics
+Journal of Chemical Sciences
+Journal of the Chemical Society
+Journal of the Chemical Society of Pakistan
+Journal of Chemical Thermodynamics
+Journal of Cheminformatics
+Journal of Chemometrics
+Journal of Chromatography A
+Journal of Cluster Science
+Journal of Combinatorial Chemistry
+Journal of Computational Chemistry
+Journal of Electroanalytical Chemistry
+Journal of Environmental Monitoring
+Journal of Heterocyclic Chemistry
+Journal of Mass Spectrometry
+Journal of Materials Chemistry
+Journal of Medicinal Chemistry
+Journal of Molecular Structure
+Journal of Molecular Structure: THEOCHEM
+Journal of Natural Products
+Journal of Organic Chemistry
+Journal of Organometallic Chemistry
+Journal of Physical Chemistry A
+Journal of Physical Chemistry B
+Journal of Physical Chemistry C
+Journal of Physical Chemistry Letters
+Journal of Polymer Science Part A: Polymer Chemistry
+Journal of Polymer Science Part B: Polymer Physics
+Journal of Radioanalytical and Nuclear Chemistry
+Journal of the Royal Institute of Chemistry
+Journal of the Electrochemical Society
+Journal of Thermal Analysis and Calorimetry
+Lab on a Chip
+Langmuir
+Liebigs Annalen
+Macromolecules
+Magnetic Resonance in Chemistry
+Metallomics
+Methods in Organic Synthesis
+Microchimica Acta
+Molbank
+Molecular BioSystems
+Molecular Physics
+Molecules
+Nano Letters
+Natural Product Reports
+Nature Chemical Biology
+Nature Chemistry
+Nature Materials
+Nature Protocols
+New Journal of Chemistry
+Open Chemistry
+Organic and Biomolecular Chemistry
+Organic Letters
+Organometallics
+Perkin Transactions
+Photochemical and Photobiological Sciences
+Physical Chemistry Chemical Physics
+Polish Journal of Chemistry
+Polyhedron
+Proceedings of the Chemical Society
+RSC Advances
+Revista Boliviana de Quimica
+Revista de la Sociedad Venezolana Química
+Scientia Pharmaceutica
+Soft Matter
+Spectroscopy Letters
+Surface Science Reports
+Synlett
+Synthesis
+Talanta
+Tetrahedron
+Tetrahedron Letters
+Theoretical Chemistry Accounts
+Trends in Analytical Chemistry
+Zeitschrift für Naturforschung
+Zeitschrift für Naturforschung B
+Zeitschrift für Physikalische Chemie
